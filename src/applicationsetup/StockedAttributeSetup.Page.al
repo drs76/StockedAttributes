@@ -3,7 +3,7 @@ page 50100 StockedAttributeSetup
 
     PageType = Card;
     SourceTable = StockedAttributeSetup;
-    Caption = 'Stocked attribute setup';
+    Caption = 'Stocked Attribute Setup';
     UsageCategory = Administration;
     ApplicationArea = All;
 
@@ -19,6 +19,21 @@ page 50100 StockedAttributeSetup
                     ToolTip = 'Enable or disable the stocked attribute functionality';
                     ApplicationArea = All;
                 }
+            }
+        }
+    }
+
+    actions
+    {
+        area(Navigation)
+        {
+            action(StockedAttributes)
+            {
+                Caption = 'Templates';
+                ToolTip = 'Setup stocked attribute template''s';
+                ApplicationArea = All;
+                Image = DimensionSets;
+                RunObject = Page StockedAttributeTemplates;
             }
         }
     }

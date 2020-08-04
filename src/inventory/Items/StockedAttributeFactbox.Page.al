@@ -1,6 +1,6 @@
 page 50102 StockedAttributeFactbox
 {
-    Caption = 'Item Variant Attributes';
+    Caption = 'Stocked Attributes';
     PageType = ListPart;
     Editable = false;
     SourceTable = StockedAttributeSetEntry;

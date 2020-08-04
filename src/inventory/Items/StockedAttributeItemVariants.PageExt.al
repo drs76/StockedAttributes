@@ -176,37 +176,6 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
         }
     }
 
-    actions
-    {
-        addafter("V&ariant")
-        {
-            group(StockedAttributesGroup)
-            {
-                Caption = 'Stocked Attribute Template';
-                Visible = StockedAttributeVisible;
-
-                action(StockedAttributes)
-                {
-                    Caption = 'Stocked attributes';
-                    Visible = StockedAttributeVisible;
-                    ApplicationArea = All;
-                    Image = DimensionSets;
-                    ToolTip = 'Setup stocked attributes to be used for the Item';
-                    Promoted = true;
-                    PromotedCategory = Process;
-
-                    trigger OnAction()
-                    var
-                        Item: Record Item;
-                    begin
-                        Item.Get("Item No.");
-                        StockedAttributeMgmt.EditStockedAttributeTemplate(Item);
-                    end;
-                }
-            }
-        }
-    }
-
     trigger OnOpenPage()
     begin
         StockedAttributeVisible := StockedAttributeMgmt.IsEnabled();
@@ -256,6 +225,7 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
 
     local procedure SetAttributeCaptions()
     var
+        StockedAttributeTemplate: Record StockedAttributeTemplate;
         TempStockedAttributeTemplateEntry: Record StockedAttributeTemplateEntry temporary;
         PreviousId: Integer;
         x: Integer;
@@ -263,7 +233,8 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
         if not StockedAttributeVisible then
             exit;
 
-        StockedAttributeMgmt.GetAttributeTemplateSet(TempStockedAttributeTemplateEntry, Item.StockedAttributeTemplateID);
+        StockedAttributeTemplate.Get(Item.StockedAttributeTemplateCode);
+        StockedAttributeMgmt.GetAttributeTemplateSet(TempStockedAttributeTemplateEntry, StockedAttributeTemplate."Template Set ID");
         if not TempStockedAttributeTemplateEntry.FindSet() then
             exit;
 

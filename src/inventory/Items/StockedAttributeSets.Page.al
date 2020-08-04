@@ -1,6 +1,6 @@
 page 50101 StockedAttributeSets
 {
-    Caption = 'Variant Attributes';
+    Caption = 'Stocked Attributes Sets';
     LinksAllowed = false;
     Editable = false;
     PageType = List;

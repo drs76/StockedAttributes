@@ -4,34 +4,11 @@ pageextension 50102 StockedAttributeItemCard extends "Item Card"
     {
         addbefore(Inventory)
         {
-            field(StockedAttributeTemplateID; StockedAttributeTemplateID)
+            field(StockedAttributeTemplateID; StockedAttributeTemplateCode)
             {
-                ToolTip = 'Stocked Attribute Template Id';
-                Visible = StockedAttributeVisible;
-                Editable = false;
-                ApplicationArea = All;
-            }
-        }
-    }
-    actions
-    {
-        addafter(Attributes)
-        {
-            action(StockedAttributes)
-            {
-                Caption = 'Stocked attribute template';
+                ToolTip = 'Stocked Attribute Template Code';
                 Visible = StockedAttributeVisible;
                 ApplicationArea = All;
-                Image = DimensionSets;
-                ToolTip = 'Setup a stocked attribute template to be used for this Item';
-                Promoted = true;
-                PromotedCategory = Category4;
-
-                trigger OnAction()
-                begin
-                    StockedAttributeMgmt.EditStockedAttributeTemplate(Rec);
-                    CurrPage.Update(false);
-                end;
             }
         }
     }

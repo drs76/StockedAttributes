@@ -13,27 +13,27 @@ table 50104 StockedAttributeTemplateEntry
         {
             Caption = 'Attribute ID';
             DataClassification = SystemMetadata;
-            TableRelation = "Item Attribute".ID where (StockedAttribute = const (true));
+            TableRelation = "Item Attribute".ID where(StockedAttribute = const(true));
         }
 
         field(3; "Attribute Code"; Text[250])
         {
             Caption = 'Attribute';
             FieldClass = FlowField;
-            CalcFormula = lookup ("Item Attribute".Name where (ID = field (AttributeID)));
+            CalcFormula = lookup ("Item Attribute".Name where(ID = field(AttributeID)));
             Editable = false;
         }
         field(4; AttributeValueID; Integer)
         {
             Caption = 'Attribute Value ID';
             DataClassification = SystemMetadata;
-            TableRelation = "Item Attribute Value".ID where ("Attribute ID" = Field (AttributeID));
+            TableRelation = "Item Attribute Value".ID where("Attribute ID" = Field(AttributeID));
         }
         field(5; "Attribute Value"; Text[250])
         {
             Caption = 'Attribute Value';
             FieldClass = FlowField;
-            CalcFormula = lookup ("Item Attribute Value".Value where (ID = field (AttributeValueID), "Attribute ID" = field (AttributeID)));
+            CalcFormula = lookup ("Item Attribute Value".Value where(ID = field(AttributeValueID), "Attribute ID" = field(AttributeID)));
             Editable = false;
         }
     }
@@ -62,7 +62,7 @@ table 50104 StockedAttributeTemplateEntry
 
     procedure GetTemplateSetID(var StockedAttributeTemplateEntry: Record StockedAttributeTemplateEntry): Integer;
     var
-        StockedAttributeTemplate: Record StockedAttributeTemplate;
+        StockedAttributeTemplateTree: Record StockedAttributeTemplateTree;
         StockedAttributeTemplateEntry2: Record StockedAttributeTemplateEntry;
         Found: Boolean;
     begin
@@ -78,38 +78,38 @@ table 50104 StockedAttributeTemplateEntry
             exit(0);
 
         Found := true;
-        StockedAttributeTemplate."Template Set ID" := 0;
+        StockedAttributeTemplateTree."Template Set ID" := 0;
         repeat
             StockedAttributeTemplateEntry.TestField(AttributeValueID);
             if Found then
-                if not StockedAttributeTemplate.Get(StockedAttributeTemplate."Template Set ID", StockedAttributeTemplateEntry.AttributeID, StockedAttributeTemplateEntry.AttributeValueID) then begin
+                if not StockedAttributeTemplateTree.Get(StockedAttributeTemplateTree."Template Set ID", StockedAttributeTemplateEntry.AttributeID, StockedAttributeTemplateEntry.AttributeValueID) then begin
                     Found := false;
-                    StockedAttributeTemplate.LockTable();
+                    StockedAttributeTemplateTree.LockTable();
                 end;
             if not Found then begin
-                StockedAttributeTemplate."Parent Template Set ID" := StockedAttributeTemplate."Parent Template Set ID";
-                StockedAttributeTemplate."Template Attribute ID" := StockedAttributeTemplateEntry.AttributeID;
-                StockedAttributeTemplate."Template Value ID" := StockedAttributeTemplateEntry.AttributeValueID;
-                StockedAttributeTemplate."Template Set ID" := 0;
-                StockedAttributeTemplate."In Use" := false;
-                if not StockedAttributeTemplate.Insert(true) then
-                    StockedAttributeTemplate.Get(StockedAttributeTemplate."Parent Template Set ID", StockedAttributeTemplate."Template Attribute ID", StockedAttributeTemplate."Template Value ID");
+                StockedAttributeTemplateTree."Parent Template Set ID" := StockedAttributeTemplateTree."Parent Template Set ID";
+                StockedAttributeTemplateTree."Template Attribute ID" := StockedAttributeTemplateEntry.AttributeID;
+                StockedAttributeTemplateTree."Template Value ID" := StockedAttributeTemplateEntry.AttributeValueID;
+                StockedAttributeTemplateTree."Template Set ID" := 0;
+                StockedAttributeTemplateTree."In Use" := false;
+                if not StockedAttributeTemplateTree.Insert(true) then
+                    StockedAttributeTemplateTree.Get(StockedAttributeTemplateTree."Parent Template Set ID", StockedAttributeTemplateTree."Template Attribute ID", StockedAttributeTemplateTree."Template Value ID");
             end;
         until StockedAttributeTemplateEntry.Next() = 0;
-        if not StockedAttributeTemplate."In Use" then begin
+        if not StockedAttributeTemplateTree."In Use" then begin
             if Found then begin
-                StockedAttributeTemplate.LockTable();
-                StockedAttributeTemplate.Get(StockedAttributeTemplate."Parent Template Set ID", StockedAttributeTemplate."Template Attribute ID", StockedAttributeTemplate."Template Value ID");
+                StockedAttributeTemplateTree.LockTable();
+                StockedAttributeTemplateTree.Get(StockedAttributeTemplateTree."Parent Template Set ID", StockedAttributeTemplateTree."Template Attribute ID", StockedAttributeTemplateTree."Template Value ID");
             end;
-            StockedAttributeTemplate."In Use" := TRUE;
-            StockedAttributeTemplate.Modify();
+            StockedAttributeTemplateTree."In Use" := TRUE;
+            StockedAttributeTemplateTree.Modify();
 
-            InsertTemplateSetEntries(StockedAttributeTemplateEntry, StockedAttributeTemplate."Template Set ID");
+            InsertTemplateSetEntries(StockedAttributeTemplateEntry, StockedAttributeTemplateTree."Template Set ID");
         end;
 
         StockedAttributeTemplateEntry.Copy(StockedAttributeTemplateEntry2);
 
-        exit(StockedAttributeTemplate."Template Set ID");
+        exit(StockedAttributeTemplateTree."Template Set ID");
     end;
 
     local procedure InsertTemplateSetEntries(var StockedAttrTemplateSet: Record StockedAttributeTemplateEntry; NewId: Integer)

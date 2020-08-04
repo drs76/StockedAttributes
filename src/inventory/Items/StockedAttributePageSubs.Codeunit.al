@@ -4,28 +4,28 @@ codeunit 50102 StockedAttributePageSubs
     [EventSubscriber(ObjectType::Page, Page::"Sales Quote Subform", 'OnAfterValidateEvent', 'No.', true, true)]
     local procedure SalesQuoteSubform_OnAfterValidate_No(var Rec: Record "Sales Line"; var xRec: Record "Sales Line")
     begin
-        if CheckAndRun(Rec) then
+        if CheckAndRun(Rec.RecordId()) then
             Rec.Find('=');
     end;
 
     [EventSubscriber(ObjectType::Page, Page::"Sales Order Subform", 'OnAfterValidateEvent', 'No.', true, true)]
     local procedure SalesOrderSubform_OnAfterValidate_No(var Rec: Record "Sales Line"; var xRec: Record "Sales Line")
     begin
-        if CheckAndRun(Rec) then
+        if CheckAndRun(Rec.RecordId()) then
             Rec.Find('=');
     end;
 
     [EventSubscriber(ObjectType::Page, Page::"Sales Invoice Subform", 'OnAfterValidateEvent', 'No.', true, true)]
     local procedure SalesInvoiceSubform_OnAfterValidate_No(var Rec: Record "Sales Line"; var xRec: Record "Sales Line")
     begin
-        if CheckAndRun(Rec) then
+        if CheckAndRun(Rec.RecordId()) then
             Rec.Find('=');
     end;
 
     [EventSubscriber(ObjectType::Page, Page::"Sales Cr. Memo Subform", 'OnAfterValidateEvent', 'No.', true, true)]
     local procedure SalesCrMemoSubform_OnAfterValidate_No(var Rec: Record "Sales Line"; var xRec: Record "Sales Line")
     begin
-        if CheckAndRun(Rec) then
+        if CheckAndRun(Rec.RecordId()) then
             Rec.Find('=');
     end;
 
@@ -33,28 +33,28 @@ codeunit 50102 StockedAttributePageSubs
     [EventSubscriber(ObjectType::Page, Page::"Purchase Quote Subform", 'OnAfterValidateEvent', 'No.', true, true)]
     local procedure PurchaseQuoteSubform_OnAfterValidate_No(var Rec: Record "Purchase Line"; var xRec: Record "Purchase Line")
     begin
-        if CheckAndRun(Rec) then
+        if CheckAndRun(Rec.RecordId()) then
             Rec.Find('=');
     end;
 
     [EventSubscriber(ObjectType::Page, Page::"Purchase Order Subform", 'OnAfterValidateEvent', 'No.', true, true)]
     local procedure PurchaseOrderSubform_OnAfterValidate_No(var Rec: Record "Purchase Line"; var xRec: Record "Purchase Line")
     begin
-        if CheckAndRun(Rec) then
+        if CheckAndRun(Rec.RecordId()) then
             Rec.Find('=');
     end;
 
     [EventSubscriber(ObjectType::Page, Page::"Purch. Invoice Subform", 'OnAfterValidateEvent', 'No.', true, true)]
     local procedure PurchaseInvoiceSubform_OnAfterValidate_No(var Rec: Record "Purchase Line"; var xRec: Record "Purchase Line")
     begin
-        if CheckAndRun(Rec) then
+        if CheckAndRun(Rec.RecordId()) then
             Rec.Find('=');
     end;
 
     [EventSubscriber(ObjectType::Page, Page::"Purch. Cr. Memo Subform", 'OnAfterValidateEvent', 'No.', true, true)]
     local procedure PurchaseCrMemoSubform_OnAfterValidate_No(var Rec: Record "Purchase Line"; var xRec: Record "Purchase Line")
     begin
-        if CheckAndRun(Rec) then
+        if CheckAndRun(Rec.RecordId()) then
             Rec.Find('=');
     end;
 
@@ -62,7 +62,7 @@ codeunit 50102 StockedAttributePageSubs
     [EventSubscriber(ObjectType::Page, Page::"Assembly Order Subform", 'OnAfterValidateEvent', 'No.', true, true)]
     local procedure AssemblyOrderSubform_OnAfterValidate_No(var Rec: Record "Assembly Line"; var xRec: Record "Assembly Line")
     begin
-        if CheckAndRun(Rec) then
+        if CheckAndRun(Rec.RecordId()) then
             Rec.Find('=');
     end;
 
@@ -70,7 +70,7 @@ codeunit 50102 StockedAttributePageSubs
     [EventSubscriber(ObjectType::Page, Page::"Transfer Order Subform", 'OnAfterValidateEvent', 'Item No.', true, true)]
     local procedure TransferOrderSubform_OnAfterValidate_No(var Rec: Record "Transfer Line"; var xRec: Record "Transfer Line")
     begin
-        if CheckAndRun(Rec) then
+        if CheckAndRun(Rec.RecordId()) then
             Rec.Find('=');
     end;
 
@@ -78,11 +78,11 @@ codeunit 50102 StockedAttributePageSubs
     [EventSubscriber(ObjectType::Page, Page::"Item Journal", 'OnAfterValidateEvent', 'Item No.', true, true)]
     local procedure ItemJournal_OnAfterValidate_No(var Rec: Record "Item Journal Line"; var xRec: Record "Item Journal Line")
     begin
-        if CheckAndRun(Rec) then
+        if CheckAndRun(Rec.RecordId()) then
             Rec.Find('=');
     end;
 
-    local procedure CheckAndRun(RecordIn: Variant) ReturnValue: Boolean;
+    local procedure CheckAndRun(SourceRecordId: RecordId) ReturnValue: Boolean;
     var
         SalesLine: Record "Sales Line";
         PurchaseLine: Record "Purchase Line";
@@ -97,7 +97,7 @@ codeunit 50102 StockedAttributePageSubs
         if not StockedAttributeMgmt.IsEnabled() then
             exit;
 
-        RecRef.GetTable(RecordIn);
+        RecRef.Get(SourceRecordId);
         case RecRef.Number() of
             Database::"Sales Line":
                 begin
@@ -130,7 +130,7 @@ codeunit 50102 StockedAttributePageSubs
                         exit;
                 end;
         end;
-        StockedAttributeDocEntryMgmt.LaunchStockedAttributeConfigurator(RecordIn);
+        StockedAttributeDocEntryMgmt.LaunchStockedAttributeConfigurator(RecRef);
 
         ReturnValue := true;
     end;
@@ -150,7 +150,7 @@ codeunit 50102 StockedAttributePageSubs
             exit;
 
         Item.Get(ItemNo);
-        if Item.StockedAttributeTemplateID = 0 then
+        if StrLen(Item.StockedAttributeTemplateCode) = 0 then
             exit;
 
         ReturnValue := true;

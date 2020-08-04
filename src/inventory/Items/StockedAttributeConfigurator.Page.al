@@ -553,10 +553,9 @@ page 50104 StockedAttributeConfigurator
     local procedure InitPage()
     var
         Item: Record Item;
+        StockedAttributeTemplate: Record StockedAttributeTemplate;
         TempAttributeTemplateEntry: Record StockedAttributeTemplateEntry temporary;
         StockedAttributeMgmt: Codeunit StockedAttributeMgmt;
-        AttributeCount: Integer;
-        CurrentID: Integer;
     begin
         MaxSteps := 3; // Maximum navigation steps
         Clear(CurrentStep);
@@ -569,8 +568,22 @@ page 50104 StockedAttributeConfigurator
         UnitofMeasureCode := CopyStr(UoMDefault, 1, MaxStrLen(UnitofMeasureCode));
 
         Item.Get("Item No.");
-        StockedAttributeMgmt.GetAttributeTemplateSet(TempAttributeTemplateEntry, Item.StockedAttributeTemplateID);
+        Item.TestField(StockedAttributeTemplateCode);
+        StockedAttributeTemplate.Get(Item.StockedAttributeTemplateCode);
 
+        StockedAttributeMgmt.GetAttributeTemplateSet(TempAttributeTemplateEntry, StockedAttributeTemplate."Template Set ID");
+
+        SetupPage(TempAttributeTemplateEntry);
+
+        "Template Filter" := StockedAttributeTemplate."Template Set ID";
+        Rec.Insert();
+    end;
+
+    local procedure SetupPage(TempAttributeTemplateEntry: Record StockedAttributeTemplateEntry temporary)
+    var
+        AttributeCount: Integer;
+        CurrentID: Integer;
+    begin
         if not TempAttributeTemplateEntry.FindSet() then
             exit;
 
@@ -592,9 +605,6 @@ page 50104 StockedAttributeConfigurator
 
             CurrentID := TempAttributeTemplateEntry.AttributeID;
         until (TempAttributeTemplateEntry.Next() = 0) or (AttributeCount = ArrayLen(Captions));
-
-        "Template Filter" := Item.StockedAttributeTemplateID;
-        Rec.Insert();
     end;
 
     local procedure SetFieldVisible(FieldToSet: Integer)

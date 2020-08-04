@@ -1,46 +1,36 @@
-table 50103 StockedAttributeTemplate
+table 50106 StockedAttributeTemplate
 {
-    Caption = 'Stocked Attribute Template';
-    DataClassification = SystemMetadata;
+    Caption = 'StockedAttributeTemplate';
+    DataClassification = ToBeClassified;
 
     fields
     {
-        field(1; "Parent Template Set ID"; Integer)
+        field(1; Code; Code[20])
         {
-            Caption = 'Template Set ID';
-            NotBlank = true;
+            Caption = 'Code';
             DataClassification = SystemMetadata;
         }
-        field(2; "Template Attribute ID"; Integer)
+        field(2; Description; Text[2048])
         {
-            Caption = 'Template Attribute ID';
-            DataClassification = SystemMetadata;
-        }
-        field(3; "Template Value ID"; Integer)
-        {
-            Caption = 'Template Value ID';
+            Caption = 'Description';
             DataClassification = SystemMetadata;
         }
         field(4; "Template Set ID"; Integer)
         {
             Caption = 'Template Set ID';
-            AutoIncrement = true;
-            DataClassification = SystemMetadata;
-            Editable = false;
-        }
-        field(5; "In Use"; Boolean)
-        {
-            caption = 'In Use';
             DataClassification = SystemMetadata;
         }
     }
-
     keys
     {
-        key(PK; "Parent Template Set ID", "Template Attribute ID", "Template Value ID")
+        key(PK; Code)
         {
             Clustered = true;
         }
     }
-}
+    fieldgroups
+    {
+        fieldgroup(DropDown; Code, Description) { }
+    }
 
+}

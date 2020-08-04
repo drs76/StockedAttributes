@@ -53,13 +53,16 @@ codeunit 50100 StockedAttributeMgmt
 
     local procedure BuildCombinedAttributesList(ItemToCreateFor: Record Item; var CombinedAttributeList: List of [Text]; Seperator: Text[1]);
     var
+        StockedAttributeTemplate: Record StockedAttributeTemplate;
         StockedAttrTemplateEntry: Record StockedAttributeTemplateEntry;
         AttributeList: List of [Text];
         CurrentAttribute: Integer;
     begin
         // Using the Stocked Attibrutes assigned to the item, build a list of unique combinations of the
-        // attributes, which will be used to create the variants.        
-        StockedAttrTemplateEntry.SetRange(TemplateID, ItemToCreateFor.StockedAttributeTemplateID);
+        // attributes, which will be used to create the variants.     
+        StockedAttributeTemplate.Get(ItemToCreateFor.StockedAttributeTemplateCode);
+
+        StockedAttrTemplateEntry.SetRange(TemplateID, StockedAttributeTemplate."Template Set ID");
         if not StockedAttrTemplateEntry.FindSet() then
             exit;
 
@@ -207,18 +210,18 @@ codeunit 50100 StockedAttributeMgmt
         Page.RunModal(Page::"Item Variants", ItemVariant);
     end;
 
-    procedure EditStockedAttributeTemplate(Item: Record Item)
+    procedure EditStockedAttributeTemplate(StockedAttributeTemplate: Record StockedAttributeTemplate)
     var
         StockedAttributeTemplateEntry: Record StockedAttributeTemplateEntry;
-        StockedAttributesPage: Page StockedAttributeTemplates;
+        StockedAttributesPage: Page StockedAttributeTemplateSets;
     begin
         StockedAttributeTemplateEntry.FilterGroup(2);
-        StockedAttributeTemplateEntry.SetRange(TemplateID, Item.StockedAttributeTemplateID);
+        StockedAttributeTemplateEntry.SetRange(TemplateID, StockedAttributeTemplate."Template Set ID");
         StockedAttributeTemplateEntry.FilterGroup(0);
 
+        StockedAttributesPage.SetTemplate(StockedAttributeTemplate);
         StockedAttributesPage.SetTableView(StockedAttributeTemplateEntry);
-        StockedAttributesPage.SetItem(Item);
-        StockedAttributesPage.RunModal(); // item will be update in here.        
+        StockedAttributesPage.RunModal();
     end;
 
     procedure ShowVariantAttributes(VariantAttributeSetID: Integer)

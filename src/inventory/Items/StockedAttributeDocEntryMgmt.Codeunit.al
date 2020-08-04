@@ -11,15 +11,13 @@ codeunit 50101 StockedAttributeDocEntryMgmt
         UoMFieldTxt: Label 'Unit of Measure Code';
         LocationCodeFieldTxt: Label 'Location Code';
 
-    procedure LaunchStockedAttributeConfigurator(RecordIn: Variant)
+    procedure LaunchStockedAttributeConfigurator(SourceRecordRef: RecordRef)
     var
         TempStockedAttributeDocBuffer: Record StockedAttributeDocEntryBuffer temporary;
-        SourceRecordRef: RecordRef;
         Parameters: JsonObject;
     begin
         InitFields(); // setup field arrays required.
 
-        SourceRecordRef.GetTable(RecordIn);
         PrepareConfigurator(SourceRecordRef, Parameters);
 
         if RunAttributeConfigurator(Parameters, TempStockedAttributeDocBuffer) then
@@ -268,7 +266,7 @@ codeunit 50101 StockedAttributeDocEntryMgmt
         FilterFieldRef.SetFilter(FilterValue);
     end;
 
-    local procedure GetFieldNumber(TableNo: Integer; FieldName: Text) ReturnValue: Integer;
+    procedure GetFieldNumber(TableNo: Integer; FieldName: Text) ReturnValue: Integer;
     var
         FieldTable: Record Field;
         FilterTxt: Label '@%1';
