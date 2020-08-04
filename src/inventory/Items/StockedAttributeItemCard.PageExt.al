@@ -2,13 +2,18 @@ pageextension 50102 StockedAttributeItemCard extends "Item Card"
 {
     layout
     {
-        addbefore(Inventory)
+        addlast(content)
         {
-            field(StockedAttributeTemplateID; StockedAttributeTemplateCode)
+            group(StockedAttributeGrp)
             {
-                ToolTip = 'Stocked Attribute Template Code';
+                Caption = 'Stocked Attribute';
                 Visible = StockedAttributeVisible;
-                ApplicationArea = All;
+
+                field(StockedAttributeTemplateCode; StockedAttributeTemplateCode)
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Select the stocked attribute template to use for this item';
+                }
             }
         }
     }
