@@ -12,6 +12,7 @@ pageextension 50102 StockedAttributeItemCard extends "Item Card"
                 field(StockedAttributeTemplateCode; StockedAttributeTemplateCode)
                 {
                     ApplicationArea = All;
+                    Importance = Promoted;
                     ToolTip = 'Select the stocked attribute template to use for this item';
                 }
             }

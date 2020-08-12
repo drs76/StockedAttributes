@@ -21,6 +21,7 @@ codeunit 50100 StockedAttributeMgmt
         CreatingForMsg: Label 'Creating #1#######';
     begin
         ItemToCreateVariantFor.Get(ItemNo);
+        ItemToCreateVariantFor.TestField(StockedAttributeTemplateCode);
 
         if not RemoveCurrentVariants(ItemNo) then
             Message(NotAllRemovedMsg);
@@ -31,7 +32,6 @@ codeunit 50100 StockedAttributeMgmt
         if GuiAllowed() then
             Window.Open(CreatingForMsg);
 
-        // loop through combinations and create variant records
         for x := 1 to CombinedAttributeList.Count() do begin
             if GuiAllowed() then
                 Window.Update(1, CombinedAttributeList.Get(x));

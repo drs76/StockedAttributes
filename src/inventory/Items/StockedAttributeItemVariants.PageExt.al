@@ -176,6 +176,36 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
         }
     }
 
+    actions
+    {
+        addlast(Processing)
+        {
+            group(StockedAttributeGrp)
+            {
+                Visible = StockedAttributeVisible;
+
+                action(CreateAllVariants)
+                {
+                    Caption = 'Create Variants';
+                    ToolTip = 'Create variants, using stocked attribute template';
+                    ApplicationArea = All;
+                    Promoted = true;
+                    PromotedIsBig = true;
+                    PromotedOnly = true;
+                    PromotedCategory = Process;
+                    Image = Action;
+
+                    trigger OnAction()
+                    var
+                        StockedAttributeMgmt: Codeunit StockedAttributeMgmt;
+                    begin
+                        StockedAttributeMgmt.CreateAllPossibleVariants("Item No.", false);
+                        CurrPage.Update(false);
+                    end;
+                }
+            }
+        }
+    }
     trigger OnOpenPage()
     begin
         StockedAttributeVisible := StockedAttributeMgmt.IsEnabled();
@@ -233,7 +263,9 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
         if not StockedAttributeVisible then
             exit;
 
-        StockedAttributeTemplate.Get(Item.StockedAttributeTemplateCode);
+        if not StockedAttributeTemplate.Get(Item.StockedAttributeTemplateCode) then
+            exit;
+
         StockedAttributeMgmt.GetAttributeTemplateSet(TempStockedAttributeTemplateEntry, StockedAttributeTemplate."Template Set ID");
         if not TempStockedAttributeTemplateEntry.FindSet() then
             exit;
