@@ -306,7 +306,7 @@ codeunit 50100 StockedAttributeMgmt
         exit(FullDescriptionTB.ToText());
     end;
 
-    procedure CopyAttributesToTemplate(TempStockedAttributeTemplateEntry: Record StockedAttributeTemplateEntry temporary)
+    procedure CopyAttributesToTemplate(var TempStockedAttributeTemplateEntry: Record StockedAttributeTemplateEntry temporary)
     var
         TempStockedAttributeTemplateEntry2: Record StockedAttributeTemplateEntry temporary;
         ItemAttributes: Record "Item Attribute";
@@ -315,11 +315,35 @@ codeunit 50100 StockedAttributeMgmt
     begin
         TempStockedAttributeTemplateEntry2.Copy(TempStockedAttributeTemplateEntry, true);
 
-
         FilterPage.AddRecord('Item Attribute', ItemAttributes);
         FilterPage.AddFieldNo('Item Attribute', ItemAttributes.FieldNo(ID));
         if FilterPage.RunModal() then
-            Message(FilterPage.GetView('Item Attribute'));
+            TransferAttributesToTemplate(FilterPage.GetView('Item Attribute'), TempStockedAttributeTemplateEntry2);
 
+        TempStockedAttributeTemplateEntry.Copy(TempStockedAttributeTemplateEntry2, true);
+    end;
+
+    local procedure TransferAttributesToTemplate(AttributeView: Text; var TempStockedAttributeTemplateEntry: Record StockedAttributeTemplateEntry temporary)
+    var
+        ItemAttribute: Record "Item Attribute";
+        ItemAttributesQuery: Query StockedAttributeItemAttributes;
+    begin
+        if StrLen(AttributeView) = 0 then
+            exit;
+
+        ItemAttribute.SetView(AttributeView);
+
+        ItemAttributesQuery.SetFilter(ID, ItemAttribute.GetFilter(ID));
+        ItemAttributesQuery.Open();
+        while ItemAttributesQuery.Read() do begin
+            TempStockedAttributeTemplateEntry.SetRange(AttributeID, ItemAttributesQuery.ID);
+            TempStockedAttributeTemplateEntry.SetRange(AttributeValueID, ItemAttributesQuery.ValueID);
+            if not TempStockedAttributeTemplateEntry.FindFirst() then begin
+                Clear(TempStockedAttributeTemplateEntry);
+                TempStockedAttributeTemplateEntry.AttributeID := ItemAttributesQuery.ID;
+                TempStockedAttributeTemplateEntry.AttributeValueID := ItemAttributesQuery.ValueID;
+                TempStockedAttributeTemplateEntry.Insert();
+            end;
+        end;
     end;
 }
