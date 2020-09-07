@@ -2,13 +2,18 @@ pageextension 50100 StockedAttributeItemAttribute extends "Item Attribute"
 {
     layout
     {
-        addafter(Blocked)
+        addlast(content)
         {
-            field(StockedAttribute; StockedAttribute)
+            group(StockedAttributeGrp)
             {
-                ToolTip = 'This attribute can be used for stocked attribute variants';
+                Caption = 'Stocked Attribute';
                 Visible = StockedAttributeVisible;
-                ApplicationArea = All;
+
+                field(StockedAttribute; StockedAttribute)
+                {
+                    ToolTip = 'This attribute can be used for stocked attribute variants';
+                    ApplicationArea = All;
+                }
             }
         }
     }

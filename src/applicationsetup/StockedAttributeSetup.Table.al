@@ -15,6 +15,20 @@ table 50100 StockedAttributeSetup
             Caption = 'Enabled';
             DataClassification = SystemMetadata;
         }
+        field(3; EntryPageType; Enum StockedAttributeEntryPageType)
+        {
+            Caption = 'Entry Page Type';
+            DataClassification = SystemMetadata;
+            InitValue = None;
+
+            trigger OnValidate()
+            var
+                DefaultErr: Label 'Cannot select default for the default';
+            begin
+                if EntryPageType = EntryPageType::Default then
+                    Error(DefaultErr);
+            end;
+        }
     }
     keys
     {

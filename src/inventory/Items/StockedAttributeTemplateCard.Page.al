@@ -34,6 +34,11 @@ page 50105 StockedAttributeTemplate
                         StockedAttributeMgmt.EditStockedAttributeTemplate(Rec);
                     end;
                 }
+                field(EntryPageType; EntryPageType)
+                {
+                    ToolTip = 'Default: Stocked Attribute Setup, Configurator: Configurator Entry Page, Quick Entry: Quick Entry Page, None: BC Standard';
+                    ApplicationArea = All;
+                }
             }
         }
     }
