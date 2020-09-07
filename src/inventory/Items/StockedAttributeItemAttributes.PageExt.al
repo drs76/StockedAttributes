@@ -6,12 +6,13 @@ pageextension 50101 StockedAttributeItemAttributes extends "Item Attributes"
         {
             field(StockedAttribute; StockedAttribute)
             {
+                Caption = 'Stocked Attribute';
                 Visible = StockedAttributeVisible;
                 ToolTip = 'Attribute is used for stocked attribute inventory';
+                Importance = Promoted;
                 ApplicationArea = All;
             }
         }
-
     }
 
     trigger OnOpenPage()

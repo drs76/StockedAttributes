@@ -101,7 +101,7 @@ table 50104 StockedAttributeTemplateEntry
                 StockedAttributeTemplateTree.LockTable();
                 StockedAttributeTemplateTree.Get(StockedAttributeTemplateTree."Parent Template Set ID", StockedAttributeTemplateTree."Template Attribute ID", StockedAttributeTemplateTree."Template Value ID");
             end;
-            StockedAttributeTemplateTree."In Use" := TRUE;
+            StockedAttributeTemplateTree."In Use" := true;
             StockedAttributeTemplateTree.Modify();
 
             InsertTemplateSetEntries(StockedAttributeTemplateEntry, StockedAttributeTemplateTree."Template Set ID");

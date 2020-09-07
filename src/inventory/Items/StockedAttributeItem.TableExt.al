@@ -8,5 +8,11 @@ tableextension 50100 StockedAttributeItem extends Item
             DataClassification = SystemMetadata;
             TableRelation = StockedAttributeTemplate.Code;
         }
+        field(50101; StockedAttributeEntryPageType; Enum StockedAttributeEntryPageType)
+        {
+            Caption = 'Entry Page Type';
+            DataClassification = SystemMetadata;
+            InitValue = Default;
+        }
     }
 }

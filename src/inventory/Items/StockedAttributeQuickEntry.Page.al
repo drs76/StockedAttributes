@@ -1,11 +1,12 @@
-page 50104 StockedAttributeConfigurator
+page 50107 StockedAttributeQuickEntry
 {
-    Caption = 'Variant Configurator';
-    PageType = NavigatePage;
+    Caption = 'Variant Quick Entry';
+    PageType = List;
     ApplicationArea = All;
     UsageCategory = Administration;
     SourceTable = StockedAttributeDocEntryBuffer;
     SourceTableTemporary = true;
+    Editable = true;
 
     layout
     {
@@ -29,11 +30,8 @@ page 50104 StockedAttributeConfigurator
                     ApplicationArea = All;
                 }
             }
-            group(Configuration)
+            repeater(Configuration)
             {
-                Caption = 'Configuration';
-                Visible = CurrentStep = 1;
-
                 field(Selection1; Selections[1])
                 {
                     CaptionClass = '3,' + Captions[1];
@@ -335,17 +333,18 @@ page 50104 StockedAttributeConfigurator
                         ValidateSelection(20);
                     end;
                 }
-            }
-            group(EnterQuantity)
-            {
-                Caption = 'Required Quantity';
-                Visible = CurrentStep = 2;
                 field(UnitofMeasureCode; UnitofMeasureCode)
                 {
                     Caption = 'Unit of Measure';
                     ToolTip = 'Enter the unit of measure required';
                     ShowMandatory = true;
                     ApplicationArea = All;
+
+                    trigger OnValidate()
+                    var
+                    begin
+                        currPage.SaveRecord();
+                    end;
                 }
                 field(LocationCode; LocationCode)
                 {
@@ -353,6 +352,12 @@ page 50104 StockedAttributeConfigurator
                     ToolTip = 'Enter the location required';
                     ShowMandatory = true;
                     ApplicationArea = All;
+
+                    trigger OnValidate()
+                    var
+                    begin
+                        CurrPage.SaveRecord();
+                    end;
                 }
 
                 field(Quantity; Quantity)
@@ -361,118 +366,25 @@ page 50104 StockedAttributeConfigurator
                     ToolTip = 'Enter the required quantity';
                     ShowMandatory = true;
                     ApplicationArea = All;
+
+                    trigger OnValidate()
+                    begin
+                        if Quantity <> xRec.Quantity then
+                            FindVariant();
+
+                        CurrPage.SaveRecord();
+                    end;
                 }
-            }
 
-            group(ConfirmSelections)
-            {
-                Caption = 'Confirm';
-                Visible = CurrentStep = 3;
-
-                repeater(Selections)
+                field(EntryNo; EntryNo)
                 {
-                    field("Variant Code"; "Variant Code")
-                    {
-                        Caption = 'Variant Code';
-                        ToolTip = 'Variant code for selected configuration';
-                        Editable = false;
-                        ShowMandatory = true;
-                        ApplicationArea = All;
-                    }
-                    field(UnitofMeasureCode2; UnitofMeasureCode)
-                    {
-                        Caption = 'Unit of Measure Code';
-                        ToolTip = 'Unit of measure code for selected configuration';
-                        ShowMandatory = true;
-                        ApplicationArea = All;
-                    }
-                    field(Quantity2; Quantity)
-                    {
-                        Caption = 'Quantity';
-                        ToolTip = 'Quantity required for selected configuration';
-                        ShowMandatory = true;
-                        ApplicationArea = All;
-                    }
+                    Caption = 'Entry No.';
+                    ToolTip = 'Entry No.';
+                    ApplicationArea = All;
                 }
             }
         }
     }
-
-    actions
-    {
-        area(Processing)
-        {
-            group(Navigate)
-            {
-                action(Next)
-                {
-                    Caption = '&Next';
-                    ToolTip = 'Next Configurator page';
-                    Visible = NextVisible;
-                    InFooterBar = true;
-                    Image = NextRecord;
-                    ApplicationArea = All;
-
-                    trigger OnAction()
-                    begin
-                        DoStep(1);
-                    end;
-                }
-
-                action(Back)
-                {
-                    Caption = '&Back';
-                    ToolTip = 'Previous Configurator page';
-                    Visible = BackVisible;
-                    InFooterBar = true;
-                    Image = PreviousRecord;
-                    ApplicationArea = All;
-
-                    trigger OnAction()
-                    begin
-                        DoStep(-1);
-                    end;
-                }
-
-                action(Add)
-                {
-                    Caption = '&Add';
-                    ToolTip = 'Add configuration to selections';
-                    Image = Save;
-                    Visible = AddVisible;
-                    InFooterBar = true;
-                    ApplicationArea = All;
-
-                    trigger OnAction()
-                    begin
-                        InitPage();
-                        DoStep(1);
-                    end;
-                }
-                action(Finish)
-                {
-                    Caption = '&Finish';
-                    ToolTip = 'Close page, add selections to document';
-                    Image = Post;
-                    Visible = FinishVisible;
-                    InFooterBar = true;
-                    ApplicationArea = All;
-
-                    trigger OnAction()
-                    begin
-                        ClosedWithSave := True;
-                        CurrPage.Close();
-                    end;
-                }
-            }
-        }
-    }
-
-    trigger OnOpenPage()
-    begin
-        InitPage();
-        DoStep(1); // page 1
-    end;
 
     var
         Attributes: Dictionary of [Integer, Integer];
@@ -481,14 +393,7 @@ page 50104 StockedAttributeConfigurator
         SelectedValueIDs: array[20] of Integer;
         LocationDefault: Text;
         UoMDefault: Text;
-        RecordCount: Integer;
-        MaxSteps: Integer;
-        CurrentStep: Integer;
         ClosedWithSave: Boolean;
-        NextVisible: Boolean;
-        BackVisible: Boolean;
-        AddVisible: Boolean;
-        FinishVisible: Boolean;
         AttributeVisible1: Boolean;
         AttributeVisible2: Boolean;
         AttributeVisible3: Boolean;
@@ -510,6 +415,36 @@ page 50104 StockedAttributeConfigurator
         AttributeVisible19: Boolean;
         AttributeVisible20: Boolean;
 
+    trigger OnOpenPage()
+    begin
+        InitPage();
+    end;
+
+    trigger OnQueryClosePage(CloseAction: Action): Boolean
+    var
+        SaveChangesQst: Label 'Add selections to document';
+    begin
+        if Count() > 0 then
+            ClosedWithSave := Confirm(SaveChangesQst, false);
+    end;
+
+    trigger OnNewRecord(BelowxRec: Boolean)
+    begin
+        EntryNo := xRec.EntryNo + 1;
+        TransferFields(xRec, false);
+        Quantity := 0;
+    end;
+
+    trigger OnAfterGetRecord()
+    begin
+        GetRowSelections();
+    end;
+
+    trigger OnAfterGetCurrRecord()
+    begin
+        GetRowSelections();
+    end;
+
     procedure SetLineDefaults(LocationDefaultIn: Text; UoMDefaultIn: Text)
     begin
         LocationDefault := LocationDefaultIn;
@@ -526,30 +461,6 @@ page 50104 StockedAttributeConfigurator
         exit(ClosedWithSave);
     end;
 
-    local procedure DoStep(StepCount: Integer)
-    begin
-        if CurrentStep + StepCount > MaxSteps then
-            exit;
-        if CurrentStep + StepCount < 1 then
-            exit;
-
-        CurrentStep += StepCount;
-        if CurrentStep = 3 then begin
-            FindVariant();
-            Modify();
-        end;
-
-        SetControls();
-    end;
-
-    local procedure SetControls()
-    begin
-        NextVisible := CurrentStep < 3;
-        BackVisible := CurrentStep > 1;
-        AddVisible := CurrentStep = 3;
-        FinishVisible := CurrentStep = 3;
-    end;
-
     local procedure InitPage()
     var
         Item: Record Item;
@@ -559,12 +470,7 @@ page 50104 StockedAttributeConfigurator
         StockedAttributeMgmt: Codeunit StockedAttributeMgmt;
         AttributeCount: Integer;
     begin
-        MaxSteps := 3; // Maximum navigation steps
-        Clear(CurrentStep);
-
-        Rec.Init();
-        RecordCount += 1;
-        EntryNo := RecordCount;
+        EntryNo := 1;
         "Item No." := GetRangeMin("Item No.");
         LocationCode := CopyStr(LocationDefault, 1, MaxStrLen(LocationCode));
         UnitofMeasureCode := CopyStr(UoMDefault, 1, MaxStrLen(UnitofMeasureCode));
@@ -587,7 +493,7 @@ page 50104 StockedAttributeConfigurator
         SetFieldsVisible(AttributeCount);
 
         "Template Filter" := StockedAttributeTemplate."Template Set ID";
-        Rec.Insert();
+        Insert();
     end;
 
     local procedure SetFieldsVisible(AttributeCount: Integer)
@@ -644,7 +550,7 @@ page 50104 StockedAttributeConfigurator
         StockedAttributeEntrySetup: Codeunit StockedAttributeEntryPageMgmt;
     begin
         StockedAttributeEntrySetup.ValidateEntry(ColumnNo, Attributes, Selections, SelectedValueIDs);
-        currPage.SaveRecord();
+        UpdateSelections();
     end;
 
     local procedure FindVariant()
@@ -652,5 +558,40 @@ page 50104 StockedAttributeConfigurator
         StockedAttributeEntrySetup: Codeunit StockedAttributeEntryPageMgmt;
     begin
         StockedAttributeEntrySetup.EntryPageFindVariant(Rec, Attributes, SelectedValueIDs);
+    end;
+
+    local procedure UpdateSelections()
+    var
+        x: Integer;
+    begin
+        Clear(PageSelections);
+        for x := 1 to ArrayLen(SelectedValueIDs) do begin
+            if StrLen(PageSelections) > 0 then
+                PageSelections += ',';
+            PageSelections += Format(SelectedValueIDs[x]);
+        end;
+        CurrPage.SaveRecord();
+    end;
+
+    local procedure GetRowSelections()
+    var
+        ItemAttributeValue: Record "Item Attribute Value";
+        SelectionsList: List of [Text];
+        ListElement: Text;
+        x: Integer;
+    begin
+        if StrLen(PageSelections) = 0 then
+            exit;
+
+        Clear(Selections);
+        Clear(SelectedValueIDs);
+        SelectionsList := PageSelections.Split(',');
+        for x := 1 to SelectionsList.Count() do
+            if x <= ArrayLen(Selections) then
+                if SelectionsList.Get(x, ListElement) then
+                    if Evaluate(SelectedValueIDs[x], ListElement) then
+                        if Attributes.ContainsKey(x) then
+                            if ItemAttributeValue.Get(Attributes.Get(x), SelectedValueIDs[x]) then
+                                Selections[x] := ItemAttributeValue.Value;
     end;
 }

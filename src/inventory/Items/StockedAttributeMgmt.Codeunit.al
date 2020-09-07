@@ -17,7 +17,7 @@ codeunit 50100 StockedAttributeMgmt
         Window: Dialog;
         x: Integer;
         Seperator: Char;
-        NotAllRemovedMsg: Label 'Warning : not all existing Item Variant records were removed before re-creation';
+        NotAllRemovedMsg: Label 'Warning : Not all current Item Variant records were removed before re-creation';
         CreatingForMsg: Label 'Creating #1#######';
     begin
         ItemToCreateVariantFor.Get(ItemNo);
@@ -129,7 +129,7 @@ codeunit 50100 StockedAttributeMgmt
             tempAttributeSetEntry.AttributeSetID := -1;
             tempAttributeSetEntry.AttributeID := ItemAttribute.ID;
             tempAttributeSetEntry.AttributeValueID := ItemAttributeValue.ID;
-            tempAttributeSetEntry.Insert();
+            tempAttributeSetEntry.Insert(true);
         end;
     end;
 
@@ -160,13 +160,13 @@ codeunit 50100 StockedAttributeMgmt
         ItemVariant.SetRange("Item No.", ItemToCreateFor."No.");
         ItemVariant.SetRange("Attribute Set ID", AttributeSetID);
         if not ItemVariant.FindFirst() then begin
-            ItemVariant."Item No." := ItemToCreateFor."No.";
-            ItemVariant.Code := GetNextVariantCode(ItemToCreateFor."No.");
+            ItemVariant.Validate("Item No.", ItemToCreateFor."No.");
+            ItemVariant.Validate(Code, GetNextVariantCode(ItemToCreateFor."No."));
             ItemVariant.Insert(true);
         end;
-        ItemVariant.Description := CopyStr(StrSubStno(VariantDescriptionTxt, ItemToCreateFor.Description, AttributeSetID), 1, MaxStrLen(ItemVariant.Description));
-        ItemVariant."Attribute Set ID" := AttributeSetID;
-        ItemVariant.Modify();
+        ItemVariant.Validate(Description, CopyStr(StrSubStno(VariantDescriptionTxt, ItemToCreateFor.Description, AttributeSetID), 1, MaxStrLen(ItemVariant.Description)));
+        ItemVariant.Validate("Attribute Set ID", AttributeSetID);
+        ItemVariant.Modify(true);
     end;
 
     local procedure RemoveCurrentVariants(ItemNo: Code[20]): Boolean
@@ -342,7 +342,7 @@ codeunit 50100 StockedAttributeMgmt
                 Clear(TempStockedAttributeTemplateEntry);
                 TempStockedAttributeTemplateEntry.AttributeID := ItemAttributesQuery.ID;
                 TempStockedAttributeTemplateEntry.AttributeValueID := ItemAttributesQuery.ValueID;
-                TempStockedAttributeTemplateEntry.Insert();
+                TempStockedAttributeTemplateEntry.Insert(true);
             end;
         end;
     end;

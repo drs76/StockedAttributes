@@ -20,6 +20,12 @@ table 50106 StockedAttributeTemplate
             Caption = 'Template Set ID';
             DataClassification = SystemMetadata;
         }
+        field(5; EntryPageType; Enum StockedAttributeEntryPageType)
+        {
+            Caption = 'Entry Page Type';
+            DataClassification = SystemMetadata;
+            InitValue = Default;
+        }
     }
     keys
     {
