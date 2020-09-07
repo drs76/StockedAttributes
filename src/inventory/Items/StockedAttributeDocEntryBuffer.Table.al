@@ -2,7 +2,7 @@ table 50105 StockedAttributeDocEntryBuffer
 {
     Caption = 'Stocked Attribute Entry Buffer';
     DataClassification = SystemMetadata;
-
+    Extensible = true;
     fields
     {
         field(1; EntryNo; Integer)
@@ -48,106 +48,112 @@ table 50105 StockedAttributeDocEntryBuffer
         field(8; "Attribute Filter 1"; Integer)
         {
             Caption = 'Attribute Filter 1';
-            FieldClass = FlowFilter;
         }
         field(9; "Attribute Filter 2"; Integer)
         {
             Caption = 'Attribute Filter 2';
-            FieldClass = FlowFilter;
         }
         field(10; "Attribute Filter 3"; Integer)
         {
             Caption = 'Attribute Filter 3';
-            FieldClass = FlowFilter;
         }
         field(11; "Attribute Filter 4"; Integer)
         {
             Caption = 'Attribute Filter 4';
-            FieldClass = FlowFilter;
         }
         field(12; "Attribute Filter 5"; Integer)
         {
             Caption = 'Attribute Filter 5';
-            FieldClass = FlowFilter;
+
         }
         field(13; "Attribute Filter 6"; Integer)
         {
             Caption = 'Attribute Filter 6';
-            FieldClass = FlowFilter;
+
         }
         field(14; "Attribute Filter 7"; Integer)
         {
             Caption = 'Attribute Filter 7';
-            FieldClass = FlowFilter;
+
         }
         field(15; "Attribute Filter 8"; Integer)
         {
             Caption = 'Attribute Filter 8';
-            FieldClass = FlowFilter;
+
         }
         field(16; "Attribute Filter 9"; Integer)
         {
             Caption = 'Attribute Filter 9';
-            FieldClass = FlowFilter;
+
         }
         field(17; "Attribute Filter 10"; Integer)
         {
             Caption = 'Attribute Filter 10';
-            FieldClass = FlowFilter;
+
         }
         field(18; "Attribute Filter 11"; Integer)
         {
             Caption = 'Attribute Filter 11';
-            FieldClass = FlowFilter;
+
         }
         field(19; "Attribute Filter 12"; Integer)
         {
             Caption = 'Attribute Filter 12';
-            FieldClass = FlowFilter;
+
         }
         field(20; "Attribute Filter 13"; Integer)
         {
             Caption = 'Attribute Filter 13';
-            FieldClass = FlowFilter;
+
         }
         field(21; "Attribute Filter 14"; Integer)
         {
             Caption = 'Attribute Filter 14';
-            FieldClass = FlowFilter;
+
         }
         field(22; "Attribute Filter 15"; Integer)
         {
             Caption = 'Attribute Filter 15';
-            FieldClass = FlowFilter;
+
         }
         field(23; "Attribute Filter 16"; Integer)
         {
             Caption = 'Attribute Filter 16';
-            FieldClass = FlowFilter;
+
         }
         field(24; "Attribute Filter 17"; Integer)
         {
             Caption = 'Attribute Filter 17';
-            FieldClass = FlowFilter;
+
         }
         field(25; "Attribute Filter 18"; Integer)
         {
             Caption = 'Attribute Filter 18';
-            FieldClass = FlowFilter;
+
         }
         field(26; "Attribute Filter 19"; Integer)
         {
             Caption = 'Attribute Filter 19';
-            FieldClass = FlowFilter;
+
         }
         field(27; "Attribute Filter 20"; Integer)
         {
             Caption = 'Attribute Filter 20';
-            FieldClass = FlowFilter;
+
         }
         field(28; "Template Filter"; Integer)
         {
             Caption = 'Attribute Template Filter';
+            DataClassification = SystemMetadata;
+        }
+        field(29; PageSelections; Text[2048])
+        {
+            Caption = 'Page Selections';
+            DataClassification = SystemMetadata;
+        }
+        field(30; AttributeSetId; Integer)
+        {
+            Caption = 'Attribute Set Id';
             DataClassification = SystemMetadata;
         }
     }

@@ -14,27 +14,27 @@ table 50102 StockedAttributeSetEntry
         {
             Caption = 'Attribute ID';
             DataClassification = SystemMetadata;
-            TableRelation = "Item Attribute".ID where (StockedAttribute = Const (true));
+            TableRelation = "Item Attribute".ID where(StockedAttribute = Const(true));
         }
 
         field(3; AttributeValueID; Integer)
         {
             Caption = 'Attribute Value ID';
             DataClassification = SystemMetadata;
-            TableRelation = "Item Attribute Value".ID where ("Attribute ID" = Field (AttributeID));
+            TableRelation = "Item Attribute Value".ID where("Attribute ID" = Field(AttributeID));
         }
         field(4; "Attribute Code"; Text[250])
         {
             Caption = 'Attribute';
             FieldClass = FlowField;
-            CalcFormula = lookup ("Item Attribute".Name where (ID = field (AttributeID)));
+            CalcFormula = lookup ("Item Attribute".Name where(ID = field(AttributeID)));
             Editable = false;
         }
         field(5; "Attribute Value"; Text[250])
         {
             Caption = 'Attribute Value';
             FieldClass = FlowField;
-            CalcFormula = lookup ("Item Attribute Value".Value where (ID = field (AttributeValueID), "Attribute ID" = field (AttributeID)));
+            CalcFormula = lookup ("Item Attribute Value".Value where(ID = field(AttributeValueID), "Attribute ID" = field(AttributeID)));
             Editable = false;
         }
     }
@@ -89,8 +89,8 @@ table 50102 StockedAttributeSetEntry
                 StockedAttributeTreeNode.LockTable();
                 StockedAttributeTreeNode.Get(StockedAttributeTreeNode."Parent Attribute Set ID", StockedAttributeTreeNode."Attribute Value ID");
             end;
-            StockedAttributeTreeNode."In Use" := TRUE;
-            StockedAttributeTreeNode.Modify();
+            StockedAttributeTreeNode."In Use" := true;
+            StockedAttributeTreeNode.Modify(true);
 
             InsertAttributeSetEntries(StockedAttributeSetEntry, StockedAttributeTreeNode."Attribute Set ID");
         end;

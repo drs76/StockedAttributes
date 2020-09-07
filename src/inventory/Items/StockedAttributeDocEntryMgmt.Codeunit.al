@@ -20,8 +20,9 @@ codeunit 50101 StockedAttributeDocEntryMgmt
 
         PrepareConfigurator(SourceRecordRef, Parameters);
 
-        if RunAttributeConfigurator(Parameters, TempStockedAttributeDocBuffer) then
-            AddSelectionsToDocument(SourceRecordRef, Parameters, TempStockedAttributeDocBuffer);
+        if GetPageIdToRun(Parameters) then
+            if RunAttributeVariantEntry(Parameters, TempStockedAttributeDocBuffer) then
+                AddSelectionsToDocument(SourceRecordRef, Parameters, TempStockedAttributeDocBuffer);
     end;
 
     local procedure InitFields()
@@ -78,38 +79,74 @@ codeunit 50101 StockedAttributeDocEntryMgmt
         end;
     end;
 
-    procedure RunAttributeConfigurator(Parameters: JsonObject; var TempStockedAttributeDocBuffer: Record StockedAttributeDocEntryBuffer temporary) ReturnValue: Boolean;
+    local procedure GetPageIdToRun(var Parameters: JsonObject): Boolean;
     var
-        AttributeEntryBuffer: Page StockedAttributeConfigurator;
+        Item: Record Item;
+        StockedAttributeTemplate: Record StockedAttributeTemplate;
+        StockedAttributeSetup: Record StockedAttributeSetup;
+        EntryPageType: Enum StockedAttributeEntryPageType;
+        JToken: JsonToken;
+        PageId: Integer;
+        PageLbl: Label 'Page';
+        MissingParamErr: Label 'Mising Item Parameter';
+    begin
+        if not Parameters.Get(ItemNoFieldTxt, JToken) then
+            Error(MissingParamErr);
+
+        Item.Get(JToken.AsValue().AsText());
+
+        if Item.StockedAttributeEntryPageType = EntryPageType::Default then begin
+            StockedAttributeTemplate.Get(Item.StockedAttributeTemplateCode);
+            if StockedAttributeTemplate.EntryPageType = EntryPageType::Default then begin
+                StockedAttributeSetup.Get();
+                PageId := StockedAttributeSetup.EntryPageType.AsInteger();
+            end else
+                PageId := StockedAttributeTemplate.EntryPageType.AsInteger();
+        end else
+            if Item.StockedAttributeEntryPageType <> EntryPageType::None then
+                PageId := Item.StockedAttributeEntryPageType.AsInteger();
+
+        case PageId of
+            EntryPageType::Configurator.AsInteger():
+                PageId := Page::StockedAttributeConfigurator;
+            EntryPageType::"Quick Entry".AsInteger():
+                PageId := Page::StockedAttributeQuickEntry;
+        end;
+
+        if PageId <> 0 then
+            Parameters.Add(PageLbl, PageId); // page to use.    
+
+        exit(PageId <> 0);
+    end;
+
+    local procedure RunAttributeVariantEntry(Parameters: JsonObject; var TempDocEntryBuffer: Record StockedAttributeDocEntryBuffer temporary): Boolean;
+    var
         ItemNo: Text;
         LocationCodeParam: Text;
         UoCodeParam: Text;
+        PageNo: Integer;
     begin
-        SetupPageParams(Parameters, ItemNo, LocationCodeParam, UoCodeParam);
+        SetupPageParams(Parameters, ItemNo, LocationCodeParam, UoCodeParam, PageNo);
         if ItemNo = '' then
             exit;
 
         Commit();
 
-        TempStockedAttributeDocBuffer.FilterGroup(2);
-        TempStockedAttributeDocBuffer.SetRange("Item No.", ItemNo);
-        TempStockedAttributeDocBuffer.FilterGroup(0);
+        TempDocEntryBuffer.FilterGroup(2);
+        TempDocEntryBuffer.SetRange("Item No.", ItemNo);
+        TempDocEntryBuffer.FilterGroup(0);
 
-        AttributeEntryBuffer.SetTableView(TempStockedAttributeDocBuffer);
-        AttributeEntryBuffer.SetLineDefaults(LocationCodeParam, UoCodeParam);
-        AttributeEntryBuffer.RunModal();
-
-        ReturnValue := AttributeEntryBuffer.SaveSelections();
-        if not ReturnValue then
-            exit; // Finish on page not selected.
-
-        AttributeEntryBuffer.GetRecords(TempStockedAttributeDocBuffer);
+        exit(RunEntryPage(PageNo, TempDocEntryBuffer, LocationCodeParam, UoCodeParam));
     end;
 
-    local procedure SetupPageParams(Parameters: JsonObject; var ItemNo: Text; var LocationCode: Text; var UoM: Text)
+    local procedure SetupPageParams(Parameters: JsonObject; var ItemNo: Text; var LocationCode: Text; var UoM: Text; var PageNo: Integer)
     var
         JToken: JsonToken;
+        PageLbl: Label 'Page';
     begin
+        if Parameters.Get(PageLbl, JToken) then
+            PageNo := JToken.AsValue().AsInteger();
+
         if Parameters.Get(ItemNoFieldTxt, JToken) then
             ItemNo := JToken.AsValue().AsText();
 
@@ -120,54 +157,110 @@ codeunit 50101 StockedAttributeDocEntryMgmt
             UoM := JToken.AsValue().AsText();
     end;
 
-    local procedure AddSelectionsToDocument(SourceRecordRef: RecordRef; Parameters: JsonObject; var TempStockedAttributeDocBuffer: Record StockedAttributeDocEntryBuffer temporary)
+    local procedure RunEntryPage(PageNo: Integer; var TempDocEntryBuffer: Record StockedAttributeDocEntryBuffer temporary; Location: Text; UOM: Text): Boolean
+    begin
+        if PageNo = Page::StockedAttributeConfigurator then
+            exit(RunConfigurator(TempDocEntryBuffer, Location, UOM));
+
+        if PageNo = Page::StockedAttributeQuickEntry then
+            exit(RunQuickEntry(TempDocEntryBuffer, Location, UOM));
+    end;
+
+    local procedure RunConfigurator(var TempDocEntryBuffer: Record StockedAttributeDocEntryBuffer temporary; Location: Text; UOM: Text): Boolean
     var
+        VariantConfigurator: Page StockedAttributeConfigurator;
+    begin
+        VariantConfigurator.SetTableView(TempDocEntryBuffer);
+        VariantConfigurator.SetLineDefaults(Location, UOM);
+        VariantConfigurator.RunModal();
+        if not VariantConfigurator.SaveSelections() then
+            exit(false);
+
+        VariantConfigurator.GetRecords(TempDocEntryBuffer);
+        exit(true);
+    end;
+
+    local procedure RunQuickEntry(var TempDocEntryBuffer: Record StockedAttributeDocEntryBuffer temporary; Location: Text; UOM: Text): Boolean;
+    var
+        VariantQuickEntry: Page StockedAttributeQuickEntry;
+    begin
+        VariantQuickEntry.SetTableView(TempDocEntryBuffer);
+        VariantQuickEntry.SetLineDefaults(Location, UOM);
+        VariantQuickEntry.RunModal();
+
+        if not VariantQuickEntry.SaveSelections() then
+            exit(false);
+
+        VariantQuickEntry.GetRecords(TempDocEntryBuffer);
+        exit(true);
+    end;
+
+    local procedure AddSelectionsToDocument(SourceRecordRef: RecordRef; Parameters: JsonObject; var TempDocEntryBuffer: Record StockedAttributeDocEntryBuffer temporary)
+    var
+        Item: Record Item;
+        StockedAttributeMgmt: Codeunit StockedAttributeMgmt;
         NewLineRecordRef: RecordRef;
+        ItemToken: JsonToken;
         VariantFieldNo: Integer;
         QuantityFieldNo: Integer;
         UoMFieldNo: Integer;
         LocationFieldNo: Integer;
+        DescriptionFieldNo: Integer;
         VariantCodeFieldNameTxt: Label 'Variant Code';
         QuantityFieldNameTxt: Label 'Quantity';
         UoMFieldNameTxt: Label 'Unit of Measure Code';
+        DescriptionNameTxt: Label 'Description';
     begin
-        if TempStockedAttributeDocBuffer.FindSet() then begin
+        if Parameters.Get(ItemNoFieldTxt, ItemToken) then
+            Item.Get(ItemToken.AsValue().AsText());
+
+        if TempDocEntryBuffer.FindSet() then begin
             SourceRecordRef.Find('=');
 
             VariantFieldNo := GetFieldNumber(SourceRecordRef.Number(), VariantCodeFieldNameTxt);
             QuantityFieldNo := GetFieldNumber(SourceRecordRef.Number(), QuantityFieldNameTxt);
             UoMFieldNo := GetFieldNumber(SourceRecordRef.Number(), UoMFieldNameTxt);
             LocationFieldNo := GetFieldNumber(SourceRecordRef.Number(), LocationCodeFieldTxt);
+            DescriptionFieldNo := GetFieldNumber(SourceRecordRef.Number(), DescriptionNameTxt);
 
             // Update fields on source line
-            UpdateRecordRef(SourceRecordRef, VariantFieldNo, TempStockedAttributeDocBuffer."Variant Code");
-            UpdateRecordRef(SourceRecordRef, QuantityFieldNo, TempStockedAttributeDocBuffer.Quantity);
-            UpdateRecordRef(SourceRecordRef, UoMFieldNo, TempStockedAttributeDocBuffer.UnitofMeasureCode);
-            UpdateRecordRef(SourceRecordRef, LocationFieldNo, TempStockedAttributeDocBuffer.LocationCode);
+            UpdateRecordRef(SourceRecordRef, VariantFieldNo, TempDocEntryBuffer."Variant Code");
+            UpdateRecordRef(SourceRecordRef, QuantityFieldNo, TempDocEntryBuffer.Quantity);
+            UpdateRecordRef(SourceRecordRef, UoMFieldNo, TempDocEntryBuffer.UnitofMeasureCode);
+            UpdateRecordRef(SourceRecordRef, LocationFieldNo, TempDocEntryBuffer.LocationCode);
+            UpdateRecordRef(SourceRecordRef, DescriptionFieldNo, StockedAttributeMgmt.GetVariantFullDescription(Item, TempDocEntryBuffer.AttributeSetId));
             SourceRecordRef.Modify();
 
             // Add any additional selections to the document.
-            if TempStockedAttributeDocBuffer.Next() <> 0 then
+            if TempDocEntryBuffer.Next() <> 0 then
                 repeat
                     // Add new line
                     AddLine(NewLineRecordRef, SourceRecordRef, Parameters);
 
                     // Update field on new line
-                    UpdateRecordRef(NewLineRecordRef, VariantFieldNo, TempStockedAttributeDocBuffer."Variant Code");
-                    UpdateRecordRef(NewLineRecordRef, QuantityFieldNo, TempStockedAttributeDocBuffer.Quantity);
-                    UpdateRecordRef(NewLineRecordRef, UoMFieldNo, TempStockedAttributeDocBuffer.UnitofMeasureCode);
-                    UpdateRecordRef(NewLineRecordRef, LocationFieldNo, TempStockedAttributeDocBuffer.LocationCode);
+                    UpdateRecordRef(NewLineRecordRef, VariantFieldNo, TempDocEntryBuffer."Variant Code");
+                    UpdateRecordRef(NewLineRecordRef, QuantityFieldNo, TempDocEntryBuffer.Quantity);
+                    UpdateRecordRef(NewLineRecordRef, UoMFieldNo, TempDocEntryBuffer.UnitofMeasureCode);
+                    UpdateRecordRef(NewLineRecordRef, LocationFieldNo, TempDocEntryBuffer.LocationCode);
+                    UpdateRecordRef(SourceRecordRef, DescriptionFieldNo, StockedAttributeMgmt.GetVariantFullDescription(Item, TempDocEntryBuffer.AttributeSetId));
                     NewLineRecordRef.Modify(true);
-                until TempStockedAttributeDocBuffer.Next() = 0;
+                until TempDocEntryBuffer.Next() = 0;
         end;
     end;
 
     local procedure UpdateRecordRef(var RecordRefToUpdate: RecordRef; FieldNumber: Integer; FieldValue: Variant)
     var
         FieldRefToSet: FieldRef;
+        DescriptionNameTxt: Label 'Description';
     begin
         FieldRefToSet := RecordRefToUpdate.Field(FieldNumber);
-        FieldRefToSet.Validate(FieldValue);
+
+        if FieldRefToSet.Name = DescriptionNameTxt then begin
+            if StrLen(Format(FieldValue)) = 0 then
+                exit;
+            FieldRefToSet.Value := CopyStr(Format(FieldValue), 1, FieldRefToSet.Length);
+        end else
+            FieldRefToSet.Validate(FieldValue);
     end;
 
     local procedure AddLine(var NewLineRecoredRef: RecordRef; SourceRecordRef: RecordRef; Parameters: JsonObject)
@@ -177,7 +270,7 @@ codeunit 50101 StockedAttributeDocEntryMgmt
         KeyNames: array[2] of Text;
         NextLineNo: Integer;
     begin
-        NewLineRecoredRef.Open(SourceRecordRef.Number());
+        NewLineRecoredRef := SourceRecordRef;
 
         if NewLineRecoredRef.Number() = Database::"Item Journal Line" then begin
             KeyNames[1] := JournalKeys[1];

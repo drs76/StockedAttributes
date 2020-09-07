@@ -58,10 +58,10 @@ page 50103 StockedAttributeTemplateSets
         {
             action(AddAttributes)
             {
-                Caption = 'Copy attributes to template';
+                Caption = 'Copy';
                 ApplicationArea = All;
-                Image = Action;
-                ToolTip = 'Add item attributes and values to the template';
+                Image = Copy;
+                ToolTip = 'Copy item attribute and values to the template';
 
                 trigger OnAction()
                 begin

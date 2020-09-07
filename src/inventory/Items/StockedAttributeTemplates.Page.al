@@ -23,6 +23,10 @@ page 50106 StockedAttributeTemplates
                 {
                     ApplicationArea = All;
                 }
+                field(EntryPageType; EntryPageType)
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

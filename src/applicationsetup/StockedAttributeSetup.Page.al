@@ -19,6 +19,11 @@ page 50100 StockedAttributeSetup
                     ToolTip = 'Enable or disable the stocked attribute functionality';
                     ApplicationArea = All;
                 }
+                field(EntryPageType; EntryPageType)
+                {
+                    ToolTip = 'Set the default entry page type';
+                    ApplicationArea = All;
+                }
             }
         }
     }
