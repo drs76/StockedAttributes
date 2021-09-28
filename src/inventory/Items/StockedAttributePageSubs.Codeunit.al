@@ -1,6 +1,15 @@
+/// <summary>
+/// Codeunit StockedAttributePageSubs (ID 50102).
+/// </summary>
 codeunit 50102 StockedAttributePageSubs
 {
-    // Sales
+    #region Sales
+
+    /// <summary>
+    /// SalesQuoteSubform_OnAfterValidate_No.
+    /// </summary>
+    /// <param name="Rec">VAR Record "Sales Line".</param>
+    /// <param name="xRec">VAR Record "Sales Line".</param>
     [EventSubscriber(ObjectType::Page, Page::"Sales Quote Subform", 'OnAfterValidateEvent', 'No.', true, true)]
     local procedure SalesQuoteSubform_OnAfterValidate_No(var Rec: Record "Sales Line"; var xRec: Record "Sales Line")
     begin
@@ -8,6 +17,11 @@ codeunit 50102 StockedAttributePageSubs
             Rec.Find('=');
     end;
 
+    /// <summary>
+    /// SalesOrderSubform_OnAfterValidate_No.
+    /// </summary>
+    /// <param name="Rec">VAR Record "Sales Line".</param>
+    /// <param name="xRec">VAR Record "Sales Line".</param>
     [EventSubscriber(ObjectType::Page, Page::"Sales Order Subform", 'OnAfterValidateEvent', 'No.', true, true)]
     local procedure SalesOrderSubform_OnAfterValidate_No(var Rec: Record "Sales Line"; var xRec: Record "Sales Line")
     begin
@@ -15,6 +29,11 @@ codeunit 50102 StockedAttributePageSubs
             Rec.Find('=');
     end;
 
+    /// <summary>
+    /// SalesInvoiceSubform_OnAfterValidate_No.
+    /// </summary>
+    /// <param name="Rec">VAR Record "Sales Line".</param>
+    /// <param name="xRec">VAR Record "Sales Line".</param>
     [EventSubscriber(ObjectType::Page, Page::"Sales Invoice Subform", 'OnAfterValidateEvent', 'No.', true, true)]
     local procedure SalesInvoiceSubform_OnAfterValidate_No(var Rec: Record "Sales Line"; var xRec: Record "Sales Line")
     begin
@@ -22,6 +41,11 @@ codeunit 50102 StockedAttributePageSubs
             Rec.Find('=');
     end;
 
+    /// <summary>
+    /// SalesCrMemoSubform_OnAfterValidate_No.
+    /// </summary>
+    /// <param name="Rec">VAR Record "Sales Line".</param>
+    /// <param name="xRec">VAR Record "Sales Line".</param>
     [EventSubscriber(ObjectType::Page, Page::"Sales Cr. Memo Subform", 'OnAfterValidateEvent', 'No.', true, true)]
     local procedure SalesCrMemoSubform_OnAfterValidate_No(var Rec: Record "Sales Line"; var xRec: Record "Sales Line")
     begin
@@ -29,7 +53,15 @@ codeunit 50102 StockedAttributePageSubs
             Rec.Find('=');
     end;
 
-    // Purchase
+    #endregion
+
+    #region Purchase
+
+    /// <summary>
+    /// PurchaseQuoteSubform_OnAfterValidate_No.
+    /// </summary>
+    /// <param name="Rec">VAR Record "Purchase Line".</param>
+    /// <param name="xRec">VAR Record "Purchase Line".</param>
     [EventSubscriber(ObjectType::Page, Page::"Purchase Quote Subform", 'OnAfterValidateEvent', 'No.', true, true)]
     local procedure PurchaseQuoteSubform_OnAfterValidate_No(var Rec: Record "Purchase Line"; var xRec: Record "Purchase Line")
     begin
@@ -37,6 +69,11 @@ codeunit 50102 StockedAttributePageSubs
             Rec.Find('=');
     end;
 
+    /// <summary>
+    /// PurchaseOrderSubform_OnAfterValidate_No.
+    /// </summary>
+    /// <param name="Rec">VAR Record "Purchase Line".</param>
+    /// <param name="xRec">VAR Record "Purchase Line".</param>
     [EventSubscriber(ObjectType::Page, Page::"Purchase Order Subform", 'OnAfterValidateEvent', 'No.', true, true)]
     local procedure PurchaseOrderSubform_OnAfterValidate_No(var Rec: Record "Purchase Line"; var xRec: Record "Purchase Line")
     begin
@@ -44,6 +81,11 @@ codeunit 50102 StockedAttributePageSubs
             Rec.Find('=');
     end;
 
+    /// <summary>
+    /// PurchaseInvoiceSubform_OnAfterValidate_No.
+    /// </summary>
+    /// <param name="Rec">VAR Record "Purchase Line".</param>
+    /// <param name="xRec">VAR Record "Purchase Line".</param>
     [EventSubscriber(ObjectType::Page, Page::"Purch. Invoice Subform", 'OnAfterValidateEvent', 'No.', true, true)]
     local procedure PurchaseInvoiceSubform_OnAfterValidate_No(var Rec: Record "Purchase Line"; var xRec: Record "Purchase Line")
     begin
@@ -51,6 +93,11 @@ codeunit 50102 StockedAttributePageSubs
             Rec.Find('=');
     end;
 
+    /// <summary>
+    /// PurchaseCrMemoSubform_OnAfterValidate_No.
+    /// </summary>
+    /// <param name="Rec">VAR Record "Purchase Line".</param>
+    /// <param name="xRec">VAR Record "Purchase Line".</param>
     [EventSubscriber(ObjectType::Page, Page::"Purch. Cr. Memo Subform", 'OnAfterValidateEvent', 'No.', true, true)]
     local procedure PurchaseCrMemoSubform_OnAfterValidate_No(var Rec: Record "Purchase Line"; var xRec: Record "Purchase Line")
     begin
@@ -58,7 +105,15 @@ codeunit 50102 StockedAttributePageSubs
             Rec.Find('=');
     end;
 
-    // Assembly 
+    #endregion
+
+    #region Assembly 
+
+    /// <summary>
+    /// TransferOrderSubform_OnAfterValidate_No.
+    /// </summary>
+    /// <param name="Rec">VAR Record "Transfer Line".</param>
+    /// <param name="xRec">VAR Record "Transfer Line".</param>
     [EventSubscriber(ObjectType::Page, Page::"Assembly Order Subform", 'OnAfterValidateEvent', 'No.', true, true)]
     local procedure AssemblyOrderSubform_OnAfterValidate_No(var Rec: Record "Assembly Line"; var xRec: Record "Assembly Line")
     begin
@@ -66,7 +121,15 @@ codeunit 50102 StockedAttributePageSubs
             Rec.Find('=');
     end;
 
-    // Transfer
+    #endregion
+
+    #region Transfer
+
+    /// <summary>
+    /// ItemJournal_OnAfterValidate_No.
+    /// </summary>
+    /// <param name="Rec">VAR Record "Item Journal Line".</param>
+    /// <param name="xRec">VAR Record "Item Journal Line".</param>
     [EventSubscriber(ObjectType::Page, Page::"Transfer Order Subform", 'OnAfterValidateEvent', 'Item No.', true, true)]
     local procedure TransferOrderSubform_OnAfterValidate_No(var Rec: Record "Transfer Line"; var xRec: Record "Transfer Line")
     begin
@@ -74,7 +137,15 @@ codeunit 50102 StockedAttributePageSubs
             Rec.Find('=');
     end;
 
-    // Item Journal
+    #endregion
+
+    #region Item Journal
+
+    /// <summary>
+    /// ItemJournal_OnAfterValidate_No.
+    /// </summary>
+    /// <param name="Rec">VAR Record "Item Journal Line".</param>
+    /// <param name="xRec">VAR Record "Item Journal Line".</param>
     [EventSubscriber(ObjectType::Page, Page::"Item Journal", 'OnAfterValidateEvent', 'Item No.', true, true)]
     local procedure ItemJournal_OnAfterValidate_No(var Rec: Record "Item Journal Line"; var xRec: Record "Item Journal Line")
     begin
@@ -82,6 +153,13 @@ codeunit 50102 StockedAttributePageSubs
             Rec.Find('=');
     end;
 
+    #endregion
+
+    /// <summary>
+    /// CheckAndRun.
+    /// </summary>
+    /// <param name="SourceRecordId">RecordId.</param>
+    /// <returns>Return variable ReturnValue of type Boolean.</returns>
     local procedure CheckAndRun(SourceRecordId: RecordId) ReturnValue: Boolean;
     var
         SalesLine: Record "Sales Line";
@@ -135,18 +213,26 @@ codeunit 50102 StockedAttributePageSubs
         ReturnValue := true;
     end;
 
+    /// <summary>
+    /// TestLine.
+    /// </summary>
+    /// <param name="LineType">Text.</param>
+    /// <param name="ItemNo">Code[20].</param>
+    /// <param name="VariantCode">Code[10].</param>
+    /// <returns>Return variable ReturnValue of type Boolean.</returns>
     local procedure TestLine(LineType: Text; ItemNo: Code[20]; VariantCode: Code[10]) ReturnValue: Boolean;
     var
         Item: Record Item;
         TypeItemTxt: Label 'Item';
+        EmptyTxt: Label '';
     begin
         if LineType <> TypeItemTxt then
             exit;
 
-        if ItemNo = '' then
+        if ItemNo = EmptyTxt then
             exit;
 
-        if VariantCode <> '' then
+        if VariantCode <> EmptyTxt then
             exit;
 
         Item.Get(ItemNo);

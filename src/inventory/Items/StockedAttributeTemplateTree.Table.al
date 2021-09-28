@@ -1,7 +1,10 @@
+/// <summary>
+/// Table StockedAttributeTemplateTree (ID 50103).
+/// </summary>
 table 50103 StockedAttributeTemplateTree
 {
     Caption = 'Stocked Attribute Template';
-    DataClassification = SystemMetadata;
+    DataClassification = CustomerContent;
 
     fields
     {
@@ -9,29 +12,29 @@ table 50103 StockedAttributeTemplateTree
         {
             Caption = 'Parent Template Set ID';
             NotBlank = true;
-            DataClassification = SystemMetadata;
+            DataClassification = CustomerContent;
         }
         field(2; "Template Attribute ID"; Integer)
         {
             Caption = 'Template Attribute ID';
-            DataClassification = SystemMetadata;
+            DataClassification = CustomerContent;
         }
         field(3; "Template Value ID"; Integer)
         {
             Caption = 'Template Value ID';
-            DataClassification = SystemMetadata;
+            DataClassification = CustomerContent;
         }
         field(4; "Template Set ID"; Integer)
         {
             Caption = 'Template Set ID';
             AutoIncrement = true;
-            DataClassification = SystemMetadata;
+            DataClassification = CustomerContent;
             Editable = false;
         }
         field(5; "In Use"; Boolean)
         {
             caption = 'In Use';
-            DataClassification = SystemMetadata;
+            DataClassification = CustomerContent;
         }
     }
 

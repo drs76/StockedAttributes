@@ -1,3 +1,6 @@
+/// <summary>
+/// Page StockedAttributeTemplate (ID 50105).
+/// </summary>
 page 50105 StockedAttributeTemplate
 {
 
@@ -12,20 +15,23 @@ page 50105 StockedAttributeTemplate
         {
             group(General)
             {
-                field(Code; Code)
+                field(Code; Rec.Code)
                 {
                     ApplicationArea = All;
                     Style = Strong;
+                    ToolTip = 'Specifies the Stocked Attribute Template Code';
                 }
-                field(Description; Description)
+                field(Description; Rec.Description)
                 {
                     ApplicationArea = All;
                     MultiLine = true;
+                    ToolTip = 'Specifies the Stocked Attribute Template Description';
                 }
-                field("Template Set ID"; "Template Set ID")
+                field("Template Set ID"; Rec."Template Set ID")
                 {
                     ApplicationArea = All;
                     Editable = false;
+                    ToolTip = 'Specifies the Stocked Attribute Template Set ID';
 
                     trigger OnDrillDown()
                     var
@@ -34,7 +40,7 @@ page 50105 StockedAttributeTemplate
                         StockedAttributeMgmt.EditStockedAttributeTemplate(Rec);
                     end;
                 }
-                field(EntryPageType; EntryPageType)
+                field(EntryPageType; Rec.EntryPageType)
                 {
                     ToolTip = 'Default: Stocked Attribute Setup, Configurator: Configurator Entry Page, Quick Entry: Quick Entry Page, None: BC Standard';
                     ApplicationArea = All;

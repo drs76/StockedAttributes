@@ -1,3 +1,6 @@
+/// <summary>
+/// Table StockedAttributeTemplateEntry (ID 50104).
+/// </summary>
 table 50104 StockedAttributeTemplateEntry
 {
     Caption = 'Stocked Attribute Template Entry';
@@ -7,12 +10,12 @@ table 50104 StockedAttributeTemplateEntry
         field(1; TemplateID; Integer)
         {
             Caption = 'Template ID';
-            DataClassification = SystemMetadata;
+            DataClassification = CustomerContent;
         }
         field(2; AttributeID; Integer)
         {
             Caption = 'Attribute ID';
-            DataClassification = SystemMetadata;
+            DataClassification = CustomerContent;
             TableRelation = "Item Attribute".ID where(StockedAttribute = const(true));
         }
 
@@ -20,20 +23,20 @@ table 50104 StockedAttributeTemplateEntry
         {
             Caption = 'Attribute';
             FieldClass = FlowField;
-            CalcFormula = lookup ("Item Attribute".Name where(ID = field(AttributeID)));
+            CalcFormula = lookup("Item Attribute".Name where(ID = field(AttributeID)));
             Editable = false;
         }
         field(4; AttributeValueID; Integer)
         {
             Caption = 'Attribute Value ID';
-            DataClassification = SystemMetadata;
+            DataClassification = CustomerContent;
             TableRelation = "Item Attribute Value".ID where("Attribute ID" = Field(AttributeID));
         }
         field(5; "Attribute Value"; Text[250])
         {
             Caption = 'Attribute Value';
             FieldClass = FlowField;
-            CalcFormula = lookup ("Item Attribute Value".Value where(ID = field(AttributeValueID), "Attribute ID" = field(AttributeID)));
+            CalcFormula = lookup("Item Attribute Value".Value where(ID = field(AttributeValueID), "Attribute ID" = field(AttributeID)));
             Editable = false;
         }
     }
@@ -60,6 +63,11 @@ table 50104 StockedAttributeTemplateEntry
         }
     }
 
+    /// <summary>
+    /// GetTemplateSetID.
+    /// </summary>
+    /// <param name="StockedAttributeTemplateEntry">VAR Record StockedAttributeTemplateEntry.</param>
+    /// <returns>Return value of type Integer.</returns>
     procedure GetTemplateSetID(var StockedAttributeTemplateEntry: Record StockedAttributeTemplateEntry): Integer;
     var
         StockedAttributeTemplateTree: Record StockedAttributeTemplateTree;
@@ -112,6 +120,11 @@ table 50104 StockedAttributeTemplateEntry
         exit(StockedAttributeTemplateTree."Template Set ID");
     end;
 
+    /// <summary>
+    /// InsertTemplateSetEntries.
+    /// </summary>
+    /// <param name="StockedAttrTemplateSet">VAR Record StockedAttributeTemplateEntry.</param>
+    /// <param name="NewId">Integer.</param>
     local procedure InsertTemplateSetEntries(var StockedAttrTemplateSet: Record StockedAttributeTemplateEntry; NewId: Integer)
     var
         StockedAttrTemplateSet2: Record StockedAttributeTemplateEntry;

@@ -1,3 +1,6 @@
+/// <summary>
+/// Page StockedAttributeQuickEntry (ID 50107).
+/// </summary>
 page 50107 StockedAttributeQuickEntry
 {
     Caption = 'Variant Quick Entry';
@@ -15,14 +18,14 @@ page 50107 StockedAttributeQuickEntry
             group(ItemDetails)
             {
                 Caption = 'Item';
-                field("Item No."; "Item No.")
+                field("Item No."; Rec."Item No.")
                 {
                     ToolTip = 'Item No. being configured';
                     Editable = false;
                     Style = Strong;
                     ApplicationArea = All;
                 }
-                field(Description; Description)
+                field(Description; Rec.Description)
                 {
                     ToolTip = 'Item main description';
                     Editable = false;
@@ -333,7 +336,7 @@ page 50107 StockedAttributeQuickEntry
                         ValidateSelection(20);
                     end;
                 }
-                field(UnitofMeasureCode; UnitofMeasureCode)
+                field(UnitofMeasureCode; Rec.UnitofMeasureCode)
                 {
                     Caption = 'Unit of Measure';
                     ToolTip = 'Enter the unit of measure required';
@@ -346,7 +349,7 @@ page 50107 StockedAttributeQuickEntry
                         currPage.SaveRecord();
                     end;
                 }
-                field(LocationCode; LocationCode)
+                field(LocationCode; Rec.LocationCode)
                 {
                     Caption = 'Location Code';
                     ToolTip = 'Enter the location required';
@@ -360,7 +363,7 @@ page 50107 StockedAttributeQuickEntry
                     end;
                 }
 
-                field(Quantity; Quantity)
+                field(Quantity; Rec.Quantity)
                 {
                     Caption = 'Required Quantity';
                     ToolTip = 'Enter the required quantity';
@@ -376,7 +379,7 @@ page 50107 StockedAttributeQuickEntry
                     end;
                 }
 
-                field(EntryNo; EntryNo)
+                field(EntryNo; Rec.EntryNo)
                 {
                     Caption = 'Entry No.';
                     ToolTip = 'Entry No.';
@@ -445,22 +448,38 @@ page 50107 StockedAttributeQuickEntry
         GetRowSelections();
     end;
 
+    /// <summary>
+    /// SetLineDefaults.
+    /// </summary>
+    /// <param name="LocationDefaultIn">Text.</param>
+    /// <param name="UoMDefaultIn">Text.</param>
     procedure SetLineDefaults(LocationDefaultIn: Text; UoMDefaultIn: Text)
     begin
         LocationDefault := LocationDefaultIn;
         UoMDefault := UoMDefaultIn;
     end;
 
+    /// <summary>
+    /// GetRecords.
+    /// </summary>
+    /// <param name="TempStockedAttributeDocBuffer">Temporary VAR Record StockedAttributeDocEntryBuffer.</param>
     procedure GetRecords(var TempStockedAttributeDocBuffer: Record StockedAttributeDocEntryBuffer temporary);
     begin
         TempStockedAttributeDocBuffer.Copy(Rec, true);
     end;
 
+    /// <summary>
+    /// SaveSelections.
+    /// </summary>
+    /// <returns>Return value of type Boolean.</returns>
     procedure SaveSelections(): Boolean;
     begin
         exit(ClosedWithSave);
     end;
 
+    /// <summary>
+    /// InitPage.
+    /// </summary>
     local procedure InitPage()
     var
         Item: Record Item;
@@ -470,12 +489,12 @@ page 50107 StockedAttributeQuickEntry
         StockedAttributeMgmt: Codeunit StockedAttributeMgmt;
         AttributeCount: Integer;
     begin
-        EntryNo := 1;
-        "Item No." := GetRangeMin("Item No.");
-        LocationCode := CopyStr(LocationDefault, 1, MaxStrLen(LocationCode));
-        UnitofMeasureCode := CopyStr(UoMDefault, 1, MaxStrLen(UnitofMeasureCode));
+        Rec.EntryNo := 1;
+        Rec."Item No." := Rec.GetRangeMin("Item No.");
+        Rec.LocationCode := CopyStr(LocationDefault, 1, MaxStrLen(Rec.LocationCode));
+        Rec.UnitofMeasureCode := CopyStr(UoMDefault, 1, MaxStrLen(Rec.UnitofMeasureCode));
 
-        Item.Get("Item No.");
+        Item.Get(Rec."Item No.");
         Item.TestField(StockedAttributeTemplateCode);
         StockedAttributeTemplate.Get(Item.StockedAttributeTemplateCode);
 
@@ -492,10 +511,14 @@ page 50107 StockedAttributeQuickEntry
 
         SetFieldsVisible(AttributeCount);
 
-        "Template Filter" := StockedAttributeTemplate."Template Set ID";
-        Insert();
+        Rec."Template Filter" := StockedAttributeTemplate."Template Set ID";
+        Rec.Insert();
     end;
 
+    /// <summary>
+    /// SetFieldsVisible.
+    /// </summary>
+    /// <param name="AttributeCount">Integer.</param>
     local procedure SetFieldsVisible(AttributeCount: Integer)
     var
         x: Integer;
@@ -545,6 +568,10 @@ page 50107 StockedAttributeQuickEntry
             end;
     end;
 
+    /// <summary>
+    /// ValidateSelection.
+    /// </summary>
+    /// <param name="ColumnNo">Integer.</param>
     local procedure ValidateSelection(ColumnNo: Integer)
     var
         StockedAttributeEntrySetup: Codeunit StockedAttributeEntryPageMgmt;
@@ -553,6 +580,9 @@ page 50107 StockedAttributeQuickEntry
         UpdateSelections();
     end;
 
+    /// <summary>
+    /// FindVariant.
+    /// </summary>
     local procedure FindVariant()
     var
         StockedAttributeEntrySetup: Codeunit StockedAttributeEntryPageMgmt;
@@ -560,32 +590,43 @@ page 50107 StockedAttributeQuickEntry
         StockedAttributeEntrySetup.EntryPageFindVariant(Rec, Attributes, SelectedValueIDs);
     end;
 
+    /// <summary>
+    /// UpdateSelections.
+    /// </summary>
     local procedure UpdateSelections()
     var
+        TxtBuilder: TextBuilder;
         x: Integer;
+        CommaTxt: Label ',';
     begin
-        Clear(PageSelections);
+        Clear(Rec.PageSelections);
         for x := 1 to ArrayLen(SelectedValueIDs) do begin
-            if StrLen(PageSelections) > 0 then
-                PageSelections += ',';
-            PageSelections += Format(SelectedValueIDs[x]);
+            if txtBuilder.Length() > 0 then
+                TxtBuilder.Append(CommaTxt);
+
+            TxtBuilder.Append(Format(SelectedValueIDs[x]));
         end;
+        Rec.PageSelections := COpyStr(TxtBuilder.ToText(), 1, MaxStrLen(Rec.PageSelections));
         CurrPage.SaveRecord();
     end;
 
+    /// <summary>
+    /// GetRowSelections.
+    /// </summary>
     local procedure GetRowSelections()
     var
         ItemAttributeValue: Record "Item Attribute Value";
         SelectionsList: List of [Text];
         ListElement: Text;
         x: Integer;
+        CommaTxt: Label ',';
     begin
-        if StrLen(PageSelections) = 0 then
+        if StrLen(Rec.PageSelections) = 0 then
             exit;
 
         Clear(Selections);
         Clear(SelectedValueIDs);
-        SelectionsList := PageSelections.Split(',');
+        SelectionsList := Rec.PageSelections.Split(CommaTxt);
         for x := 1 to SelectionsList.Count() do
             if x <= ArrayLen(Selections) then
                 if SelectionsList.Get(x, ListElement) then

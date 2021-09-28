@@ -1,3 +1,6 @@
+/// <summary>
+/// PageExtension StockedAttributeItemAttribute (ID 50100) extends Record Item Attribute.
+/// </summary>
 pageextension 50100 StockedAttributeItemAttribute extends "Item Attribute"
 {
     layout
@@ -9,7 +12,7 @@ pageextension 50100 StockedAttributeItemAttribute extends "Item Attribute"
                 Caption = 'Stocked Attribute';
                 Visible = StockedAttributeVisible;
 
-                field(StockedAttribute; StockedAttribute)
+                field(StockedAttribute; Rec.StockedAttribute)
                 {
                     ToolTip = 'This attribute can be used for stocked attribute variants';
                     ApplicationArea = All;

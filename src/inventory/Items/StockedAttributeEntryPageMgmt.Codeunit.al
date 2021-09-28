@@ -1,3 +1,6 @@
+/// <summary>
+/// Codeunit StockedAttributeEntryPageMgmt (ID 50103).
+/// </summary>
 codeunit 50103 StockedAttributeEntryPageMgmt
 {
     var
@@ -7,6 +10,10 @@ codeunit 50103 StockedAttributeEntryPageMgmt
         Captions: array[20] of Text;
         AttributeCount: Integer;
 
+
+    /// <summary>
+    /// SetupPage.
+    /// </summary>
     procedure SetupPage()
     var
         CurrentID: Integer;
@@ -14,6 +21,7 @@ codeunit 50103 StockedAttributeEntryPageMgmt
         if not TempAttributeTemplateEntry.FindSet() then
             exit;
 
+        Clear(CurrentID);
         repeat
             if TempAttributeTemplateEntry.AttributeID <> CurrentID then
                 if not Attributes.Values().Contains(TempAttributeTemplateEntry.AttributeID) then
@@ -27,6 +35,10 @@ codeunit 50103 StockedAttributeEntryPageMgmt
                 SetupPageParts(TempAttributeTemplateEntry);
     end;
 
+    /// <summary>
+    /// SetupPageParts.
+    /// </summary>
+    /// <param name="TempTemplateEntry">Temporary Record StockedAttributeTemplateEntry.</param>
     local procedure SetupPageParts(TempTemplateEntry: Record StockedAttributeTemplateEntry temporary)
     begin
         TempTemplateEntry.CalcFields("Attribute Code");
@@ -41,6 +53,11 @@ codeunit 50103 StockedAttributeEntryPageMgmt
         SetFlowFilters(AttributeCount, TempTemplateEntry.AttributeID);
     end;
 
+    /// <summary>
+    /// SetFlowFilters.
+    /// </summary>
+    /// <param name="FieldToSet">Integer.</param>
+    /// <param name="IDToSet">Integer.</param>
     local procedure SetFlowFilters(FieldToSet: Integer; IDToSet: Integer)
     begin
         case FieldToSet of
@@ -87,6 +104,10 @@ codeunit 50103 StockedAttributeEntryPageMgmt
         end;
     end;
 
+    /// <summary>
+    /// GetCaptions.
+    /// </summary>
+    /// <param name="NewCaptions">VAR array[20] of Text.</param>
     procedure GetCaptions(var NewCaptions: array[20] of Text)
     var
         x: Integer;
@@ -95,36 +116,64 @@ codeunit 50103 StockedAttributeEntryPageMgmt
             NewCaptions[x] := Captions[x];
     end;
 
+    /// <summary>
+    /// GetAttributes.
+    /// </summary>
+    /// <param name="NewAttributes">VAR Dictionary of [Integer, Integer].</param>
     procedure GetAttributes(var NewAttributes: Dictionary of [Integer, Integer])
     begin
         NewAttributes := Attributes;
     end;
 
+    /// <summary>
+    /// GetAttributeCount.
+    /// </summary>
+    /// <param name="NewAttributeCount">VAR Integer.</param>
     procedure GetAttributeCount(var NewAttributeCount: Integer)
     begin
         NewAttributeCount := AttributeCount;
     end;
 
+    /// <summary>
+    /// SetTempAttributeEntry.
+    /// </summary>
+    /// <param name="NewTempAttributeTemplateEntry">Temporary VAR Record StockedAttributeTemplateEntry.</param>
     procedure SetTempAttributeEntry(var NewTempAttributeTemplateEntry: Record StockedAttributeTemplateEntry temporary)
     begin
         TempAttributeTemplateEntry.Copy(NewTempAttributeTemplateEntry, true);
     end;
 
+    /// <summary>
+    /// GetStockedAttributeDocEntryBuffer.
+    /// </summary>
+    /// <param name="NewStockedAttributeDocEntryBuffer">Temporary VAR Record StockedAttributeDocEntryBuffer.</param>
     procedure SetStockedAttributeDocEntryBuffer(var NewStockedAttributeDocEntryBuffer: Record StockedAttributeDocEntryBuffer temporary)
     begin
         TempStockedAttributeDocEntryBuffer.Copy(NewStockedAttributeDocEntryBuffer, true);
     end;
 
+    /// <summary>
+    /// GetStockedAttributeDocEntryBuffer.
+    /// </summary>
+    /// <param name="NewStockedAttributeDocEntryBuffer">Temporary VAR Record StockedAttributeDocEntryBuffer.</param>
     procedure GetStockedAttributeDocEntryBuffer(var NewStockedAttributeDocEntryBuffer: Record StockedAttributeDocEntryBuffer temporary)
     begin
         NewStockedAttributeDocEntryBuffer.Copy(TempStockedAttributeDocEntryBuffer, true);
     end;
 
+    /// <summary>
+    /// ValidateEntry.
+    /// </summary>
+    /// <param name="ColumnNo">Integer.</param>
+    /// <param name="Attributes">VAR Dictionary of [Integer, Integer].</param>
+    /// <param name="Selections">VAR array[20] of Text.</param>
+    /// <param name="ValueIDs">VAR array[20] of Integer.</param>
     procedure ValidateEntry(ColumnNo: Integer; var Attributes: Dictionary of [Integer, Integer]; var Selections: array[20] of Text; var ValueIDs: array[20] of Integer)
     var
         ItemAttributeValue: Record "Item Attribute Value";
         SelectedAttributeID: Integer;
         SelectedValueID: Integer;
+        EmptyTxt: Label '';
     begin
         SelectedAttributeID := Attributes.Get(ColumnNo);
         if not Evaluate(SelectedValueID, Selections[ColumnNo]) then begin
@@ -136,7 +185,7 @@ codeunit 50103 StockedAttributeEntryPageMgmt
 
         if not ItemAttributeValue.Get(SelectedAttributeID, SelectedValueID) then begin
             ValueIDs[ColumnNo] := 0;
-            Selections[ColumnNo] := '';
+            Selections[ColumnNo] := EmptyTxt;
             exit;
         end;
 
@@ -145,6 +194,12 @@ codeunit 50103 StockedAttributeEntryPageMgmt
         Selections[ColumnNo] := ItemAttributeValue.Value;
     end;
 
+    /// <summary>
+    /// EntryPageFindVariant.
+    /// </summary>
+    /// <param name="TempDocBuffer">Temporary VAR Record StockedAttributeDocEntryBuffer.</param>
+    /// <param name="Attributes">Dictionary of [Integer, Integer].</param>
+    /// <param name="ValueIDs">VAR array[20] of Integer.</param>
     procedure EntryPageFindVariant(var TempDocBuffer: Record StockedAttributeDocEntryBuffer temporary; Attributes: Dictionary of [Integer, Integer]; var ValueIDs: array[20] of Integer)
     var
         TempSetEntry: Record StockedAttributeSetEntry temporary;
@@ -153,6 +208,7 @@ codeunit 50103 StockedAttributeEntryPageMgmt
         FoundSetID: Integer;
         x: Integer;
         CannotFindErr: Label 'Cannot locate a matching configuration';
+        EmptyTxt: Label '';
     begin
         for x := 1 to ArrayLen(ValueIDs) do
             if ValueIDs[x] > 0 then begin
@@ -173,7 +229,7 @@ codeunit 50103 StockedAttributeEntryPageMgmt
             end;
         end;
 
-        if TempDocBuffer."Variant Code" = '' then
+        if TempDocBuffer."Variant Code" = EmptyTxt then
             Error(CannotFindErr);
     end;
 }

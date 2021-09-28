@@ -1,24 +1,27 @@
+/// <summary>
+/// Table StockedAttributeSetup (ID 50100).
+/// </summary>
 table 50100 StockedAttributeSetup
 {
     Caption = 'StockedAttributesSetup';
-    DataClassification = SystemMetadata;
+    DataClassification = CustomerContent;
 
     fields
     {
         field(1; "Primary Key"; Code[10])
         {
             Caption = 'Primary Key';
-            DataClassification = SystemMetadata;
+            DataClassification = CustomerContent;
         }
         field(2; Enabled; Boolean)
         {
             Caption = 'Enabled';
-            DataClassification = SystemMetadata;
+            DataClassification = CustomerContent;
         }
         field(3; EntryPageType; Enum StockedAttributeEntryPageType)
         {
             Caption = 'Entry Page Type';
-            DataClassification = SystemMetadata;
+            DataClassification = CustomerContent;
             InitValue = None;
 
             trigger OnValidate()
