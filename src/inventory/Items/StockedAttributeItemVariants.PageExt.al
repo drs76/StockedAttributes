@@ -12,7 +12,7 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
 
         addAfter(Code)
         {
-            field(StockedAttributeFullDescription; StockedAttributeMgmt.GetVariantFullDescription(Item, "Attribute Set Id"))
+            field(StockedAttributeFullDescription; StockedAttributeMgmt.GetVariantFullDescription(Item, Rec."Attribute Set Id"))
             {
                 Caption = 'Description';
                 ToolTip = 'Full Item Variant description';
@@ -22,7 +22,7 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
 
                 trigger OnDrillDown()
                 begin
-                    StockedAttributeMgmt.ShowVariantAttributes("Attribute Set Id");
+                    StockedAttributeMgmt.ShowVariantAttributes(Rec."Attribute Set Id");
                 end;
             }
 

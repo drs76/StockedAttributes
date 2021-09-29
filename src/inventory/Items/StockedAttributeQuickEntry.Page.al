@@ -426,15 +426,15 @@ page 50107 StockedAttributeQuickEntry
     var
         SaveChangesQst: Label 'Add selections to document';
     begin
-        if Count() > 0 then
+        if Rec.Count() > 0 then
             ClosedWithSave := Confirm(SaveChangesQst, false);
     end;
 
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        EntryNo := xRec.EntryNo + 1;
-        TransferFields(xRec, false);
-        Quantity := 0;
+        Rec.EntryNo := xRec.EntryNo + 1;
+        Rec.TransferFields(xRec, false);
+        Rec.Quantity := 0;
     end;
 
     trigger OnAfterGetRecord()

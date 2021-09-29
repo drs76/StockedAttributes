@@ -5,21 +5,26 @@ enum 50100 StockedAttributeEntryPageType
 {
     Extensible = true;
 
-    value(0; Default)
-    {
-        Caption = 'Default';
-    }
-    value(1; Configurator)
-    {
-        Caption = 'Configurator';
-    }
-    value(2; "Quick Entry")
-    {
-        Caption = 'Quick Entry';
-    }
-    value(3; None)
+    value(0; None)
     {
         Caption = 'None';
     }
 
+    value(1; Default)
+    {
+        Caption = 'Default';
+    }
+    value(2; Configurator)
+    {
+        Caption = 'Configurator';
+    }
+    value(3; "Quick Entry")
+    {
+        Caption = 'Quick Entry';
+    }
+
+    value(4; "Search Entry")
+    {
+        Caption = 'Search Entry';
+    }
 }
