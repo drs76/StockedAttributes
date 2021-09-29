@@ -1,47 +1,51 @@
+/// <summary>
+/// Table StockedAttributeDocEntryBuffer (ID 50105).
+/// </summary>
 table 50105 StockedAttributeDocEntryBuffer
 {
     Caption = 'Stocked Attribute Entry Buffer';
-    DataClassification = SystemMetadata;
+    DataClassification = CustomerContent;
     Extensible = true;
+
     fields
     {
         field(1; EntryNo; Integer)
         {
             Caption = 'Entry No';
-            DataClassification = SystemMetadata;
+            DataClassification = CustomerContent;
             AutoIncrement = true;
         }
         field(2; "Item No."; Code[20])
         {
             Caption = 'Item No.';
-            DataClassification = SystemMetadata;
+            DataClassification = CustomerContent;
         }
         field(3; "Variant Code"; Code[20])
         {
             Caption = 'Variant Code';
-            DataClassification = SystemMetadata;
+            DataClassification = CustomerContent;
         }
         field(4; Description; Text[100])
         {
             Caption = 'Description';
             FieldClass = FlowField;
-            CalcFormula = lookup (Item.Description where("No." = field("Item No.")));
+            CalcFormula = lookup(Item.Description where("No." = field("Item No.")));
         }
         field(5; Quantity; Decimal)
         {
             Caption = 'Quantity';
-            DataClassification = SystemMetadata;
+            DataClassification = CustomerContent;
         }
         field(6; UnitofMeasureCode; Code[10])
         {
             Caption = 'Unit of Measure Code';
-            DataClassification = SystemMetadata;
+            DataClassification = CustomerContent;
             TableRelation = "Item Unit of Measure".Code where("Item No." = field("Item No."));
         }
         field(7; LocationCode; Code[10])
         {
             Caption = 'Location Code';
-            DataClassification = SystemMetadata;
+            DataClassification = CustomerContent;
             TableRelation = Location;
         }
 
@@ -144,17 +148,17 @@ table 50105 StockedAttributeDocEntryBuffer
         field(28; "Template Filter"; Integer)
         {
             Caption = 'Attribute Template Filter';
-            DataClassification = SystemMetadata;
+            DataClassification = CustomerContent;
         }
         field(29; PageSelections; Text[2048])
         {
             Caption = 'Page Selections';
-            DataClassification = SystemMetadata;
+            DataClassification = CustomerContent;
         }
         field(30; AttributeSetId; Integer)
         {
             Caption = 'Attribute Set Id';
-            DataClassification = SystemMetadata;
+            DataClassification = CustomerContent;
         }
     }
     keys

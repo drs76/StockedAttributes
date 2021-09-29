@@ -1,3 +1,6 @@
+/// <summary>
+/// Enum StockedAttributeEntryPageType (ID 50100).
+/// </summary>
 enum 50100 StockedAttributeEntryPageType
 {
     Extensible = true;

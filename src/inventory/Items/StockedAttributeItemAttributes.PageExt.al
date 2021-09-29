@@ -1,10 +1,13 @@
+/// <summary>
+/// PageExtension StockedAttributeItemAttributes (ID 50101) extends Record Item Attributes.
+/// </summary>
 pageextension 50101 StockedAttributeItemAttributes extends "Item Attributes"
 {
     layout
     {
         addafter(Blocked)
         {
-            field(StockedAttribute; StockedAttribute)
+            field(StockedAttribute; Rec.StockedAttribute)
             {
                 Caption = 'Stocked Attribute';
                 Visible = StockedAttributeVisible;

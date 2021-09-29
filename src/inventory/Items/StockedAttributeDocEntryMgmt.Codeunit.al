@@ -1,3 +1,6 @@
+/// <summary>
+/// Codeunit StockedAttributeDocEntryMgmt (ID 50101).
+/// </summary>
 codeunit 50101 StockedAttributeDocEntryMgmt
 {
     // Methods used for the Stocked Attribute Configurator Entry page.
@@ -11,6 +14,10 @@ codeunit 50101 StockedAttributeDocEntryMgmt
         UoMFieldTxt: Label 'Unit of Measure Code';
         LocationCodeFieldTxt: Label 'Location Code';
 
+    /// <summary>
+    /// LaunchStockedAttributeConfigurator.
+    /// </summary>
+    /// <param name="SourceRecordRef">RecordRef.</param>
     procedure LaunchStockedAttributeConfigurator(SourceRecordRef: RecordRef)
     var
         TempStockedAttributeDocBuffer: Record StockedAttributeDocEntryBuffer temporary;
@@ -25,6 +32,9 @@ codeunit 50101 StockedAttributeDocEntryMgmt
                 AddSelectionsToDocument(SourceRecordRef, Parameters, TempStockedAttributeDocBuffer);
     end;
 
+    /// <summary>
+    /// InitFields.
+    /// </summary>
     local procedure InitFields()
     var
         DocumentTypeTxt: Label 'Document Type';
@@ -53,6 +63,11 @@ codeunit 50101 StockedAttributeDocEntryMgmt
         JournalKeys[2] := JournalBatchNameTxt;
     end;
 
+    /// <summary>
+    /// PrepareConfigurator.
+    /// </summary>
+    /// <param name="SourceRecordRef">RecordRef.</param>
+    /// <param name="Parameters">VAR JsonObject.</param>
     local procedure PrepareConfigurator(SourceRecordRef: RecordRef; var Parameters: JsonObject);
     var
         SourceFieldRef: FieldRef;
@@ -79,6 +94,11 @@ codeunit 50101 StockedAttributeDocEntryMgmt
         end;
     end;
 
+    /// <summary>
+    /// GetPageIdToRun.
+    /// </summary>
+    /// <param name="Parameters">VAR JsonObject.</param>
+    /// <returns>Return value of type Boolean.</returns>
     local procedure GetPageIdToRun(var Parameters: JsonObject): Boolean;
     var
         Item: Record Item;
@@ -119,6 +139,12 @@ codeunit 50101 StockedAttributeDocEntryMgmt
         exit(PageId <> 0);
     end;
 
+    /// <summary>
+    /// RunAttributeVariantEntry.
+    /// </summary>
+    /// <param name="Parameters">JsonObject.</param>
+    /// <param name="TempDocEntryBuffer">Temporary VAR Record StockedAttributeDocEntryBuffer.</param>
+    /// <returns>Return value of type Boolean.</returns>
     local procedure RunAttributeVariantEntry(Parameters: JsonObject; var TempDocEntryBuffer: Record StockedAttributeDocEntryBuffer temporary): Boolean;
     var
         ItemNo: Text;
@@ -139,6 +165,14 @@ codeunit 50101 StockedAttributeDocEntryMgmt
         exit(RunEntryPage(PageNo, TempDocEntryBuffer, LocationCodeParam, UoCodeParam));
     end;
 
+    /// <summary>
+    /// SetupPageParams.
+    /// </summary>
+    /// <param name="Parameters">JsonObject.</param>
+    /// <param name="ItemNo">VAR Text.</param>
+    /// <param name="LocationCode">VAR Text.</param>
+    /// <param name="UoM">VAR Text.</param>
+    /// <param name="PageNo">VAR Integer.</param>
     local procedure SetupPageParams(Parameters: JsonObject; var ItemNo: Text; var LocationCode: Text; var UoM: Text; var PageNo: Integer)
     var
         JToken: JsonToken;
@@ -157,6 +191,14 @@ codeunit 50101 StockedAttributeDocEntryMgmt
             UoM := JToken.AsValue().AsText();
     end;
 
+    /// <summary>
+    /// RunEntryPage.
+    /// </summary>
+    /// <param name="PageNo">Integer.</param>
+    /// <param name="TempDocEntryBuffer">Temporary VAR Record StockedAttributeDocEntryBuffer.</param>
+    /// <param name="Location">Text.</param>
+    /// <param name="UOM">Text.</param>
+    /// <returns>Return value of type Boolean.</returns>
     local procedure RunEntryPage(PageNo: Integer; var TempDocEntryBuffer: Record StockedAttributeDocEntryBuffer temporary; Location: Text; UOM: Text): Boolean
     begin
         if PageNo = Page::StockedAttributeConfigurator then
@@ -166,6 +208,13 @@ codeunit 50101 StockedAttributeDocEntryMgmt
             exit(RunQuickEntry(TempDocEntryBuffer, Location, UOM));
     end;
 
+    /// <summary>
+    /// RunConfigurator.
+    /// </summary>
+    /// <param name="TempDocEntryBuffer">Temporary VAR Record StockedAttributeDocEntryBuffer.</param>
+    /// <param name="Location">Text.</param>
+    /// <param name="UOM">Text.</param>
+    /// <returns>Return value of type Boolean.</returns>
     local procedure RunConfigurator(var TempDocEntryBuffer: Record StockedAttributeDocEntryBuffer temporary; Location: Text; UOM: Text): Boolean
     var
         VariantConfigurator: Page StockedAttributeConfigurator;
@@ -180,6 +229,13 @@ codeunit 50101 StockedAttributeDocEntryMgmt
         exit(true);
     end;
 
+    /// <summary>
+    /// RunQuickEntry.
+    /// </summary>
+    /// <param name="TempDocEntryBuffer">Temporary VAR Record StockedAttributeDocEntryBuffer.</param>
+    /// <param name="Location">Text.</param>
+    /// <param name="UOM">Text.</param>
+    /// <returns>Return value of type Boolean.</returns>
     local procedure RunQuickEntry(var TempDocEntryBuffer: Record StockedAttributeDocEntryBuffer temporary; Location: Text; UOM: Text): Boolean;
     var
         VariantQuickEntry: Page StockedAttributeQuickEntry;
@@ -195,6 +251,12 @@ codeunit 50101 StockedAttributeDocEntryMgmt
         exit(true);
     end;
 
+    /// <summary>
+    /// AddSelectionsToDocument.
+    /// </summary>
+    /// <param name="SourceRecordRef">RecordRef.</param>
+    /// <param name="Parameters">JsonObject.</param>
+    /// <param name="TempDocEntryBuffer">Temporary VAR Record StockedAttributeDocEntryBuffer.</param>
     local procedure AddSelectionsToDocument(SourceRecordRef: RecordRef; Parameters: JsonObject; var TempDocEntryBuffer: Record StockedAttributeDocEntryBuffer temporary)
     var
         Item: Record Item;
@@ -248,6 +310,12 @@ codeunit 50101 StockedAttributeDocEntryMgmt
         end;
     end;
 
+    /// <summary>
+    /// UpdateRecordRef.
+    /// </summary>
+    /// <param name="RecordRefToUpdate">VAR RecordRef.</param>
+    /// <param name="FieldNumber">Integer.</param>
+    /// <param name="FieldValue">Variant.</param>
     local procedure UpdateRecordRef(var RecordRefToUpdate: RecordRef; FieldNumber: Integer; FieldValue: Variant)
     var
         FieldRefToSet: FieldRef;
@@ -263,6 +331,12 @@ codeunit 50101 StockedAttributeDocEntryMgmt
             FieldRefToSet.Validate(FieldValue);
     end;
 
+    /// <summary>
+    /// AddLine.
+    /// </summary>
+    /// <param name="NewLineRecoredRef">VAR RecordRef.</param>
+    /// <param name="SourceRecordRef">RecordRef.</param>
+    /// <param name="Parameters">JsonObject.</param>
     local procedure AddLine(var NewLineRecoredRef: RecordRef; SourceRecordRef: RecordRef; Parameters: JsonObject)
     var
         FldRef: FieldRef;
@@ -296,6 +370,14 @@ codeunit 50101 StockedAttributeDocEntryMgmt
         InsertNewLine(NewLineRecoredRef, SourceRecordRef, NextLineNo, KeyNames, Parameters);
     end;
 
+    /// <summary>
+    /// InsertNewLine.
+    /// </summary>
+    /// <param name="NewLineRecordRef">VAR RecordRef.</param>
+    /// <param name="SourceRecordRef">VAR RecordRef.</param>
+    /// <param name="NewLineNo">Integer.</param>
+    /// <param name="KeyNames">array[2] of Text.</param>
+    /// <param name="Parameters">JsonObject.</param>
     local procedure InsertNewLine(var NewLineRecordRef: RecordRef; var SourceRecordRef: RecordRef; NewLineNo: Integer; KeyNames: array[2] of Text; Parameters: JsonObject)
     var
         FldRef: FieldRef;
@@ -339,6 +421,11 @@ codeunit 50101 StockedAttributeDocEntryMgmt
         NewLineRecordRef.Insert(true);
     end;
 
+    /// <summary>
+    /// DefaultJournalLine.
+    /// </summary>
+    /// <param name="SourceRecordRef">RecordRef.</param>
+    /// <param name="NewRecordRef">VAR RecordRef.</param>
     local procedure DefaultJournalLine(SourceRecordRef: RecordRef; var NewRecordRef: RecordRef)
     var
         ItemJnlLine: Record "Item Journal Line";
@@ -349,6 +436,12 @@ codeunit 50101 StockedAttributeDocEntryMgmt
         NewRecordRef.GetTable(ItemJnlLine2);
     end;
 
+    /// <summary>
+    /// FilterOnKey.
+    /// </summary>
+    /// <param name="RecordRefToFilter">VAR RecordRef.</param>
+    /// <param name="FieldName">Text.</param>
+    /// <param name="FilterValue">Variant.</param>
     local procedure FilterOnKey(var RecordRefToFilter: RecordRef; FieldName: Text; FilterValue: Variant)
     var
         FilterFieldRef: FieldRef;
@@ -359,6 +452,12 @@ codeunit 50101 StockedAttributeDocEntryMgmt
         FilterFieldRef.SetFilter(FilterValue);
     end;
 
+    /// <summary>
+    /// GetFieldNumber.
+    /// </summary>
+    /// <param name="TableNo">Integer.</param>
+    /// <param name="FieldName">Text.</param>
+    /// <returns>Return variable ReturnValue of type Integer.</returns>
     procedure GetFieldNumber(TableNo: Integer; FieldName: Text) ReturnValue: Integer;
     var
         FieldTable: Record Field;

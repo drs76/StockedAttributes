@@ -1,9 +1,11 @@
+/// <summary>
+/// Page StockedAttributeConfigurator (ID 50104).
+/// </summary>
 page 50104 StockedAttributeConfigurator
 {
     Caption = 'Variant Configurator';
     PageType = NavigatePage;
-    ApplicationArea = All;
-    UsageCategory = Administration;
+    UsageCategory = None;
     SourceTable = StockedAttributeDocEntryBuffer;
     SourceTableTemporary = true;
 
@@ -14,14 +16,14 @@ page 50104 StockedAttributeConfigurator
             group(ItemDetails)
             {
                 Caption = 'Item';
-                field("Item No."; "Item No.")
+                field("Item No."; Rec."Item No.")
                 {
                     ToolTip = 'Item No. being configured';
                     Editable = false;
                     Style = Strong;
                     ApplicationArea = All;
                 }
-                field(Description; Description)
+                field(Description; Rec.Description)
                 {
                     ToolTip = 'Item main description';
                     Editable = false;
@@ -340,14 +342,14 @@ page 50104 StockedAttributeConfigurator
             {
                 Caption = 'Required Quantity';
                 Visible = CurrentStep = 2;
-                field(UnitofMeasureCode; UnitofMeasureCode)
+                field(UnitofMeasureCode; Rec.UnitofMeasureCode)
                 {
                     Caption = 'Unit of Measure';
                     ToolTip = 'Enter the unit of measure required';
                     ShowMandatory = true;
                     ApplicationArea = All;
                 }
-                field(LocationCode; LocationCode)
+                field(LocationCode; Rec.LocationCode)
                 {
                     Caption = 'Location Code';
                     ToolTip = 'Enter the location required';
@@ -355,7 +357,7 @@ page 50104 StockedAttributeConfigurator
                     ApplicationArea = All;
                 }
 
-                field(Quantity; Quantity)
+                field(Quantity; Rec.Quantity)
                 {
                     Caption = 'Required Quantity';
                     ToolTip = 'Enter the required quantity';
@@ -371,7 +373,7 @@ page 50104 StockedAttributeConfigurator
 
                 repeater(Selections)
                 {
-                    field("Variant Code"; "Variant Code")
+                    field("Variant Code"; Rec."Variant Code")
                     {
                         Caption = 'Variant Code';
                         ToolTip = 'Variant code for selected configuration';
@@ -379,14 +381,14 @@ page 50104 StockedAttributeConfigurator
                         ShowMandatory = true;
                         ApplicationArea = All;
                     }
-                    field(UnitofMeasureCode2; UnitofMeasureCode)
+                    field(UnitofMeasureCode2; Rec.UnitofMeasureCode)
                     {
                         Caption = 'Unit of Measure Code';
                         ToolTip = 'Unit of measure code for selected configuration';
                         ShowMandatory = true;
                         ApplicationArea = All;
                     }
-                    field(Quantity2; Quantity)
+                    field(Quantity2; Rec.Quantity)
                     {
                         Caption = 'Quantity';
                         ToolTip = 'Quantity required for selected configuration';
@@ -510,22 +512,39 @@ page 50104 StockedAttributeConfigurator
         AttributeVisible19: Boolean;
         AttributeVisible20: Boolean;
 
+    /// <summary>
+    /// SetLineDefaults.
+    /// </summary>
+    /// <param name="LocationDefaultIn">Text.</param>
+    /// <param name="UoMDefaultIn">Text.</param>
     procedure SetLineDefaults(LocationDefaultIn: Text; UoMDefaultIn: Text)
     begin
         LocationDefault := LocationDefaultIn;
         UoMDefault := UoMDefaultIn;
     end;
 
+    /// <summary>
+    /// GetRecords.
+    /// </summary>
+    /// <param name="TempStockedAttributeDocBuffer">Temporary VAR Record StockedAttributeDocEntryBuffer.</param>
     procedure GetRecords(var TempStockedAttributeDocBuffer: Record StockedAttributeDocEntryBuffer temporary);
     begin
         TempStockedAttributeDocBuffer.Copy(Rec, true);
     end;
 
+    /// <summary>
+    /// SaveSelections.
+    /// </summary>
+    /// <returns>Return value of type Boolean.</returns>
     procedure SaveSelections(): Boolean;
     begin
         exit(ClosedWithSave);
     end;
 
+    /// <summary>
+    /// DoStep.
+    /// </summary>
+    /// <param name="StepCount">Integer.</param>
     local procedure DoStep(StepCount: Integer)
     begin
         if CurrentStep + StepCount > MaxSteps then
@@ -542,6 +561,9 @@ page 50104 StockedAttributeConfigurator
         SetControls();
     end;
 
+    /// <summary>
+    /// SetControls.
+    /// </summary>
     local procedure SetControls()
     begin
         NextVisible := CurrentStep < 3;
@@ -550,6 +572,9 @@ page 50104 StockedAttributeConfigurator
         FinishVisible := CurrentStep = 3;
     end;
 
+    /// <summary>
+    /// InitPage.
+    /// </summary>
     local procedure InitPage()
     var
         Item: Record Item;
@@ -590,6 +615,10 @@ page 50104 StockedAttributeConfigurator
         Rec.Insert();
     end;
 
+    /// <summary>
+    /// SetFieldsVisible.
+    /// </summary>
+    /// <param name="AttributeCount">Integer.</param>
     local procedure SetFieldsVisible(AttributeCount: Integer)
     var
         x: Integer;
@@ -639,6 +668,10 @@ page 50104 StockedAttributeConfigurator
             end;
     end;
 
+    /// <summary>
+    /// ValidateSelection.
+    /// </summary>
+    /// <param name="ColumnNo">Integer.</param>
     local procedure ValidateSelection(ColumnNo: Integer)
     var
         StockedAttributeEntrySetup: Codeunit StockedAttributeEntryPageMgmt;
@@ -647,6 +680,9 @@ page 50104 StockedAttributeConfigurator
         currPage.SaveRecord();
     end;
 
+    /// <summary>
+    /// FindVariant.
+    /// </summary>
     local procedure FindVariant()
     var
         StockedAttributeEntrySetup: Codeunit StockedAttributeEntryPageMgmt;

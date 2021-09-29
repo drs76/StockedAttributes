@@ -1,5 +1,12 @@
+/// <summary>
+/// Codeunit StockedAttributeMgmt (ID 50100).
+/// </summary>
 codeunit 50100 StockedAttributeMgmt
 {
+    /// <summary>
+    /// IsEnabled.
+    /// </summary>
+    /// <returns>Return value of type Boolean.</returns>
     procedure IsEnabled(): Boolean;
     var
         StockedAttributeSetup: Record StockedAttributeSetup;
@@ -9,6 +16,11 @@ codeunit 50100 StockedAttributeMgmt
         exit(StockedAttributeSetup.Enabled);
     end;
 
+    /// <summary>
+    /// CreateAllPossibleVariants.
+    /// </summary>
+    /// <param name="ItemNo">Code[20].</param>
+    /// <param name="ShowVariants">Boolean.</param>
     procedure CreateAllPossibleVariants(ItemNo: Code[20]; ShowVariants: Boolean)
     var
         ItemToCreateVariantFor: Record Item;
@@ -51,6 +63,12 @@ codeunit 50100 StockedAttributeMgmt
         end;
     end;
 
+    /// <summary>
+    /// BuildCombinedAttributesList.
+    /// </summary>
+    /// <param name="ItemToCreateFor">Record Item.</param>
+    /// <param name="CombinedAttributeList">VAR List of [Text].</param>
+    /// <param name="Seperator">Text[1].</param>
     local procedure BuildCombinedAttributesList(ItemToCreateFor: Record Item; var CombinedAttributeList: List of [Text]; Seperator: Text[1]);
     var
         StockedAttributeTemplate: Record StockedAttributeTemplate;
@@ -80,6 +98,12 @@ codeunit 50100 StockedAttributeMgmt
         CombineLists(AttributeList, CombinedAttributeList, Seperator);
     end;
 
+    /// <summary>
+    /// CombineLists.
+    /// </summary>
+    /// <param name="InList">VAR List of [Text].</param>
+    /// <param name="CombinedList">VAR List of [Text].</param>
+    /// <param name="Seperator">Text[1].</param>
     local procedure CombineLists(var InList: List of [Text]; var CombinedList: List of [Text]; Seperator: Text[1])
     begin
         if CombinedList.Count() > 0 then
@@ -89,6 +113,12 @@ codeunit 50100 StockedAttributeMgmt
         Clear(InList); // empty InList
     end;
 
+    /// <summary>
+    /// CodeCombine.
+    /// </summary>
+    /// <param name="Var StockedAttributeList">List of [Text].</param>
+    /// <param name="AttributeList">List of [Text].</param>
+    /// <param name="Seperator">Text[1].</param>
     local procedure CodeCombine(Var StockedAttributeList: List of [Text]; AttributeList: List of [Text]; Seperator: Text[1])
     var
         NewList: List of [Text];
@@ -104,6 +134,13 @@ codeunit 50100 StockedAttributeMgmt
         StockedAttributeList.AddRange(NewList);
     end;
 
+    /// <summary>
+    /// FormatAttributeListEntry.
+    /// </summary>
+    /// <param name="AttributeID">Text.</param>
+    /// <param name="AttributeValueID">Text.</param>
+    /// <param name="Seperator">Text[1].</param>
+    /// <returns>Return value of type Text.</returns>
     local procedure FormatAttributeListEntry(AttributeID: Text; AttributeValueID: Text; Seperator: Text[1]): Text;
     var
         AttributeEntryTxt: Label '%1%2%3';
@@ -111,6 +148,12 @@ codeunit 50100 StockedAttributeMgmt
         exit(StrSubStno(AttributeEntryTxt, AttributeID, Seperator, AttributeValueID));
     end;
 
+    /// <summary>
+    /// CreateVariantSet.
+    /// </summary>
+    /// <param name="tempAttributeSetEntry">Temporary VAR Record StockedAttributeSetEntry.</param>
+    /// <param name="CodeString">Text.</param>
+    /// <param name="Seperator">Text[1].</param>
     local procedure CreateVariantSet(var tempAttributeSetEntry: Record StockedAttributeSetEntry temporary; CodeString: Text; Seperator: Text[1])
     var
         ItemAttribute: Record "Item Attribute";
@@ -133,6 +176,12 @@ codeunit 50100 StockedAttributeMgmt
         end;
     end;
 
+    /// <summary>
+    /// StripCode.
+    /// </summary>
+    /// <param name="InString">VAR Text.</param>
+    /// <param name="Seperator">Text[1].</param>
+    /// <returns>Return value of type Text.</returns>
     local procedure StripCode(var InString: Text; Seperator: Text[1]): Text
     var
         CodeString: Text;
@@ -148,6 +197,11 @@ codeunit 50100 StockedAttributeMgmt
         exit(CodeString);
     end;
 
+    /// <summary>
+    /// CreateVariant.
+    /// </summary>
+    /// <param name="ItemToCreateFor">Record Item.</param>
+    /// <param name="tempAttributeSetEntry">Temporary VAR Record StockedAttributeSetEntry.</param>
     local procedure CreateVariant(ItemToCreateFor: Record Item; var tempAttributeSetEntry: Record StockedAttributeSetEntry temporary)
     var
         ItemVariant: Record "Item Variant";
@@ -169,6 +223,11 @@ codeunit 50100 StockedAttributeMgmt
         ItemVariant.Modify(true);
     end;
 
+    /// <summary>
+    /// RemoveCurrentVariants.
+    /// </summary>
+    /// <param name="ItemNo">Code[20].</param>
+    /// <returns>Return value of type Boolean.</returns>
     local procedure RemoveCurrentVariants(ItemNo: Code[20]): Boolean
     var
         ItemVariant: Record "Item Variant";
@@ -187,6 +246,11 @@ codeunit 50100 StockedAttributeMgmt
         exit(AllRemoved);
     end;
 
+    /// <summary>
+    /// GetNextVariantCode.
+    /// </summary>
+    /// <param name="ItemNo">Code[20].</param>
+    /// <returns>Return value of type Code[10].</returns>
     local procedure GetNextVariantCode(ItemNo: Code[20]): Code[10]
     var
         ItemVariant: Record "Item Variant";
@@ -200,6 +264,10 @@ codeunit 50100 StockedAttributeMgmt
         Clear(ItemVariant);
     end;
 
+    /// <summary>
+    /// ShowVariants.
+    /// </summary>
+    /// <param name="ItemNo">Code[20].</param>
     local procedure ShowVariants(ItemNo: Code[20])
     var
         ItemVariant: Record "Item Variant";
@@ -210,6 +278,10 @@ codeunit 50100 StockedAttributeMgmt
         Page.RunModal(Page::"Item Variants", ItemVariant);
     end;
 
+    /// <summary>
+    /// EditStockedAttributeTemplate.
+    /// </summary>
+    /// <param name="StockedAttributeTemplate">Record StockedAttributeTemplate.</param>
     procedure EditStockedAttributeTemplate(StockedAttributeTemplate: Record StockedAttributeTemplate)
     var
         StockedAttributeTemplateEntry: Record StockedAttributeTemplateEntry;
@@ -224,13 +296,15 @@ codeunit 50100 StockedAttributeMgmt
         StockedAttributesPage.RunModal();
     end;
 
+    /// <summary>
+    /// ShowVariantAttributes.
+    /// </summary>
+    /// <param name="VariantAttributeSetID">Integer.</param>
     procedure ShowVariantAttributes(VariantAttributeSetID: Integer)
     var
         StockedAttributeSetEntry: Record StockedAttributeSetEntry;
         StockedAttributeSetsPage: Page StockedAttributeSets;
-        NewAttributeSetID: Integer;
     begin
-        NewAttributeSetID := VariantAttributeSetID;
         StockedAttributeSetEntry.FilterGroup(2);
         StockedAttributeSetEntry.SetRange(AttributeSetID, VariantAttributeSetID);
         StockedAttributeSetEntry.FilterGroup(0);
@@ -239,6 +313,11 @@ codeunit 50100 StockedAttributeMgmt
         StockedAttributeSetsPage.RunModal();
     end;
 
+    /// <summary>
+    /// GetAttributeSetID.
+    /// </summary>
+    /// <param name="StockedAttributeSetEntry2">VAR Record StockedAttributeSetEntry.</param>
+    /// <returns>Return value of type Integer.</returns>
     procedure GetAttributeSetID(var StockedAttributeSetEntry2: Record StockedAttributeSetEntry): Integer;
     var
         StockedAttributeSetEntry: Record StockedAttributeSetEntry;
@@ -246,6 +325,11 @@ codeunit 50100 StockedAttributeMgmt
         exit(StockedAttributeSetEntry.GetAttributeSetID(StockedAttributeSetEntry2));
     end;
 
+    /// <summary>
+    /// GetAttributeSet.
+    /// </summary>
+    /// <param name="TempAttributeSetEntry">Temporary VAR Record StockedAttributeSetEntry.</param>
+    /// <param name="AttributeSetID">Integer.</param>
     procedure GetAttributeSet(var TempAttributeSetEntry: Record StockedAttributeSetEntry temporary; AttributeSetID: Integer)
     var
         StockedAttributeSetEntry: Record StockedAttributeSetEntry;
@@ -261,6 +345,11 @@ codeunit 50100 StockedAttributeMgmt
             until StockedAttributeSetEntry.Next() = 0;
     end;
 
+    /// <summary>
+    /// GetAttributeTemplateSetID.
+    /// </summary>
+    /// <param name="StockedAttributeTemplateEntry2">VAR Record StockedAttributeTemplateEntry.</param>
+    /// <returns>Return value of type Integer.</returns>
     procedure GetAttributeTemplateSetID(var StockedAttributeTemplateEntry2: Record StockedAttributeTemplateEntry): Integer;
     var
         StockedAttributeTemplateEntry: Record StockedAttributeTemplateEntry;
@@ -268,6 +357,11 @@ codeunit 50100 StockedAttributeMgmt
         exit(StockedAttributeTemplateEntry.GetTemplateSetID(StockedAttributeTemplateEntry2));
     end;
 
+    /// <summary>
+    /// GetAttributeTemplateSet.
+    /// </summary>
+    /// <param name="TempAttributeTemplateSet">Temporary VAR Record StockedAttributeTemplateEntry.</param>
+    /// <param name="TemplateSetID">Integer.</param>
     procedure GetAttributeTemplateSet(var TempAttributeTemplateSet: Record StockedAttributeTemplateEntry temporary; TemplateSetID: Integer)
     var
         StockedAttributeTemplateEntry: Record StockedAttributeTemplateEntry;
@@ -282,6 +376,12 @@ codeunit 50100 StockedAttributeMgmt
             until StockedAttributeTemplateEntry.Next() = 0;
     end;
 
+    /// <summary>
+    /// GetVariantFullDescription.
+    /// </summary>
+    /// <param name="Item">Record Item.</param>
+    /// <param name="VariantAttributeSetID">Integer.</param>
+    /// <returns>Return value of type Text.</returns>
     procedure GetVariantFullDescription(Item: Record Item; VariantAttributeSetID: Integer): Text;
     var
         StockedAttributeSetEntry: Record StockedAttributeSetEntry;
@@ -306,23 +406,32 @@ codeunit 50100 StockedAttributeMgmt
         exit(FullDescriptionTB.ToText());
     end;
 
+    /// <summary>
+    /// CopyAttributesToTemplate.
+    /// </summary>
+    /// <param name="TempStockedAttributeTemplateEntry">Temporary VAR Record StockedAttributeTemplateEntry.</param>
     procedure CopyAttributesToTemplate(var TempStockedAttributeTemplateEntry: Record StockedAttributeTemplateEntry temporary)
     var
         TempStockedAttributeTemplateEntry2: Record StockedAttributeTemplateEntry temporary;
         ItemAttributes: Record "Item Attribute";
         FilterPage: FilterPageBuilder;
-
+        ItemAttributeLbl: Label 'Item Attribute';
     begin
         TempStockedAttributeTemplateEntry2.Copy(TempStockedAttributeTemplateEntry, true);
 
-        FilterPage.AddRecord('Item Attribute', ItemAttributes);
-        FilterPage.AddFieldNo('Item Attribute', ItemAttributes.FieldNo(ID));
+        FilterPage.AddRecord(ItemAttributeLbl, ItemAttributes);
+        FilterPage.AddFieldNo(ItemAttributeLbl, ItemAttributes.FieldNo(ID));
         if FilterPage.RunModal() then
-            TransferAttributesToTemplate(FilterPage.GetView('Item Attribute'), TempStockedAttributeTemplateEntry2);
+            TransferAttributesToTemplate(FilterPage.GetView(ItemAttributeLbl), TempStockedAttributeTemplateEntry2);
 
         TempStockedAttributeTemplateEntry.Copy(TempStockedAttributeTemplateEntry2, true);
     end;
 
+    /// <summary>
+    /// TransferAttributesToTemplate.
+    /// </summary>
+    /// <param name="AttributeView">Text.</param>
+    /// <param name="TempStockedAttributeTemplateEntry">Temporary VAR Record StockedAttributeTemplateEntry.</param>
     local procedure TransferAttributesToTemplate(AttributeView: Text; var TempStockedAttributeTemplateEntry: Record StockedAttributeTemplateEntry temporary)
     var
         ItemAttribute: Record "Item Attribute";

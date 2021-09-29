@@ -1,3 +1,6 @@
+/// <summary>
+/// Page StockedAttributeSetup (ID 50100).
+/// </summary>
 page 50100 StockedAttributeSetup
 {
 
@@ -13,13 +16,13 @@ page 50100 StockedAttributeSetup
         {
             group(General)
             {
-                field(Enabled; Enabled)
+                field(Enabled; Rec.Enabled)
                 {
                     Caption = 'Enabled';
                     ToolTip = 'Enable or disable the stocked attribute functionality';
                     ApplicationArea = All;
                 }
-                field(EntryPageType; EntryPageType)
+                field(EntryPageType; Rec.EntryPageType)
                 {
                     ToolTip = 'Set the default entry page type';
                     ApplicationArea = All;
@@ -60,9 +63,9 @@ page 50100 StockedAttributeSetup
 
     trigger OnOpenPage()
     begin
-        if not FindFirst() then begin
-            Init();
-            Insert();
+        if not Rec.FindFirst() then begin
+            Rec.Init();
+            Rec.Insert();
         end;
     end;
 }

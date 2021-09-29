@@ -1,40 +1,43 @@
+/// <summary>
+/// Table StockedAttributeSetEntry (ID 50102).
+/// </summary>
 table 50102 StockedAttributeSetEntry
 {
     Caption = 'Stocked Attribute Set Entry';
-    DataClassification = SystemMetadata;
+    DataClassification = CustomerContent;
 
     fields
     {
         field(1; AttributeSetID; Integer)
         {
             Caption = 'Attribute Set ID';
-            DataClassification = SystemMetadata;
+            DataClassification = CustomerContent;
         }
         field(2; AttributeID; Integer)
         {
             Caption = 'Attribute ID';
-            DataClassification = SystemMetadata;
+            DataClassification = CustomerContent;
             TableRelation = "Item Attribute".ID where(StockedAttribute = Const(true));
         }
 
         field(3; AttributeValueID; Integer)
         {
             Caption = 'Attribute Value ID';
-            DataClassification = SystemMetadata;
+            DataClassification = CustomerContent;
             TableRelation = "Item Attribute Value".ID where("Attribute ID" = Field(AttributeID));
         }
         field(4; "Attribute Code"; Text[250])
         {
             Caption = 'Attribute';
             FieldClass = FlowField;
-            CalcFormula = lookup ("Item Attribute".Name where(ID = field(AttributeID)));
+            CalcFormula = lookup("Item Attribute".Name where(ID = field(AttributeID)));
             Editable = false;
         }
         field(5; "Attribute Value"; Text[250])
         {
             Caption = 'Attribute Value';
             FieldClass = FlowField;
-            CalcFormula = lookup ("Item Attribute Value".Value where(ID = field(AttributeValueID), "Attribute ID" = field(AttributeID)));
+            CalcFormula = lookup("Item Attribute Value".Value where(ID = field(AttributeValueID), "Attribute ID" = field(AttributeID)));
             Editable = false;
         }
     }
@@ -48,6 +51,11 @@ table 50102 StockedAttributeSetEntry
         key(Key3; AttributeID, AttributeValueID, AttributeSetID) { }
     }
 
+    /// <summary>
+    /// GetAttributeSetID.
+    /// </summary>
+    /// <param name="StockedAttributeSetEntry">VAR Record StockedAttributeSetEntry.</param>
+    /// <returns>Return value of type Integer.</returns>
     procedure GetAttributeSetID(var StockedAttributeSetEntry: Record StockedAttributeSetEntry): Integer;
     var
         StockedAttributeTreeNode: Record StockedAttributeTreeNode;
@@ -100,6 +108,11 @@ table 50102 StockedAttributeSetEntry
         exit(StockedAttributeTreeNode."Attribute Set ID");
     end;
 
+    /// <summary>
+    /// InsertAttributeSetEntries.
+    /// </summary>
+    /// <param name="StockedAttributeSetEntry">VAR Record StockedAttributeSetEntry.</param>
+    /// <param name="NewId">Integer.</param>
     local procedure InsertAttributeSetEntries(var StockedAttributeSetEntry: Record StockedAttributeSetEntry; NewId: Integer)
     var
         StockedAttributeSetEntry2: Record StockedAttributeSetEntry;

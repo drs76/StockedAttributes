@@ -1,3 +1,6 @@
+/// <summary>
+/// Page StockedAttributeTemplates (ID 50106).
+/// </summary>
 page 50106 StockedAttributeTemplates
 {
 
@@ -7,6 +10,7 @@ page 50106 StockedAttributeTemplates
     ApplicationArea = All;
     UsageCategory = Administration;
     CardPageId = StockedAttributeTemplate;
+    RefreshOnActivate = true;
 
     layout
     {
@@ -15,17 +19,20 @@ page 50106 StockedAttributeTemplates
             repeater(General)
             {
                 Editable = false;
-                field(Code; Code)
+                field(Code; Rec.Code)
                 {
                     ApplicationArea = All;
+                    ToolTip = 'Specifies the Stocked Attribute Template Code';
                 }
-                field(Description; Description)
+                field(Description; Rec.Description)
                 {
                     ApplicationArea = All;
+                    ToolTip = 'Specifies the Stocked Attribute Template Description';
                 }
-                field(EntryPageType; EntryPageType)
+                field(EntryPageType; Rec.EntryPageType)
                 {
                     ApplicationArea = All;
+                    ToolTip = 'Specifies the Stocked Attribute Template Entry Page Type';
                 }
             }
         }

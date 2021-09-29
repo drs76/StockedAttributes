@@ -1,3 +1,6 @@
+/// <summary>
+/// TableExtension StockedAttributeItemAttribute (ID 50102) extends Record Item Attribute.
+/// </summary>
 tableextension 50102 StockedAttributeItemAttribute extends "Item Attribute"
 {
     fields
@@ -5,7 +8,7 @@ tableextension 50102 StockedAttributeItemAttribute extends "Item Attribute"
         field(50100; StockedAttribute; Boolean)
         {
             Caption = 'Stocked Attribute';
-            DataClassification = SystemMetadata;
+            DataClassification = CustomerContent;
         }
     }
 }

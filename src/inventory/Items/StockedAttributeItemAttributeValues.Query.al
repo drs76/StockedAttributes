@@ -1,3 +1,6 @@
+/// <summary>
+/// Query StockedAttributeItemAttributes (ID 50100).
+/// </summary>
 query 50100 StockedAttributeItemAttributes
 {
     QueryType = Normal;

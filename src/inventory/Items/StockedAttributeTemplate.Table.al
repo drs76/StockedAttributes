@@ -1,3 +1,6 @@
+/// <summary>
+/// Table StockedAttributeTemplate (ID 50106).
+/// </summary>
 table 50106 StockedAttributeTemplate
 {
     Caption = 'StockedAttributeTemplate';
@@ -8,22 +11,22 @@ table 50106 StockedAttributeTemplate
         field(1; Code; Code[20])
         {
             Caption = 'Code';
-            DataClassification = SystemMetadata;
+            DataClassification = CustomerContent;
         }
         field(2; Description; Text[2048])
         {
             Caption = 'Description';
-            DataClassification = SystemMetadata;
+            DataClassification = CustomerContent;
         }
         field(4; "Template Set ID"; Integer)
         {
             Caption = 'Template Set ID';
-            DataClassification = SystemMetadata;
+            DataClassification = CustomerContent;
         }
         field(5; EntryPageType; Enum StockedAttributeEntryPageType)
         {
             Caption = 'Entry Page Type';
-            DataClassification = SystemMetadata;
+            DataClassification = CustomerContent;
             InitValue = Default;
         }
     }

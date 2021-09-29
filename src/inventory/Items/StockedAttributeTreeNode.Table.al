@@ -1,7 +1,10 @@
+/// <summary>
+/// Table StockedAttributeTreeNode (ID 50101).
+/// </summary>
 table 50101 StockedAttributeTreeNode
 {
     Caption = 'Stocked Attribute Tree Node';
-    DataClassification = SystemMetadata;
+    DataClassification = CustomerContent;
 
     fields
     {
@@ -9,24 +12,24 @@ table 50101 StockedAttributeTreeNode
         {
             Caption = 'Attribute Set ID';
             NotBlank = true;
-            DataClassification = SystemMetadata;
+            DataClassification = CustomerContent;
         }
         field(2; "Attribute Value ID"; Integer)
         {
             Caption = 'Attribute Value ID';
-            DataClassification = SystemMetadata;
+            DataClassification = CustomerContent;
         }
         field(3; "Attribute Set ID"; Integer)
         {
             Caption = 'Attribute Set ID';
             AutoIncrement = true;
-            DataClassification = SystemMetadata;
+            DataClassification = CustomerContent;
             Editable = false;
         }
         field(4; "In Use"; Boolean)
         {
             caption = 'In Use';
-            DataClassification = SystemMetadata;
+            DataClassification = CustomerContent;
         }
     }
 

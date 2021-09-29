@@ -1,3 +1,6 @@
+/// <summary>
+/// PageExtension StockedAttributeItemVariants (ID 50103) extends Record Item Variants.
+/// </summary>
 pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
 {
     layout
@@ -30,6 +33,7 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
                 Visible = AttributeVisible1;
                 ApplicationArea = All;
             }
+
             field(Attribute2; AttributeValues[2])
             {
                 CaptionClass = '3,' + AttributeCaptions[2];
@@ -37,6 +41,7 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
                 Visible = AttributeVisible2;
                 ApplicationArea = All;
             }
+
             field(Attribute3; AttributeValues[3])
             {
                 CaptionClass = '3,' + AttributeCaptions[3];
@@ -44,6 +49,7 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
                 Visible = AttributeVisible3;
                 ApplicationArea = All;
             }
+
             field(Attribute4; AttributeValues[4])
             {
                 CaptionClass = '3,' + AttributeCaptions[4];
@@ -51,6 +57,7 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
                 Visible = AttributeVisible4;
                 ApplicationArea = All;
             }
+
             field(Attribute5; AttributeValues[5])
             {
                 CaptionClass = '3,' + AttributeCaptions[5];
@@ -58,6 +65,7 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
                 Visible = AttributeVisible5;
                 ApplicationArea = All;
             }
+
             field(Attribute6; AttributeValues[6])
             {
                 CaptionClass = '3,' + AttributeCaptions[6];
@@ -65,6 +73,7 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
                 Visible = AttributeVisible6;
                 ApplicationArea = All;
             }
+
             field(Attribute7; AttributeValues[7])
             {
                 CaptionClass = '3,' + AttributeCaptions[7];
@@ -72,6 +81,7 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
                 Visible = AttributeVisible7;
                 ApplicationArea = All;
             }
+
             field(Attribute8; AttributeValues[8])
             {
                 CaptionClass = '3,' + AttributeCaptions[8];
@@ -79,6 +89,7 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
                 Visible = AttributeVisible8;
                 ApplicationArea = All;
             }
+
             field(Attribute9; AttributeValues[9])
             {
                 CaptionClass = '3,' + AttributeCaptions[9];
@@ -86,6 +97,7 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
                 Visible = AttributeVisible9;
                 ApplicationArea = All;
             }
+
             field(Attribute10; AttributeValues[10])
             {
                 CaptionClass = '3,' + AttributeCaptions[10];
@@ -93,6 +105,7 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
                 Visible = AttributeVisible10;
                 ApplicationArea = All;
             }
+
             field(Attribute11; AttributeValues[11])
             {
                 CaptionClass = '3,' + AttributeCaptions[11];
@@ -100,6 +113,7 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
                 Visible = AttributeVisible11;
                 ApplicationArea = All;
             }
+
             field(Attribute12; AttributeValues[12])
             {
                 CaptionClass = '3,' + AttributeCaptions[12];
@@ -107,6 +121,7 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
                 Visible = AttributeVisible12;
                 ApplicationArea = All;
             }
+
             field(Attribute13; AttributeValues[13])
             {
                 CaptionClass = '3,' + AttributeCaptions[13];
@@ -114,6 +129,7 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
                 Visible = AttributeVisible13;
                 ApplicationArea = All;
             }
+
             field(Attribute14; AttributeValues[14])
             {
                 CaptionClass = '3,' + AttributeCaptions[14];
@@ -121,6 +137,7 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
                 Visible = AttributeVisible14;
                 ApplicationArea = All;
             }
+
             field(Attribute15; AttributeValues[15])
             {
                 CaptionClass = '3,' + AttributeCaptions[15];
@@ -128,6 +145,7 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
                 Visible = AttributeVisible15;
                 ApplicationArea = All;
             }
+
             field(Attribute16; AttributeValues[16])
             {
                 CaptionClass = '3,' + AttributeCaptions[16];
@@ -135,6 +153,7 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
                 Visible = AttributeVisible16;
                 ApplicationArea = All;
             }
+
             field(Attribute17; AttributeValues[17])
             {
                 CaptionClass = '3,' + AttributeCaptions[17];
@@ -142,6 +161,7 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
                 Visible = AttributeVisible17;
                 ApplicationArea = All;
             }
+
             field(Attribute18; AttributeValues[18])
             {
                 CaptionClass = '3,' + AttributeCaptions[18];
@@ -149,6 +169,7 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
                 Visible = AttributeVisible18;
                 ApplicationArea = All;
             }
+
             field(Attribute19; AttributeValues[19])
             {
                 CaptionClass = '3,' + AttributeCaptions[19];
@@ -156,6 +177,7 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
                 Visible = AttributeVisible19;
                 ApplicationArea = All;
             }
+
             field(Attribute20; AttributeValues[20])
             {
                 CaptionClass = '3,' + AttributeCaptions[20];
@@ -206,6 +228,7 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
             }
         }
     }
+
     trigger OnOpenPage()
     begin
         StockedAttributeVisible := StockedAttributeMgmt.IsEnabled();
@@ -253,6 +276,9 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
         AttributeCount: Integer;
 
 
+    /// <summary>
+    /// SetAttributeCaptions.
+    /// </summary>
     local procedure SetAttributeCaptions()
     var
         StockedAttributeTemplate: Record StockedAttributeTemplate;
@@ -270,6 +296,7 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
         if not TempStockedAttributeTemplateEntry.FindSet() then
             exit;
 
+        Clear(PreviousId);
         repeat
             if TempStockedAttributeTemplateEntry.AttributeID <> PreviousId then begin
                 x += 1;
@@ -284,6 +311,9 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
         AttributeCount := x;
     end;
 
+    /// <summary>
+    /// GetVariantDetail.
+    /// </summary>
     local procedure GetVariantDetail()
     var
         TempStockedAttributeSetEntry: Record StockedAttributeSetEntry temporary;
@@ -292,11 +322,11 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
         if not StockedAttributeVisible then
             exit;
 
-        If Item."No." <> "Item No." then
-            if not Item.Get("Item No.") then
+        If Item."No." <> Rec."Item No." then
+            if not Item.Get(Rec."Item No.") then
                 Clear(Item);
 
-        StockedAttributeMgmt.GetAttributeSet(TempStockedAttributeSetEntry, "Attribute Set Id");
+        StockedAttributeMgmt.GetAttributeSet(TempStockedAttributeSetEntry, Rec."Attribute Set Id");
         for x := 1 to AttributeCount do begin
             TempStockedAttributeSetEntry.SetRange(AttributeID, AttributeIds[x]);
             if TempStockedAttributeSetEntry.FindFirst() then begin
@@ -306,6 +336,10 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
         end;
     end;
 
+    /// <summary>
+    /// SetFieldVisible.
+    /// </summary>
+    /// <param name="FieldToSet">Integer.</param>
     local procedure SetFieldVisible(FieldToSet: Integer)
     begin
         case FieldToSet of

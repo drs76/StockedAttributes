@@ -1,3 +1,6 @@
+/// <summary>
+/// Page StockedAttributeTemplateSets (ID 50103).
+/// </summary>
 page 50103 StockedAttributeTemplateSets
 {
     Caption = 'Stocked Attribute Template Sets';
@@ -14,7 +17,7 @@ page 50103 StockedAttributeTemplateSets
         {
             repeater(Repeater1)
             {
-                field(AttributeID; AttributeID)
+                field(AttributeID; Rec.AttributeID)
                 {
                     Caption = 'Attribute ID';
                     Editable = AttributeValueID = 0;
@@ -22,14 +25,14 @@ page 50103 StockedAttributeTemplateSets
                     Width = 10;
                     ApplicationArea = All;
                 }
-                field("Attribute Code"; "Attribute Code")
+                field("Attribute Code"; Rec."Attribute Code")
                 {
                     Caption = 'Attribute';
                     ToolTip = 'Specifies the descriptive name of the Attribute.';
                     Enabled = false;
                     ApplicationArea = All;
                 }
-                field(AttributeValueID; AttributeValueID)
+                field(AttributeValueID; Rec.AttributeValueID)
                 {
                     Caption = 'Value ID';
                     ToolTip = 'Specifies the attribute value.';
@@ -41,7 +44,7 @@ page 50103 StockedAttributeTemplateSets
                         currPage.Update();
                     end;
                 }
-                field("Attribute Value"; "Attribute Value")
+                field("Attribute Value"; Rec."Attribute Value")
                 {
                     Caption = 'Value';
                     ToolTip = 'Specifies the descriptive name of the Attribute Value.';
@@ -84,6 +87,10 @@ page 50103 StockedAttributeTemplateSets
         StockedAttributeMgmt.GetAttributeTemplateSet(Rec, NewTemplateID);
     end;
 
+    /// <summary>
+    /// SetTemplate.
+    /// </summary>
+    /// <param name="TemplateIn">Record StockedAttributeTemplate.</param>
     procedure SetTemplate(TemplateIn: Record StockedAttributeTemplate)
     begin
         StockedAttributeTemplate.Copy(TemplateIn);

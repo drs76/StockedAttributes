@@ -15,17 +15,17 @@
       "id": "63ca2fa4-4f03-4f2b-a480-172fef340d3f",
       "publisher": "Microsoft",
       "name": "System Application",
-      "version": "16.0.0.0"
+      "version": "18.0.0.0"
     },
     {
       "id": "437dbf0e-84ff-417a-965d-ed2bb9650972",
       "publisher": "Microsoft",
       "name": "Base Application",
-      "version": "16.0.0.0"
+      "version": "18.0.0.0"
     }
   ],
   "screenshots": [],
-  "platform": "16.0.0.0",
+  "platform": "18.0.0.0",
   "idRanges": [
     {
       "from": 50100,
@@ -34,5 +34,6 @@
   ],
   "contextSensitiveHelpUrl": "https://StockedAttributes.com/help/",
   "showMyCode": true,
-  "runtime": "5.0"
+  "runtime": "7.0",
+  "target": "OnPrem"
 }

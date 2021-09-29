@@ -1,3 +1,6 @@
+/// <summary>
+/// Page StockedAttributeSets (ID 50101).
+/// </summary>
 page 50101 StockedAttributeSets
 {
     Caption = 'Stocked Attributes Sets';
@@ -13,18 +16,18 @@ page 50101 StockedAttributeSets
         {
             repeater(Attributes)
             {
-                field(AttributeSetID; AttributeSetID)
+                field(AttributeSetID; Rec.AttributeSetID)
                 {
                     Visible = false;
                     ApplicationArea = All;
                 }
-                field("Attribute Code"; "Attribute Code")
+                field("Attribute Code"; Rec."Attribute Code")
                 {
                     Caption = 'Attribute';
                     ToolTip = 'Attribute Code';
                     ApplicationArea = All;
                 }
-                field("Attribute Value"; "Attribute Value")
+                field("Attribute Value"; Rec."Attribute Value")
                 {
                     Caption = 'Attribute Value';
                     ToolTip = 'Attribute Value';

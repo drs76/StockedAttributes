@@ -1,3 +1,6 @@
+/// <summary>
+/// Page StockedAttributeFactbox (ID 50102).
+/// </summary>
 page 50102 StockedAttributeFactbox
 {
     Caption = 'Stocked Attributes';
@@ -12,12 +15,12 @@ page 50102 StockedAttributeFactbox
         {
             repeater(Repeater1)
             {
-                field("Attribute Code"; "Attribute Code")
+                field("Attribute Code"; Rec."Attribute Code")
                 {
                     Width = 20;
                     ApplicationArea = All;
                 }
-                field("Attribute Value"; "Attribute Value")
+                field("Attribute Value"; Rec."Attribute Value")
                 {
                     Caption = 'Value';
                     ApplicationArea = All;
