@@ -8,6 +8,7 @@ page 50105 StockedAttributeTemplate
     PageType = Card;
     SourceTable = StockedAttributeTemplate;
     UsageCategory = None;
+    RefreshOnActivate = true;
 
     layout
     {

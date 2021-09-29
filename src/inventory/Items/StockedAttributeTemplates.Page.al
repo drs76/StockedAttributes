@@ -10,6 +10,7 @@ page 50106 StockedAttributeTemplates
     ApplicationArea = All;
     UsageCategory = Administration;
     CardPageId = StockedAttributeTemplate;
+    RefreshOnActivate = true;
 
     layout
     {

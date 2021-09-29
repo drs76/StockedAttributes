@@ -17,12 +17,23 @@ pageextension 50102 StockedAttributeItemCard extends "Item Card"
                     Importance = Promoted;
                     ToolTip = 'Select the stocked attribute template to use for this item';
                 }
+
                 field(StockedAttributeEntryPageType; Rec.StockedAttributeEntryPageType)
                 {
                     ToolTip = 'Default: Stocked Attribute Template, Configurator: Configurator Entry Page, Quick Entry: Quick Entry Page, None: BC Standard';
                     ApplicationArea = All;
                 }
             }
+        }
+    }
+
+    actions
+    {
+        modify("Va&riants")
+        {
+            ApplicationArea = All;
+            Promoted = true;
+            PromotedCategory = Category4;
         }
     }
 

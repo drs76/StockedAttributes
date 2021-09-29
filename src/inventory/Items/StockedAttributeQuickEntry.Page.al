@@ -5,8 +5,7 @@ page 50107 StockedAttributeQuickEntry
 {
     Caption = 'Variant Quick Entry';
     PageType = List;
-    ApplicationArea = All;
-    UsageCategory = Administration;
+    UsageCategory = None;
     SourceTable = StockedAttributeDocEntryBuffer;
     SourceTableTemporary = true;
     Editable = true;

@@ -5,8 +5,7 @@ page 50104 StockedAttributeConfigurator
 {
     Caption = 'Variant Configurator';
     PageType = NavigatePage;
-    ApplicationArea = All;
-    UsageCategory = Administration;
+    UsageCategory = None;
     SourceTable = StockedAttributeDocEntryBuffer;
     SourceTableTemporary = true;
 
