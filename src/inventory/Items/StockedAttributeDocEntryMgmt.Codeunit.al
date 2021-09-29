@@ -131,6 +131,8 @@ codeunit 50101 StockedAttributeDocEntryMgmt
                 PageId := Page::StockedAttributeConfigurator;
             EntryPageType::"Quick Entry".AsInteger():
                 PageId := Page::StockedAttributeQuickEntry;
+            EntryPageType::"Search Entry".AsInteger():
+                PageId := Page::StockedAttributeSearchEntry;
         end;
 
         if PageId <> 0 then
@@ -206,6 +208,9 @@ codeunit 50101 StockedAttributeDocEntryMgmt
 
         if PageNo = Page::StockedAttributeQuickEntry then
             exit(RunQuickEntry(TempDocEntryBuffer, Location, UOM));
+
+        if PageNo = Page::StockedAttributeSearchEntry then
+            exit(RunSearchEntry(TempDocEntryBuffer, Location, UOM));
     end;
 
     /// <summary>
@@ -248,6 +253,28 @@ codeunit 50101 StockedAttributeDocEntryMgmt
             exit(false);
 
         VariantQuickEntry.GetRecords(TempDocEntryBuffer);
+        exit(true);
+    end;
+
+    /// <summary>
+    /// RunSearchEntry.
+    /// </summary>
+    /// <param name="TempDocEntryBuffer">Temporary VAR Record StockedAttributeDocEntryBuffer.</param>
+    /// <param name="Location">Text.</param>
+    /// <param name="UOM">Text.</param>
+    /// <returns>Return value of type Boolean.</returns>
+    local procedure RunSearchEntry(var TempDocEntryBuffer: Record StockedAttributeDocEntryBuffer temporary; Location: Text; UOM: Text): Boolean;
+    var
+        VariantSearchEntry: Page StockedAttributeSearchEntry;
+    begin
+        VariantSearchEntry.SetTableView(TempDocEntryBuffer);
+        VariantSearchEntry.SetLineDefaults(Location, UOM);
+        VariantSearchEntry.RunModal();
+
+        if not VariantSearchEntry.SaveSelections() then
+            exit(false);
+
+        VariantSearchEntry.GetRecords(TempDocEntryBuffer);
         exit(true);
     end;
 

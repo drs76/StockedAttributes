@@ -94,8 +94,9 @@ table 50104 StockedAttributeTemplateEntry
                     Found := false;
                     StockedAttributeTemplateTree.LockTable();
                 end;
+
             if not Found then begin
-                StockedAttributeTemplateTree."Parent Template Set ID" := StockedAttributeTemplateTree."Parent Template Set ID";
+                StockedAttributeTemplateTree."Parent Template Set ID" := StockedAttributeTemplateTree."Template Set ID";
                 StockedAttributeTemplateTree."Template Attribute ID" := StockedAttributeTemplateEntry.AttributeID;
                 StockedAttributeTemplateTree."Template Value ID" := StockedAttributeTemplateEntry.AttributeValueID;
                 StockedAttributeTemplateTree."Template Set ID" := 0;
@@ -104,6 +105,7 @@ table 50104 StockedAttributeTemplateEntry
                     StockedAttributeTemplateTree.Get(StockedAttributeTemplateTree."Parent Template Set ID", StockedAttributeTemplateTree."Template Attribute ID", StockedAttributeTemplateTree."Template Value ID");
             end;
         until StockedAttributeTemplateEntry.Next() = 0;
+
         if not StockedAttributeTemplateTree."In Use" then begin
             if Found then begin
                 StockedAttributeTemplateTree.LockTable();

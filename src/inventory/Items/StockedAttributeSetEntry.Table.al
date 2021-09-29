@@ -64,11 +64,11 @@ table 50102 StockedAttributeSetEntry
     begin
         StockedAttributeSetEntry2.COPY(StockedAttributeSetEntry);
         if StockedAttributeSetEntry.AttributeSetID > 0 then
-            StockedAttributeSetEntry.SETRANGE(AttributeSetID, StockedAttributeSetEntry.AttributeSetID);
+            StockedAttributeSetEntry.SetRange(AttributeSetID, StockedAttributeSetEntry.AttributeSetID);
 
-        StockedAttributeSetEntry.SETCURRENTKEY(AttributeValueID);
-        StockedAttributeSetEntry.SETFILTER(AttributeID, '<>%1', 0);
-        StockedAttributeSetEntry.SETFILTER(AttributeValueID, '<>%1', 0);
+        StockedAttributeSetEntry.SetCurrentKey(AttributeValueID);
+        StockedAttributeSetEntry.SetFilter(AttributeID, '<>%1', 0);
+        StockedAttributeSetEntry.SetFilter(AttributeValueID, '<>%1', 0);
         if not StockedAttributeSetEntry.FindSet() then
             exit(0);
 
