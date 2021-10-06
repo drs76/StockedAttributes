@@ -14,5 +14,23 @@ tableextension 50100 StockedAttributeItem extends Item
             DataClassification = CustomerContent;
             InitValue = Default;
         }
+
+        field(50102; StockedAttributeSearchText; Text[2048])
+        {
+            Caption = 'Search Text1';
+            DataClassification = CustomerContent;
+        }
+
+        field(50103; StockedAttributeSearchText2; Text[2048])
+        {
+            Caption = 'Search Text2';
+            DataClassification = CustomerContent;
+        }
+
+    }
+
+    keys
+    {
+        key(Search; StockedAttributeSearchText, StockedAttributeSearchText2) { }
     }
 }

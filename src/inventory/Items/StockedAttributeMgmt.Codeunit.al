@@ -54,6 +54,8 @@ codeunit 50100 StockedAttributeMgmt
                 CreateVariant(ItemToCreateVariantFor, tempAttributeSetEntry);
         end;
 
+        // update the item search fields.
+        CheckUpdateItemSearchTerms(ItemToCreateVariantFor, ItemToCreateVariantFor.StockedAttributeTemplateCode);
         if GuiAllowed() then
             Window.Close();
 
@@ -221,6 +223,65 @@ codeunit 50100 StockedAttributeMgmt
         ItemVariant.Validate(Description, CopyStr(StrSubStno(VariantDescriptionTxt, ItemToCreateFor.Description, AttributeSetID), 1, MaxStrLen(ItemVariant.Description)));
         ItemVariant.Validate("Attribute Set ID", AttributeSetID);
         ItemVariant.Modify(true);
+    end;
+
+    /// <summary>
+    /// CheckUpdateItemSearchTerms.
+    /// </summary>
+    /// <param name="ItemToUpdate">Record Item.</param>
+    /// <param name="TemplateCode">Code[20].</param>
+    procedure CheckUpdateItemSearchTerms(ItemToUpdate: Record Item; TemplateCode: Code[20])
+    var
+        StockAttributeTemplate: Record StockedAttributeTemplate;
+        StockedAttributeTempltEntry: Record StockedAttributeTemplateEntry;
+    begin
+        ModifySearchTerms(ItemToUpdate, ItemToUpdate.Description);
+        ModifySearchTerms(ItemToUpdate, ItemToUpdate."Description 2");
+        ItemToUpdate.Modify();
+
+        if not StockAttributeTemplate.Get(TemplateCode) then
+            exit;
+
+        StockedAttributeTempltEntry.SetRange(TemplateID, StockAttributeTemplate."Template Set ID");
+        if not StockedAttributeTempltEntry.FindSet() then
+            exit;
+
+        repeat
+            StockedAttributeTempltEntry.CalcFields("Attribute Value");
+            ModifySearchTerms(ItemToUpdate, StockedAttributeTempltEntry."Attribute Value");
+        until StockedAttributeTempltEntry.Next() = 0;
+
+        ItemToUpdate.Modify();
+    end;
+
+    /// <summary>
+    /// ModifySearchTerms.
+    /// </summary>
+    /// <param name="ItemToUpdate">Record Item.</param>
+    /// <param name="SearchValue">Text.</param>
+    local procedure ModifySearchTerms(var ItemToUpdate: Record Item; SearchValue: Text)
+    var
+        i: Integer;
+        SearchTxt: Label '%1 %2', Comment = '%1=Search Text, %2=Additional Search Text';
+        BadCharsTxt: Label '()|&*><"%';
+        WhereLbl: Label '=';
+    begin
+        if ItemToUpdate.StockedAttributeSearchText.Contains(SearchValue) then
+            exit;
+
+        if ItemToUpdate.StockedAttributeSearchText2.Contains(SearchValue) then
+            exit;
+
+        for i := 1 to StrLen(BadCharsTxt) do
+            SearchValue := DelChr(SearchValue, WhereLbl, Format(BadCharsTxt) [i]);
+
+        if StrLen(StrSubstNo(SearchTxt, ItemToUpdate.StockedAttributeSearchText, SearchValue)) <= MaxStrLen(ItemToUpdate.StockedAttributeSearchText) then
+            ItemToUpdate.StockedAttributeSearchText := StrSubstNo(SearchTxt, ItemToUpdate.StockedAttributeSearchText, SearchValue)
+        else
+            if StrLen(StrSubstNo(SearchTxt, ItemToUpdate.StockedAttributeSearchText, SearchValue)) <= MaxStrLen(ItemToUpdate.StockedAttributeSearchText) then
+                ItemToUpdate.StockedAttributeSearchText := StrSubstNo(SearchTxt, ItemToUpdate.StockedAttributeSearchText, SearchValue)
+            else
+                Error('We need another StockedAttributeSearchText field!');
     end;
 
     /// <summary>
