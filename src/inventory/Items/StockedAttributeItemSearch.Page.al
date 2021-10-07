@@ -321,6 +321,7 @@ page 50109 StockedAttributeItemSearch
         TempCsvBufferTable2: Record "CSV Buffer" temporary;
         Window: Dialog;
         i: Integer;
+        CommitCnt: Integer;
         ProcessT: Time;
         FilenameTxt: Label 'c:\run\my\items.csv';
         Filename2Txt: Label 'c:\run\my\colours.csv';
@@ -334,15 +335,20 @@ page 50109 StockedAttributeItemSearch
 
         ProcessT := Time();
 
-        for i := 1 to 4 do
+        for i := 1 to 1 do
             if TempCsvBufferTable.FindSet() then
                 repeat
+                    CommitCnt += 1;
                     if TempCsvBufferTable.Value <> EmptyTxt then begin
                         if Time() > (ProcessT + 1000) then begin
                             Window.Update(1, TempCsvBufferTable.Value);
                             ProcessT := Time();
                         end;
                         LoadNewItem(TempCsvBufferTable.Value, TempCsvBufferTable2, i);
+                    end;
+                    if CommitCnt > 500 then begin
+                        Commit();
+                        Clear(CommitCnt);
                     end;
                 until TempCsvBufferTable.Next() = 0;
 
@@ -361,6 +367,7 @@ page 50109 StockedAttributeItemSearch
         Item: Record Item;
         ItemUoM: Record "Item Unit of Measure";
         ConfigTemplateHeader: Record "Config. Template Header";
+        VariantMgmt: Codeunit StockedAttributeMgmt;
         ConfigTemplateManagement: Codeunit "Config. Template Management";
         ItemRecRef: RecordRef;
         DescTxt: Label '%1 %2', Comment = '%1=Item Count, %2=Item Description';
@@ -391,7 +398,29 @@ page 50109 StockedAttributeItemSearch
         Item.Validate("Base Unit of Measure", UoMTxt);
         Item.Validate("Sales Unit of Measure", UoMTxt);
         Item."Vendor No." := GetRandomVendor();
-        Item.Modify();
+
+        Item.StockedAttributeTemplateCode := GetRandDomTemplate();
+        Item.Modify(true);
+
+        if Item.StockedAttributeTemplateCode <> '' then
+            VariantMgmt.CreateAllPossibleVariants(Item."No.", false);
+    end;
+
+    local procedure GetRandDomTemplate(): Code[20]
+    var
+        OptionsTemplate: Record StockedAttributeTemplate;
+        StepCount: Integer;
+    begin
+        if OptionsTemplate.IsEmpty() then
+            exit;
+
+        StepCount := Random(OptionsTemplate.Count());
+
+        OptionsTemplate.Find('-');
+        if OptionsTemplate.Next(StepCount) = 0 then
+            OptionsTemplate.FindFirst();
+
+        exit(OptionsTemplate.Code);
     end;
 
     /// <summary>
@@ -461,7 +490,7 @@ page 50109 StockedAttributeItemSearch
     /// GetRandomCategory.
     /// </summary>
     /// <returns>Return value of type Code[10].</returns>
-    local procedure GetRandomCategory(): Code[10]
+    local procedure GetRandomCategory(): Code[20]
     var
         ItemCategory: Record "Item Category";
         StepCount: Integer;

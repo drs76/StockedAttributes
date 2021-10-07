@@ -30,24 +30,26 @@ codeunit 50100 StockedAttributeMgmt
         x: Integer;
         Seperator: Char;
         NotAllRemovedMsg: Label 'Warning : Not all current Item Variant records were removed before re-creation';
-        CreatingForMsg: Label 'Creating #1#######';
+        CreatingForMsg: Label 'Creating #1########\#2######################';
     begin
         ItemToCreateVariantFor.Get(ItemNo);
         ItemToCreateVariantFor.TestField(StockedAttributeTemplateCode);
 
         if not RemoveCurrentVariants(ItemNo) then
-            Message(NotAllRemovedMsg);
+            if ShowVariants then
+                Message(NotAllRemovedMsg);
 
         Seperator := 177; // used for seperating the attribute entries when combining
         BuildCombinedAttributesList(ItemToCreateVariantFor, CombinedAttributeList, Seperator);
 
-        if GuiAllowed() then
+        if GuiAllowed() then begin
             Window.Open(CreatingForMsg);
+            Window.Update(1, ItemNo);
+        end;
 
         for x := 1 to CombinedAttributeList.Count() do begin
             if GuiAllowed() then
-                Window.Update(1, CombinedAttributeList.Get(x));
-
+                Window.Update(2, CombinedAttributeList.Get(x));
             tempAttributeSetEntry.DeleteAll();
             CreateVariantSet(tempAttributeSetEntry, CombinedAttributeList.Get(x), Format(Seperator));
             if tempAttributeSetEntry.FindFirst() then
@@ -315,7 +317,7 @@ codeunit 50100 StockedAttributeMgmt
     local procedure GetNextVariantCode(ItemNo: Code[20]): Code[10]
     var
         ItemVariant: Record "Item Variant";
-        DefaultValueTxt: Label 'V1000';
+        DefaultValueTxt: Label 'VAR1000000';
     begin
         ItemVariant.SetRange("Item No.", ItemNo);
         if ItemVariant.FindLast() then
