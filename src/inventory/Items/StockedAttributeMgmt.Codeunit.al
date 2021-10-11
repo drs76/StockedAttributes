@@ -30,30 +30,34 @@ codeunit 50100 StockedAttributeMgmt
         x: Integer;
         Seperator: Char;
         NotAllRemovedMsg: Label 'Warning : Not all current Item Variant records were removed before re-creation';
-        CreatingForMsg: Label 'Creating #1#######';
+        CreatingForMsg: Label 'Creating #1########\#2######################';
     begin
         ItemToCreateVariantFor.Get(ItemNo);
         ItemToCreateVariantFor.TestField(StockedAttributeTemplateCode);
 
         if not RemoveCurrentVariants(ItemNo) then
-            Message(NotAllRemovedMsg);
+            if ShowVariants then
+                Message(NotAllRemovedMsg);
 
         Seperator := 177; // used for seperating the attribute entries when combining
         BuildCombinedAttributesList(ItemToCreateVariantFor, CombinedAttributeList, Seperator);
 
-        if GuiAllowed() then
+        if GuiAllowed() then begin
             Window.Open(CreatingForMsg);
+            Window.Update(1, ItemNo);
+        end;
 
         for x := 1 to CombinedAttributeList.Count() do begin
             if GuiAllowed() then
-                Window.Update(1, CombinedAttributeList.Get(x));
-
+                Window.Update(2, CombinedAttributeList.Get(x));
             tempAttributeSetEntry.DeleteAll();
             CreateVariantSet(tempAttributeSetEntry, CombinedAttributeList.Get(x), Format(Seperator));
             if tempAttributeSetEntry.FindFirst() then
                 CreateVariant(ItemToCreateVariantFor, tempAttributeSetEntry);
         end;
 
+        // update the item search fields.
+        CheckUpdateItemSearchTerms(ItemToCreateVariantFor, ItemToCreateVariantFor.StockedAttributeTemplateCode);
         if GuiAllowed() then
             Window.Close();
 
@@ -224,6 +228,65 @@ codeunit 50100 StockedAttributeMgmt
     end;
 
     /// <summary>
+    /// CheckUpdateItemSearchTerms.
+    /// </summary>
+    /// <param name="ItemToUpdate">Record Item.</param>
+    /// <param name="TemplateCode">Code[20].</param>
+    procedure CheckUpdateItemSearchTerms(ItemToUpdate: Record Item; TemplateCode: Code[20])
+    var
+        StockAttributeTemplate: Record StockedAttributeTemplate;
+        StockedAttributeTempltEntry: Record StockedAttributeTemplateEntry;
+    begin
+        ModifySearchTerms(ItemToUpdate, ItemToUpdate.Description);
+        ModifySearchTerms(ItemToUpdate, ItemToUpdate."Description 2");
+        ItemToUpdate.Modify();
+
+        if not StockAttributeTemplate.Get(TemplateCode) then
+            exit;
+
+        StockedAttributeTempltEntry.SetRange(TemplateID, StockAttributeTemplate."Template Set ID");
+        if not StockedAttributeTempltEntry.FindSet() then
+            exit;
+
+        repeat
+            StockedAttributeTempltEntry.CalcFields("Attribute Value");
+            ModifySearchTerms(ItemToUpdate, StockedAttributeTempltEntry."Attribute Value");
+        until StockedAttributeTempltEntry.Next() = 0;
+
+        ItemToUpdate.Modify();
+    end;
+
+    /// <summary>
+    /// ModifySearchTerms.
+    /// </summary>
+    /// <param name="ItemToUpdate">Record Item.</param>
+    /// <param name="SearchValue">Text.</param>
+    local procedure ModifySearchTerms(var ItemToUpdate: Record Item; SearchValue: Text)
+    var
+        i: Integer;
+        SearchTxt: Label '%1 %2', Comment = '%1=Search Text, %2=Additional Search Text';
+        BadCharsTxt: Label '()|&*><"%';
+        WhereLbl: Label '=';
+    begin
+        if ItemToUpdate.StockedAttributeSearchText.Contains(SearchValue) then
+            exit;
+
+        if ItemToUpdate.StockedAttributeSearchText2.Contains(SearchValue) then
+            exit;
+
+        for i := 1 to StrLen(BadCharsTxt) do
+            SearchValue := DelChr(SearchValue, WhereLbl, Format(BadCharsTxt) [i]);
+
+        if StrLen(StrSubstNo(SearchTxt, ItemToUpdate.StockedAttributeSearchText, SearchValue)) <= MaxStrLen(ItemToUpdate.StockedAttributeSearchText) then
+            ItemToUpdate.StockedAttributeSearchText := StrSubstNo(SearchTxt, ItemToUpdate.StockedAttributeSearchText, SearchValue)
+        else
+            if StrLen(StrSubstNo(SearchTxt, ItemToUpdate.StockedAttributeSearchText, SearchValue)) <= MaxStrLen(ItemToUpdate.StockedAttributeSearchText) then
+                ItemToUpdate.StockedAttributeSearchText := StrSubstNo(SearchTxt, ItemToUpdate.StockedAttributeSearchText, SearchValue)
+            else
+                Error('We need another StockedAttributeSearchText field!');
+    end;
+
+    /// <summary>
     /// RemoveCurrentVariants.
     /// </summary>
     /// <param name="ItemNo">Code[20].</param>
@@ -254,7 +317,7 @@ codeunit 50100 StockedAttributeMgmt
     local procedure GetNextVariantCode(ItemNo: Code[20]): Code[10]
     var
         ItemVariant: Record "Item Variant";
-        DefaultValueTxt: Label 'V1000';
+        DefaultValueTxt: Label 'VAR1000000';
     begin
         ItemVariant.SetRange("Item No.", ItemNo);
         if ItemVariant.FindLast() then
