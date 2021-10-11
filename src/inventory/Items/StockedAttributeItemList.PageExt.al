@@ -29,6 +29,7 @@ pageextension 50104 StockedAttributeItemList extends "Item List"
     /// </summary>
     local procedure RunSearch()
     begin
-        Page.Run(Page::StockedAttributeItemSearch);
+        Codeunit.Run(Codeunit::SearchManagement);
+        //Page.Run(Page::StockedAttributeItemSearch);
     end;
 }
