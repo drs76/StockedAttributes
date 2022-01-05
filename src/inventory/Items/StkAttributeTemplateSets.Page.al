@@ -20,7 +20,7 @@ page 50103 PTEStkAttributeTemplateSets
                 field(AttributeID; Rec.AttributeID)
                 {
                     Caption = 'Attribute ID';
-                    Editable = AttributeValueID = 0;
+                    Editable = Rec.AttributeValueID = 0;
                     ToolTip = 'Specifies the attribute.';
                     Width = 10;
                     ApplicationArea = All;
@@ -83,7 +83,7 @@ page 50103 PTEStkAttributeTemplateSets
 
     trigger OnOpenPage()
     begin
-        NewTemplateID := GetRangeMin(TemplateID);
+        NewTemplateID := Rec.GetRangeMin(TemplateID);
         PTEStkAttributeMgmt.GetAttributeTemplateSet(Rec, NewTemplateID);
     end;
 

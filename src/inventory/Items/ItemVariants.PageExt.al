@@ -221,7 +221,7 @@ pageextension 50103 PTEItemVariants extends "Item Variants"
                     var
                         PTEStkAttributeMgmt: Codeunit PTEStkAttributeMgmt;
                     begin
-                        PTEStkAttributeMgmt.CreateAllPossibleVariants("Item No.", false);
+                        PTEStkAttributeMgmt.CreateAllPossibleVariants(Rec."Item No.", false);
                         CurrPage.Update(false);
                     end;
                 }

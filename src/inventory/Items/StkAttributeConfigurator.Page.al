@@ -588,7 +588,7 @@ page 50104 PTEStkAttributeConfigurator
         CurrentStep += StepCount;
         if CurrentStep = 3 then begin
             FindVariant();
-            Modify();
+            Rec.Modify();
         end;
 
         SetControls();
@@ -622,12 +622,12 @@ page 50104 PTEStkAttributeConfigurator
 
         Rec.Init();
         RecordCount += 1;
-        EntryNo := RecordCount;
-        "Item No." := GetRangeMin("Item No.");
-        LocationCode := CopyStr(LocationDefault, 1, MaxStrLen(LocationCode));
-        UnitofMeasureCode := CopyStr(UoMDefault, 1, MaxStrLen(UnitofMeasureCode));
+        Rec.EntryNo := RecordCount;
+        Rec."Item No." := Rec.GetRangeMin("Item No.");
+        Rec.LocationCode := CopyStr(LocationDefault, 1, MaxStrLen(Rec.LocationCode));
+        Rec.UnitofMeasureCode := CopyStr(UoMDefault, 1, MaxStrLen(Rec.UnitofMeasureCode));
 
-        Item.Get("Item No.");
+        Item.Get(Rec."Item No.");
         Item.TestField(PTEStkAttributeTemplateCode);
         PTEStkAttributeTemplate.Get(Item.PTEStkAttributeTemplateCode);
 
@@ -644,7 +644,7 @@ page 50104 PTEStkAttributeConfigurator
 
         SetFieldsVisible(AttributeCount);
 
-        "Template Filter" := PTEStkAttributeTemplate.TemplateSetId;
+        Rec."Template Filter" := PTEStkAttributeTemplate.TemplateSetId;
         Rec.Insert();
     end;
 

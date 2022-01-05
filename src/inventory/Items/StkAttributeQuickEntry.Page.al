@@ -371,7 +371,7 @@ page 50107 PTEStkAttributeQuickEntry
 
                     trigger OnValidate()
                     begin
-                        if Quantity <> xRec.Quantity then
+                        if Rec.Quantity <> xRec.Quantity then
                             FindVariant();
 
                         CurrPage.SaveRecord();
