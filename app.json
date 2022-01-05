@@ -2,7 +2,7 @@
   "id": "12c48b50-270a-4bc0-a9f6-f12571719f58",
   "name": "StockedAttributes",
   "publisher": "Dave Sinclair",
-  "version": "18.3.25240.0",
+  "version": "18.3.25243.0",
   "brief": "",
   "description": "Item Stocked Attributes - AL Extension",
   "privacyStatement": "",
@@ -35,5 +35,5 @@
   "contextSensitiveHelpUrl": "https://StockedAttributes.com/help/",
   "showMyCode": true,
   "runtime": "7.0",
-  "target": "OnPrem"
+  "target": "Cloud"
 }

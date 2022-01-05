@@ -156,13 +156,13 @@ page 50109 PTEStkAttributeItemSearch
                     ApplicationArea = All;
                 }
 
-                field(StockedAttributeSearchText; PTEStkAttributeSearchText)
+                field(StockedAttributeSearchText; Rec.PTEStkAttributeSearchText)
                 {
                     ToolTip = 'Attributes Search String';
                     ApplicationArea = All;
                 }
 
-                field(StockedAttributeSearchText2; PTEStkAttributeSearchText2)
+                field(StockedAttributeSearchText2; Rec.PTEStkAttributeSearchText2)
                 {
                     ToolTip = 'Attributes Search String 2';
                     ApplicationArea = All;
@@ -185,16 +185,7 @@ page 50109 PTEStkAttributeItemSearch
 
 
     trigger OnOpenPage()
-    var
-        LoadItemsQst: Label 'Load Items from file?';
-        UpdateQst: Label 'Update Search Strings';
     begin
-        if confirm(LoadItemsQst, false) then
-            ImportTestItems();
-
-        if Confirm(UpdateQst, false) then
-            UpdateSearchStrings();
-
         ItemCount := Rec.Count();
         if Rec.FindFirst() then;
     end;
@@ -310,200 +301,5 @@ page 50109 PTEStkAttributeItemSearch
                 FilterTb.Append(StrSubstNo(FilterOrTxt, OrLbl, StrSubstNo(FilterWordTxt, Word)))
             else
                 FilterTb.Append(StrSubstNo(FilterOrTxt, AndLbl, StrSubstNo(FilterWordTxt, Word)));
-    end;
-
-    /// <summary>
-    /// ImportTestItems.
-    /// </summary>
-    local procedure ImportTestItems()
-    var
-        TempCsvBufferTable: Record "CSV Buffer" temporary;
-        TempCsvBufferTable2: Record "CSV Buffer" temporary;
-        Window: Dialog;
-        i: Integer;
-        CommitCnt: Integer;
-        ProcessT: Time;
-        FilenameTxt: Label 'c:\run\my\items.csv';
-        Filename2Txt: Label 'c:\run\my\colours.csv';
-        ProgressTxt: Label 'Creating Item: #1##########################';
-        CommaTxt: Label ',';
-        EmptyTxt: Label '';
-    begin
-        Window.Open(ProgressTxt);
-        TempCsvBufferTable.LoadData(FilenameTxt, CommaTxt, EmptyTxt);
-        TempCsvBufferTable2.LoadData(Filename2Txt, CommaTxt, EmptyTxt);
-
-        ProcessT := Time();
-
-        for i := 1 to 1 do
-            if TempCsvBufferTable.FindSet() then
-                repeat
-                    CommitCnt += 1;
-                    if TempCsvBufferTable.Value <> EmptyTxt then begin
-                        if Time() > (ProcessT + 1000) then begin
-                            Window.Update(1, TempCsvBufferTable.Value);
-                            ProcessT := Time();
-                        end;
-                        LoadNewItem(TempCsvBufferTable.Value, TempCsvBufferTable2, i);
-                    end;
-                    if CommitCnt > 500 then begin
-                        Commit();
-                        Clear(CommitCnt);
-                    end;
-                until TempCsvBufferTable.Next() = 0;
-
-        Commit();
-        Window.Close();
-    end;
-
-    /// <summary>
-    /// LoadNewItem.
-    /// </summary>
-    /// <param name="ItemDescription">Text.</param>
-    /// <param name="TempCsvBufferTable">Temporary VAR Record "CSV Buffer".</param>
-    /// <param name="ItemCount">Integer.</param>
-    local procedure LoadNewItem(ItemDescription: Text; var TempCsvBufferTable: Record "CSV Buffer" temporary; ItemCount: Integer)
-    var
-        Item: Record Item;
-        ItemUoM: Record "Item Unit of Measure";
-        ConfigTemplateHeader: Record "Config. Template Header";
-        VariantMgmt: Codeunit PTEStkAttributeMgmt;
-        ConfigTemplateManagement: Codeunit "Config. Template Management";
-        ItemRecRef: RecordRef;
-        DescTxt: Label '%1 %2', Comment = '%1=Item Count, %2=Item Description';
-        TemplateTxt: Label 'ITEM000001';
-        UoMTxt: Label 'PCS';
-        EmptyTxt: Label '';
-    begin
-        if ItemDescription = EmptyTxt then
-            exit;
-
-        ConfigTemplateHeader.Get(TemplateTxt);
-        ItemRecRef.GetTable(Item);
-        ConfigTemplateManagement.UpdateRecord(ConfigTemplateHeader, ItemRecRef);
-        ItemRecRef.SetTable(Item);
-
-        if ItemCount in [1, 3] then begin
-            Item.Description := CopyStr(StrSubStno(DescTxt, Format(ItemCount), ItemDescription), 1, MaxStrLen(Item.Description));
-            Item."Description 2" := CopyStr(GetRandomColour(TempCsvBufferTable), 1, MaxStrLen(Item."Description 2"));
-        end else begin
-            Item."Description 2" := CopyStr(StrSubStno(DescTxt, Format(ItemCount), ItemDescription), 1, MaxStrLen(Item."Description 2"));
-            Item.Description := CopyStr(GetRandomColour(TempCsvBufferTable), 1, MaxStrLen(Item.Description));
-        end;
-        Item."Search Description" := CopyStr(GetRandomColour(TempCsvBufferTable), 1, MaxStrLen(Item."Search Description"));
-        ItemUom."Item No." := Item."No.";
-        ItemUom.Code := UoMTxt;
-        ItemUom.Insert();
-
-        Item.Validate("Base Unit of Measure", UoMTxt);
-        Item.Validate("Sales Unit of Measure", UoMTxt);
-        Item."Vendor No." := GetRandomVendor();
-
-        Item.PTEStkAttributeTemplateCode := GetRandDomTemplate();
-        Item.Modify(true);
-
-        if Item.PTEStkAttributeTemplateCode <> '' then
-            VariantMgmt.CreateAllPossibleVariants(Item."No.", false);
-    end;
-
-    local procedure GetRandDomTemplate(): Code[20]
-    var
-        OptionsTemplate: Record PTEStkAttributeTemplate;
-        StepCount: Integer;
-    begin
-        if OptionsTemplate.IsEmpty() then
-            exit;
-
-        StepCount := Random(OptionsTemplate.Count());
-
-        OptionsTemplate.Find('-');
-        if OptionsTemplate.Next(StepCount) = 0 then
-            OptionsTemplate.FindFirst();
-
-        exit(OptionsTemplate.TemplateCode);
-    end;
-
-    /// <summary>
-    /// GetRandomVendor.
-    /// </summary>
-    /// <returns>Return value of type Code[20].</returns>
-    local procedure GetRandomVendor(): Code[20]
-    var
-        Vendor: Record Vendor;
-        StepCount: Integer;
-    begin
-        if Vendor.IsEmpty() then
-            exit;
-
-        StepCount := Random(Vendor.Count());
-
-        Vendor.Find('-');
-        if Vendor.Next(StepCount) = 0 then
-            Vendor.FindFirst();
-
-        exit(Vendor."No.");
-    end;
-
-    /// <summary>
-    /// GetRandomColour.
-    /// </summary>
-    /// <param name="TempCsvBuffer">VAR Record "CSV Buffer".</param>
-    /// <returns>Return value of type Text.</returns>
-    local procedure GetRandomColour(var TempCsvBuffer: Record "CSV Buffer"): Text
-    var
-        StepCount: Integer;
-    begin
-        if TempCsvBuffer.IsEmpty() then
-            exit;
-
-        StepCount := Random(TempCsvBuffer.Count());
-
-        TempCsvBuffer.Find('-');
-        if TempCsvBuffer.Next(StepCount) = 0 then
-            TempCsvBuffer.FindFirst();
-
-        exit(TempCsvBuffer.Value);
-    end;
-
-    /// <summary>
-    /// UpdateSearchStrings.
-    /// </summary>
-    local procedure UpdateSearchStrings()
-    var
-        Item: Record Item;
-        StockAttribMgmt: Codeunit PTEStkAttributeMgmt;
-    begin
-        if not Item.FindSet() then
-            exit;
-
-        repeat
-            StockAttribMgmt.CheckUpdateItemSearchTerms(Item, Item.PTEStkAttributeTemplateCode);
-            Item.Find('=');
-            if Item."Item Category Code" = '' then begin
-                Item."Item Category Code" := GetRandomCategory();
-                Item.Modify();
-            end;
-        until Item.Next() = 0;
-    end;
-
-    /// <summary>
-    /// GetRandomCategory.
-    /// </summary>
-    /// <returns>Return value of type Code[10].</returns>
-    local procedure GetRandomCategory(): Code[20]
-    var
-        ItemCategory: Record "Item Category";
-        StepCount: Integer;
-    begin
-        if ItemCategory.IsEmpty() then
-            exit;
-
-        StepCount := Random(ItemCategory.Count());
-
-        ItemCategory.Find('-');
-        if ItemCategory.Next(StepCount) = 0 then
-            ItemCategory.FindFirst();
-
-        exit(ItemCategory.Code);
     end;
 }
