@@ -244,6 +244,6 @@ page 50110 PTEStkAttributeFindByValue
         if OptionsTemplate.Next(StepCount) = 0 then
             OptionsTemplate.FindFirst();
 
-        exit(OptionsTemplate.Code);
+        exit(OptionsTemplate.TemplateCode);
     end;
 }

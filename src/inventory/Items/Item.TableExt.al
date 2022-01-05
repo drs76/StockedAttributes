@@ -9,7 +9,7 @@ tableextension 50100 PTEItem extends Item
         {
             Caption = 'Stocked Attribute Template Code';
             DataClassification = CustomerContent;
-            TableRelation = PTEStkAttributeTemplate.Code;
+            TableRelation = PTEStkAttributeTemplate.TemplateCode;
         }
         field(50101; PTEStkAttributeEntryPageType; Enum PTEStkAttributeEntryPageType)
         {

@@ -15,12 +15,12 @@ page 50102 PTEStkAttributeFactbox
         {
             repeater(Repeater1)
             {
-                field("Attribute Code"; Rec."Attribute Code")
+                field("Attribute Code"; Rec.AttributeCode)
                 {
                     Width = 20;
                     ApplicationArea = All;
                 }
-                field("Attribute Value"; Rec."Attribute Value")
+                field("Attribute Value"; Rec.AttributeValue)
                 {
                     Caption = 'Value';
                     ApplicationArea = All;

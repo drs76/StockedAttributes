@@ -26,14 +26,14 @@ table 50102 PTEStkAttributeSetEntry
             DataClassification = CustomerContent;
             TableRelation = "Item Attribute Value".ID where("Attribute ID" = Field(AttributeID));
         }
-        field(4; "Attribute Code"; Text[250])
+        field(4; AttributeCode; Text[250])
         {
             Caption = 'Attribute';
             FieldClass = FlowField;
             CalcFormula = lookup("Item Attribute".Name where(ID = field(AttributeID)));
             Editable = false;
         }
-        field(5; "Attribute Value"; Text[250])
+        field(5; AttributeValue; Text[250])
         {
             Caption = 'Attribute Value';
             FieldClass = FlowField;
@@ -83,21 +83,21 @@ table 50102 PTEStkAttributeSetEntry
                 end;
 
             if not Found then begin
-                StkAttributeTreeNode."Parent Attribute Set ID" := StkAttributeTreeNode.StkAttributeSetId;
-                StkAttributeTreeNode."Attribute Value ID" := StkAttributeSetEntry.AttributeValueID;
+                StkAttributeTreeNode.ParentAttributeSetId := StkAttributeTreeNode.StkAttributeSetId;
+                StkAttributeTreeNode.AttributeValueId := StkAttributeSetEntry.AttributeValueID;
                 StkAttributeTreeNode.StkAttributeSetId := 0;
-                StkAttributeTreeNode."In Use" := false;
+                StkAttributeTreeNode.InUse := false;
                 if StkAttributeTreeNode.Insert(true) then
-                    StkAttributeTreeNode.Get(StkAttributeTreeNode."Parent Attribute Set ID", StkAttributeTreeNode."Attribute Value ID");
+                    StkAttributeTreeNode.Get(StkAttributeTreeNode.ParentAttributeSetId, StkAttributeTreeNode.AttributeValueId);
             end;
         until StkAttributeSetEntry.Next() = 0;
 
-        if not StkAttributeTreeNode."In Use" then begin
+        if not StkAttributeTreeNode.InUse then begin
             if Found then begin
                 StkAttributeTreeNode.LockTable();
-                StkAttributeTreeNode.Get(StkAttributeTreeNode."Parent Attribute Set ID", StkAttributeTreeNode."Attribute Value ID");
+                StkAttributeTreeNode.Get(StkAttributeTreeNode.ParentAttributeSetId, StkAttributeTreeNode.AttributeValueId);
             end;
-            StkAttributeTreeNode."In Use" := true;
+            StkAttributeTreeNode.InUse := true;
             StkAttributeTreeNode.Modify(true);
 
             InsertAttributeSetEntries(StkAttributeSetEntry, StkAttributeTreeNode.StkAttributeSetId);

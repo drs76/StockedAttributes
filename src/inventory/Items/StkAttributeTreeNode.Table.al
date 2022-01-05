@@ -8,13 +8,13 @@ table 50101 PTEStkAttributeTreeNode
 
     fields
     {
-        field(1; "Parent Attribute Set ID"; Integer)
+        field(1; ParentAttributeSetID; Integer)
         {
             Caption = 'Attribute Set ID';
             NotBlank = true;
             DataClassification = CustomerContent;
         }
-        field(2; "Attribute Value ID"; Integer)
+        field(2; AttributeValueID; Integer)
         {
             Caption = 'Attribute Value ID';
             DataClassification = CustomerContent;
@@ -26,7 +26,7 @@ table 50101 PTEStkAttributeTreeNode
             DataClassification = CustomerContent;
             Editable = false;
         }
-        field(4; "In Use"; Boolean)
+        field(4; InUse; Boolean)
         {
             caption = 'In Use';
             DataClassification = CustomerContent;
@@ -35,7 +35,7 @@ table 50101 PTEStkAttributeTreeNode
 
     keys
     {
-        key(PK; "Parent Attribute Set ID", "Attribute Value ID")
+        key(PK; ParentAttributeSetId, AttributeValueId)
         {
             Clustered = true;
         }

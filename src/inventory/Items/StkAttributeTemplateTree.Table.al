@@ -8,30 +8,30 @@ table 50103 PTEStkAttributeTemplateTree
 
     fields
     {
-        field(1; "Parent Template Set ID"; Integer)
+        field(1; ParentTemplateSetId; Integer)
         {
             Caption = 'Parent Template Set ID';
             NotBlank = true;
             DataClassification = CustomerContent;
         }
-        field(2; "Template Attribute ID"; Integer)
+        field(2; TemplateAttributeId; Integer)
         {
             Caption = 'Template Attribute ID';
             DataClassification = CustomerContent;
         }
-        field(3; "Template Value ID"; Integer)
+        field(3; TemplateValueId; Integer)
         {
             Caption = 'Template Value ID';
             DataClassification = CustomerContent;
         }
-        field(4; "Template Set ID"; Integer)
+        field(4; TemplateSetID; Integer)
         {
             Caption = 'Template Set ID';
             AutoIncrement = true;
             DataClassification = CustomerContent;
             Editable = false;
         }
-        field(5; "In Use"; Boolean)
+        field(5; InUse; Boolean)
         {
             caption = 'In Use';
             DataClassification = CustomerContent;
@@ -40,7 +40,7 @@ table 50103 PTEStkAttributeTemplateTree
 
     keys
     {
-        key(PK; "Parent Template Set ID", "Template Attribute ID", "Template Value ID")
+        key(PK; ParentTemplateSetId, TemplateAttributeId, TemplateValueId)
         {
             Clustered = true;
         }

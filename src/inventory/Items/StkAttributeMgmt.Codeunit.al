@@ -93,7 +93,7 @@ codeunit 50100 PTEStkAttributeMgmt
         // attributes, which will be used to create the variants.     
         PTEStkAttributeTemplate.Get(ItemToCreateFor.PTEStkAttributeTemplateCode);
 
-        StockedAttrTemplateEntry.SetRange(TemplateID, PTEStkAttributeTemplate."Template Set ID");
+        StockedAttrTemplateEntry.SetRange(TemplateID, PTEStkAttributeTemplate.TemplateSetId);
         if not StockedAttrTemplateEntry.FindSet() then
             exit;
 
@@ -253,13 +253,13 @@ codeunit 50100 PTEStkAttributeMgmt
         if not StockAttributeTemplate.Get(TemplateCode) then
             exit;
 
-        StkAttributeTempltEntry.SetRange(TemplateID, StockAttributeTemplate."Template Set ID");
+        StkAttributeTempltEntry.SetRange(TemplateID, StockAttributeTemplate.TemplateSetId);
         if not StkAttributeTempltEntry.FindSet() then
             exit;
 
         repeat
-            StkAttributeTempltEntry.CalcFields("Attribute Value");
-            ModifySearchTerms(ItemToUpdate, StkAttributeTempltEntry."Attribute Value");
+            StkAttributeTempltEntry.CalcFields(AttributeValue);
+            ModifySearchTerms(ItemToUpdate, StkAttributeTempltEntry.AttributeValue);
         until StkAttributeTempltEntry.Next() = 0;
 
         ItemToUpdate.Modify();
@@ -360,7 +360,7 @@ codeunit 50100 PTEStkAttributeMgmt
         StkAttributesPage: Page PTEStkAttributeTemplateSets;
     begin
         StkAttributeTemplateEntry.FilterGroup(2);
-        StkAttributeTemplateEntry.SetRange(TemplateID, StockedAttributeTemplate."Template Set ID");
+        StkAttributeTemplateEntry.SetRange(TemplateID, StockedAttributeTemplate.TemplateSetId);
         StkAttributeTemplateEntry.FilterGroup(0);
 
         StkAttributesPage.SetTemplate(StockedAttributeTemplate);
@@ -467,12 +467,12 @@ codeunit 50100 PTEStkAttributeMgmt
 
         FullDescriptionTB.Append(Item.Description);
         repeat
-            StkAttributeSetEntry.CalcFields("Attribute Code", "Attribute Value");
+            StkAttributeSetEntry.CalcFields(AttributeCode, AttributeValue);
 
             if FullDescriptionTB.Length() > 0 then
                 FullDescriptionTB.Append(AttributeseperatorTxt);
 
-            FullDescriptionTB.Append(StrSubstNo(AttributeFormatTxt, StkAttributeSetEntry."Attribute Code", StkAttributeSetEntry."Attribute Value"));
+            FullDescriptionTB.Append(StrSubstNo(AttributeFormatTxt, StkAttributeSetEntry.AttributeCode, StkAttributeSetEntry.AttributeValue));
         until StkAttributeSetEntry.Next() = 0;
 
         exit(FullDescriptionTB.ToText());

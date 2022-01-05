@@ -19,7 +19,7 @@ page 50106 PTEStkAttributeTemplates
             repeater(General)
             {
                 Editable = false;
-                field(Code; Rec.Code)
+                field(Code; Rec.TemplateCode)
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the Stocked Attribute Template Code';

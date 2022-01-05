@@ -3,12 +3,12 @@
 /// </summary>
 table 50100 PTEStkAttributeSetup
 {
-    Caption = 'StockedAttributesSetup';
+    Caption = 'Stocked Attribute Setup';
     DataClassification = CustomerContent;
 
     fields
     {
-        field(1; "Primary Key"; Code[10])
+        field(1; PrimaryKey; Code[10])
         {
             Caption = 'Primary Key';
             DataClassification = CustomerContent;
@@ -35,7 +35,7 @@ table 50100 PTEStkAttributeSetup
     }
     keys
     {
-        key(PK; "Primary Key")
+        key(PK; PrimaryKey)
         {
             Clustered = true;
         }

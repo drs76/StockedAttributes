@@ -25,7 +25,7 @@ page 50103 PTEStkAttributeTemplateSets
                     Width = 10;
                     ApplicationArea = All;
                 }
-                field("Attribute Code"; Rec."Attribute Code")
+                field("Attribute Code"; Rec.AttributeCode)
                 {
                     Caption = 'Attribute';
                     ToolTip = 'Specifies the descriptive name of the Attribute.';
@@ -44,7 +44,7 @@ page 50103 PTEStkAttributeTemplateSets
                         currPage.Update();
                     end;
                 }
-                field("Attribute Value"; Rec."Attribute Value")
+                field("Attribute Value"; Rec.AttributeValue)
                 {
                     Caption = 'Value';
                     ToolTip = 'Specifies the descriptive name of the Attribute Value.';
@@ -77,7 +77,7 @@ page 50103 PTEStkAttributeTemplateSets
 
     trigger OnClosePage()
     begin
-        PTEStkAttributeTemplate."Template Set ID" := PTEStkAttributeMgmt.GetAttributeTemplateSetID(Rec);
+        PTEStkAttributeTemplate.TemplateSetId := PTEStkAttributeMgmt.GetAttributeTemplateSetID(Rec);
         PTEStkAttributeTemplate.Modify();
     end;
 

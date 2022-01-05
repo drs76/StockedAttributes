@@ -293,7 +293,7 @@ pageextension 50103 PTEItemVariants extends "Item Variants"
         if not StkAttributeTemplate.Get(Item.PTEStkAttributeTemplateCode) then
             exit;
 
-        StkAttributeMgmt.GetAttributeTemplateSet(TempStockedAttributeTemplateEntry, StkAttributeTemplate."Template Set ID");
+        StkAttributeMgmt.GetAttributeTemplateSet(TempStockedAttributeTemplateEntry, StkAttributeTemplate.TemplateSetId);
         if not TempStockedAttributeTemplateEntry.FindSet() then
             exit;
 
@@ -301,9 +301,9 @@ pageextension 50103 PTEItemVariants extends "Item Variants"
         repeat
             if TempStockedAttributeTemplateEntry.AttributeID <> PreviousId then begin
                 x += 1;
-                TempStockedAttributeTemplateEntry.CalcFields("Attribute Code");
+                TempStockedAttributeTemplateEntry.CalcFields(AttributeCode);
                 AttributeIds[x] := TempStockedAttributeTemplateEntry.AttributeID;
-                AttributeCaptions[x] := TempStockedAttributeTemplateEntry."Attribute Code";
+                AttributeCaptions[x] := TempStockedAttributeTemplateEntry.AttributeCode;
                 SetFieldVisible(x);
             end;
             PreviousId := TempStockedAttributeTemplateEntry.AttributeID;
@@ -331,8 +331,8 @@ pageextension 50103 PTEItemVariants extends "Item Variants"
         for x := 1 to AttributeCount do begin
             TempStockedAttributeSetEntry.SetRange(AttributeID, AttributeIds[x]);
             if TempStockedAttributeSetEntry.FindFirst() then begin
-                TempStockedAttributeSetEntry.CalcFields("Attribute Value");
-                AttributeValues[x] := TempStockedAttributeSetEntry."Attribute Value";
+                TempStockedAttributeSetEntry.CalcFields(AttributeValue);
+                AttributeValues[x] := TempStockedAttributeSetEntry.AttributeValue;
             end;
         end;
     end;

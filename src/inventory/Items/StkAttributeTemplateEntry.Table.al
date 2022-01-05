@@ -20,7 +20,7 @@ table 50104 PTEStkAttributeTemplateEntry
             TableRelation = "Item Attribute".ID where(PTEStkAttribute = const(true));
         }
 
-        field(3; "Attribute Code"; Text[250])
+        field(3; AttributeCode; Text[250])
         {
             Caption = 'Attribute';
             FieldClass = FlowField;
@@ -35,7 +35,7 @@ table 50104 PTEStkAttributeTemplateEntry
             TableRelation = "Item Attribute Value".ID where("Attribute ID" = Field(AttributeID));
         }
 
-        field(5; "Attribute Value"; Text[250])
+        field(5; AttributeValue; Text[250])
         {
             Caption = 'Attribute Value';
             FieldClass = FlowField;
@@ -57,10 +57,10 @@ table 50104 PTEStkAttributeTemplateEntry
 
     fieldgroups
     {
-        fieldgroup(DropDown; "Attribute Code", "Attribute Value")
+        fieldgroup(DropDown; AttributeCode, AttributeValue)
         {
         }
-        fieldgroup(Brick; "Attribute Code", "Attribute Value")
+        fieldgroup(Brick; AttributeCode, AttributeValue)
         {
         }
     }
@@ -88,40 +88,40 @@ table 50104 PTEStkAttributeTemplateEntry
             exit(0);
 
         Found := true;
-        StkAttributeTemplateTree."Template Set ID" := 0;
+        StkAttributeTemplateTree.TemplateSetId := 0;
         repeat
             StkAttributeTemplateEntry.TestField(AttributeValueID);
             if Found then
-                if StkAttributeTemplateTree.Get(StkAttributeTemplateTree."Template Set ID", StkAttributeTemplateEntry.AttributeID, StkAttributeTemplateEntry.AttributeValueID) then begin
+                if StkAttributeTemplateTree.Get(StkAttributeTemplateTree.TemplateSetId, StkAttributeTemplateEntry.AttributeID, StkAttributeTemplateEntry.AttributeValueID) then begin
                     Found := false;
                     StkAttributeTemplateTree.LockTable();
                 end;
 
             if not Found then begin
-                StkAttributeTemplateTree."Parent Template Set ID" := StkAttributeTemplateTree."Template Set ID";
-                StkAttributeTemplateTree."Template Attribute ID" := StkAttributeTemplateEntry.AttributeID;
-                StkAttributeTemplateTree."Template Value ID" := StkAttributeTemplateEntry.AttributeValueID;
-                StkAttributeTemplateTree."Template Set ID" := 0;
-                StkAttributeTemplateTree."In Use" := false;
+                StkAttributeTemplateTree.ParentTemplateSetId := StkAttributeTemplateTree.TemplateSetId;
+                StkAttributeTemplateTree.TemplateAttributeId := StkAttributeTemplateEntry.AttributeID;
+                StkAttributeTemplateTree.TemplateValueId := StkAttributeTemplateEntry.AttributeValueID;
+                StkAttributeTemplateTree.TemplateSetId := 0;
+                StkAttributeTemplateTree.InUse := false;
                 if not StkAttributeTemplateTree.Insert(true) then
-                    StkAttributeTemplateTree.Get(StkAttributeTemplateTree."Parent Template Set ID", StkAttributeTemplateTree."Template Attribute ID", StkAttributeTemplateTree."Template Value ID");
+                    StkAttributeTemplateTree.Get(StkAttributeTemplateTree.ParentTemplateSetId, StkAttributeTemplateTree.TemplateAttributeId, StkAttributeTemplateTree.TemplateValueId);
             end;
         until StkAttributeTemplateEntry.Next() = 0;
 
-        if not StkAttributeTemplateTree."In Use" then begin
+        if not StkAttributeTemplateTree.InUse then begin
             if Found then begin
                 StkAttributeTemplateTree.LockTable();
-                StkAttributeTemplateTree.Get(StkAttributeTemplateTree."Parent Template Set ID", StkAttributeTemplateTree."Template Attribute ID", StkAttributeTemplateTree."Template Value ID");
+                StkAttributeTemplateTree.Get(StkAttributeTemplateTree.ParentTemplateSetId, StkAttributeTemplateTree.TemplateAttributeId, StkAttributeTemplateTree.TemplateValueId);
             end;
-            StkAttributeTemplateTree."In Use" := true;
+            StkAttributeTemplateTree.InUse := true;
             StkAttributeTemplateTree.Modify();
 
-            InsertTemplateSetEntries(StkAttributeTemplateEntry, StkAttributeTemplateTree."Template Set ID");
+            InsertTemplateSetEntries(StkAttributeTemplateEntry, StkAttributeTemplateTree.TemplateSetId);
         end;
 
         StkAttributeTemplateEntry.Copy(StkAttributeTemplateEntry2);
 
-        exit(StkAttributeTemplateTree."Template Set ID");
+        exit(StkAttributeTemplateTree.TemplateSetId);
     end;
 
     /// <summary>

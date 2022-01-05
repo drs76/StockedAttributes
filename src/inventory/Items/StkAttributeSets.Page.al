@@ -21,13 +21,13 @@ page 50101 PTEStkAttributeSets
                     Visible = false;
                     ApplicationArea = All;
                 }
-                field("Attribute Code"; Rec."Attribute Code")
+                field("Attribute Code"; Rec.AttributeCode)
                 {
                     Caption = 'Attribute';
                     ToolTip = 'Attribute Code';
                     ApplicationArea = All;
                 }
-                field("Attribute Value"; Rec."Attribute Value")
+                field("Attribute Value"; Rec.AttributeValue)
                 {
                     Caption = 'Attribute Value';
                     ToolTip = 'Attribute Value';

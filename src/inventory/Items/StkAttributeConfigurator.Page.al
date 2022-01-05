@@ -631,7 +631,7 @@ page 50104 PTEStkAttributeConfigurator
         Item.TestField(PTEStkAttributeTemplateCode);
         PTEStkAttributeTemplate.Get(Item.PTEStkAttributeTemplateCode);
 
-        PTEStkAttributeMgmt.GetAttributeTemplateSet(TempAttributeTemplateEntry, PTEStkAttributeTemplate."Template Set ID");
+        PTEStkAttributeMgmt.GetAttributeTemplateSet(TempAttributeTemplateEntry, PTEStkAttributeTemplate.TemplateSetId);
 
         PTEStkAttributeEntrySetup.SetStockedAttributeDocEntryBuffer(Rec);
         PTEStkAttributeEntrySetup.SetTempAttributeEntry(TempAttributeTemplateEntry);
@@ -644,7 +644,7 @@ page 50104 PTEStkAttributeConfigurator
 
         SetFieldsVisible(AttributeCount);
 
-        "Template Filter" := PTEStkAttributeTemplate."Template Set ID";
+        "Template Filter" := PTEStkAttributeTemplate.TemplateSetId;
         Rec.Insert();
     end;
 

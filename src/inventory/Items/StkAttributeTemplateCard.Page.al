@@ -16,7 +16,7 @@ page 50105 PTEStkAttributeTemplate
         {
             group(General)
             {
-                field(Code; Rec.Code)
+                field(Code; Rec.TemplateCode)
                 {
                     ApplicationArea = All;
                     Style = Strong;
@@ -28,7 +28,7 @@ page 50105 PTEStkAttributeTemplate
                     MultiLine = true;
                     ToolTip = 'Specifies the Stocked Attribute Template Description';
                 }
-                field("Template Set ID"; Rec."Template Set ID")
+                field("Template Set ID"; Rec.TemplateSetId)
                 {
                     ApplicationArea = All;
                     Editable = false;

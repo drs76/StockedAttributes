@@ -499,7 +499,7 @@ page 50107 PTEStkAttributeQuickEntry
         Item.TestField(PTEStkAttributeTemplateCode);
         PTEStkAttributeTemplate.Get(Item.PTEStkAttributeTemplateCode);
 
-        PTEStkAttributeMgmt.GetAttributeTemplateSet(TempAttributeTemplateEntry, PTEStkAttributeTemplate."Template Set ID");
+        PTEStkAttributeMgmt.GetAttributeTemplateSet(TempAttributeTemplateEntry, PTEStkAttributeTemplate.TemplateSetId);
 
         PTEStkAttributeEntrySetup.SetStockedAttributeDocEntryBuffer(Rec);
         PTEStkAttributeEntrySetup.SetTempAttributeEntry(TempAttributeTemplateEntry);
@@ -512,7 +512,7 @@ page 50107 PTEStkAttributeQuickEntry
 
         SetFieldsVisible(AttributeCount);
 
-        Rec."Template Filter" := PTEStkAttributeTemplate."Template Set ID";
+        Rec."Template Filter" := PTEStkAttributeTemplate.TemplateSetId;
         Rec.Insert();
     end;
 

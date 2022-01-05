@@ -41,14 +41,14 @@ codeunit 50103 PTEStkAttributeEntryPageMgmt
     /// <param name="TempTemplateEntry">Temporary Record PTEStkAttributeTemplateEntry.</param>
     local procedure SetupPageParts(TempTemplateEntry: Record PTEStkAttributeTemplateEntry temporary)
     begin
-        TempTemplateEntry.CalcFields("Attribute Code");
+        TempTemplateEntry.CalcFields(AttributeCode);
 
         AttributeCount += 1;
 
         Attributes.Add(AttributeCount, TempTemplateEntry.AttributeID); // Attribute ID's in use
         SetFlowFilters(AttributeCount, TempTemplateEntry.AttributeID);
 
-        Captions[AttributeCount] := TempTemplateEntry."Attribute Code"; // Captions for fields.
+        Captions[AttributeCount] := TempTemplateEntry.AttributeCode; // Captions for fields.
 
         SetFlowFilters(AttributeCount, TempTemplateEntry.AttributeID);
     end;
