@@ -1,11 +1,11 @@
 /// <summary>
-/// Page StockedAttributeAssistedSetup (ID 50110).
+/// PagePTEStkAttributeAssistedSetup (ID 50110).
 /// </summary>
-page 50111 StockedAttributeAssistedSetup
+page 50111 PTEStkAttributeAssistedSetup
 {
     Caption = 'Sci-Net Direct Debit Assisted Setup';
     PageType = NavigatePage;
-    SourceTable = StockedAttributeSetup;
+    SourceTable = PTEStkAttributeSetup;
     UsageCategory = None;
     layout
     {
@@ -143,13 +143,13 @@ page 50111 StockedAttributeAssistedSetup
         GuidedExperience: Codeunit "Guided Experience";
     begin
         if CloseAction = Action::OK then
-            if GuidedExperience.AssistedSetupExistsAndIsNotComplete(ObjectType::Page, Page::StockedAttributeSetup) then
+            if GuidedExperience.AssistedSetupExistsAndIsNotComplete(ObjectType::Page, Page::PTEStkAttributeSetup) then
                 if not Confirm(NAVNotSetUpQst, false) then
                     Error('');
     end;
 
     var
-        StockedAttributeSetup: Record StockedAttributeSetup;
+        PTEStkAttributeSetup: Record PTEStkAttributeSetup;
         CurrentPage: Integer;
         NAVNotSetUpQst: Label 'The Stocked Attribute setup has not been completed.\Are you sure you want to exit?';
 
@@ -161,13 +161,13 @@ page 50111 StockedAttributeAssistedSetup
     var
         GuidedExperience: Codeunit "Guided Experience";
     begin
-        StockedAttributeSetup.Get();
-        StockedAttributeSetup.Enabled := Rec.Enabled;
-        StockedAttributeSetup.EntryPageType := Rec.EntryPageType;
-        StockedAttributeSetup.Modify();
+        PTEStkAttributeSetup.Get();
+        PTEStkAttributeSetup.Enabled := Rec.Enabled;
+        PTEStkAttributeSetup.EntryPageType := Rec.EntryPageType;
+        PTEStkAttributeSetup.Modify();
 
-        GuidedExperience.CompleteAssistedSetup(ObjectType::Page, Page::StockedAttributeSetup);
-        GuidedExperience.CompleteAssistedSetup(ObjectType::Page, Page::StockedAttributeAssistedSetup);
+        GuidedExperience.CompleteAssistedSetup(ObjectType::Page, Page::PTEStkAttributeSetup);
+        GuidedExperience.CompleteAssistedSetup(ObjectType::Page, Page::PTEStkAttributeAssistedSetup);
         CurrPage.Close();
     end;
 

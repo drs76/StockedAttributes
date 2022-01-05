@@ -1,7 +1,7 @@
 /// <summary>
 /// Codeunit SCI002ManualSetupSubs (ID 70229343).
 /// </summary>
-codeunit 50105 StockedAttributeSetupSubs
+codeunit 50105 PTEStkAttributeSetupSubs
 {
     /// <summary>
     /// GuidedExperience_OnRegisterManualSetup.
@@ -26,6 +26,6 @@ codeunit 50105 StockedAttributeSetupSubs
         SetupKeywordsTxt: Label 'Stocked Attributes, Dave';
     begin
         NavApp.GetCurrentModuleInfo(Info);
-        GuidedSetup.InsertManualSetup(SetupTxt, SetupTxt, SetupDescTxt, 1000, ObjectType::Page, Page::StockedAttributeSetup, ManualSetupCategory::Finance, SetupKeywordsTxt);
+        GuidedSetup.InsertManualSetup(SetupTxt, SetupTxt, SetupDescTxt, 1000, ObjectType::Page, Page::PTEStkAttributeSetup, ManualSetupCategory::Finance, SetupKeywordsTxt);
     end;
 }
