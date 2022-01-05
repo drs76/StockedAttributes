@@ -1,13 +1,13 @@
 /// <summary>
-/// PageExtension StockedAttributeItemList (ID 50104) extends Record Item List.
+/// PageExtension PTEItemList (ID 50104) extends Record Item List.
 /// </summary>
-pageextension 50104 StockedAttributeItemList extends "Item List"
+pageextension 50104 PTEItemList extends "Item List"
 {
     actions
     {
         addfirst(processing)
         {
-            action(FastSearch)
+            action(PTEFastSearch)
             {
                 ApplicationArea = All;
                 Image = Find;

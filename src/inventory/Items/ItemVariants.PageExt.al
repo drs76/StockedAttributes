@@ -1,28 +1,28 @@
 /// <summary>
-/// PageExtension StockedAttributeItemVariants (ID 50103) extends Record Item Variants.
+/// PageExtension PTEItemVariants (ID 50103) extends Page Item Variants.
 /// </summary>
-pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
+pageextension 50103 PTEItemVariants extends "Item Variants"
 {
     layout
     {
         modify(Description)
         {
-            Visible = not StockedAttributeVisible;
+            Visible = not StkAttributeVisible;
         }
 
         addAfter(Code)
         {
-            field(StockedAttributeFullDescription; StockedAttributeMgmt.GetVariantFullDescription(Item, Rec."Attribute Set Id"))
+            field(StockedAttributeFullDescription; StkAttributeMgmt.GetVariantFullDescription(Item, Rec.PTEStkAttributeSetId))
             {
                 Caption = 'Description';
                 ToolTip = 'Full Item Variant description';
-                Visible = StockedAttributeVisible;
+                Visible = StkAttributeVisible;
                 Editable = false;
                 ApplicationArea = All;
 
                 trigger OnDrillDown()
                 begin
-                    StockedAttributeMgmt.ShowVariantAttributes(Rec."Attribute Set Id");
+                    StkAttributeMgmt.ShowVariantAttributes(Rec.PTEStkAttributeSetId);
                 end;
             }
 
@@ -189,11 +189,11 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
 
         addbefore(Control1900383207)
         {
-            part(StockedAttributesFactBox; StockedAttributeFactbox)
+            part(StockedAttributesFactBox; PTEStkAttributeFactbox)
             {
                 ApplicationArea = All;
-                Visible = StockedAttributeVisible;
-                SubPageLink = AttributeSetID = field("Attribute Set Id");
+                Visible = StkAttributeVisible;
+                SubPageLink = AttributeSetID = field(PTEStkAttributeSetId);
             }
         }
     }
@@ -204,7 +204,7 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
         {
             group(StockedAttributeGrp)
             {
-                Visible = StockedAttributeVisible;
+                Visible = StkAttributeVisible;
 
                 action(CreateAllVariants)
                 {
@@ -219,9 +219,9 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
 
                     trigger OnAction()
                     var
-                        StockedAttributeMgmt: Codeunit StockedAttributeMgmt;
+                        PTEStkAttributeMgmt: Codeunit PTEStkAttributeMgmt;
                     begin
-                        StockedAttributeMgmt.CreateAllPossibleVariants("Item No.", false);
+                        PTEStkAttributeMgmt.CreateAllPossibleVariants("Item No.", false);
                         CurrPage.Update(false);
                     end;
                 }
@@ -231,7 +231,7 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
 
     trigger OnOpenPage()
     begin
-        StockedAttributeVisible := StockedAttributeMgmt.IsEnabled();
+        StkAttributeVisible := StkAttributeMgmt.IsEnabled();
         GetVariantDetail();
         SetAttributeCaptions();
     end;
@@ -248,9 +248,10 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
 
     var
         Item: Record Item;
-        StockedAttributeMgmt: Codeunit StockedAttributeMgmt;
-        StockedAttributeVisible: Boolean;
-        AttributeIds: array[20] of iNTEGER;
+        StkAttributeMgmt: Codeunit PTEStkAttributeMgmt;
+        [InDataSet]
+        StkAttributeVisible: Boolean;
+        AttributeIds: array[20] of Integer;
         AttributeValues: array[20] of Text;
         AttributeCaptions: array[20] of Text;
         AttributeVisible1: Boolean;
@@ -281,18 +282,18 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
     /// </summary>
     local procedure SetAttributeCaptions()
     var
-        StockedAttributeTemplate: Record StockedAttributeTemplate;
-        TempStockedAttributeTemplateEntry: Record StockedAttributeTemplateEntry temporary;
+        StkAttributeTemplate: Record PTEStkAttributeTemplate;
+        TempStockedAttributeTemplateEntry: Record PTEStkAttributeTemplateEntry temporary;
         PreviousId: Integer;
         x: Integer;
     begin
-        if not StockedAttributeVisible then
+        if not StkAttributeVisible then
             exit;
 
-        if not StockedAttributeTemplate.Get(Item.StockedAttributeTemplateCode) then
+        if not StkAttributeTemplate.Get(Item.PTEStkAttributeTemplateCode) then
             exit;
 
-        StockedAttributeMgmt.GetAttributeTemplateSet(TempStockedAttributeTemplateEntry, StockedAttributeTemplate."Template Set ID");
+        StkAttributeMgmt.GetAttributeTemplateSet(TempStockedAttributeTemplateEntry, StkAttributeTemplate."Template Set ID");
         if not TempStockedAttributeTemplateEntry.FindSet() then
             exit;
 
@@ -316,17 +317,17 @@ pageextension 50103 StockedAttributeItemVariants extends "Item Variants"
     /// </summary>
     local procedure GetVariantDetail()
     var
-        TempStockedAttributeSetEntry: Record StockedAttributeSetEntry temporary;
+        TempStockedAttributeSetEntry: Record PTEStkAttributeSetEntry temporary;
         x: Integer;
     begin
-        if not StockedAttributeVisible then
+        if not StkAttributeVisible then
             exit;
 
         If Item."No." <> Rec."Item No." then
             if not Item.Get(Rec."Item No.") then
                 Clear(Item);
 
-        StockedAttributeMgmt.GetAttributeSet(TempStockedAttributeSetEntry, Rec."Attribute Set Id");
+        StkAttributeMgmt.GetAttributeSet(TempStockedAttributeSetEntry, Rec.PTEStkAttributeSetId);
         for x := 1 to AttributeCount do begin
             TempStockedAttributeSetEntry.SetRange(AttributeID, AttributeIds[x]);
             if TempStockedAttributeSetEntry.FindFirst() then begin

@@ -1,12 +1,12 @@
 /// <summary>
-/// Page StockedAttributeTemplateSets (ID 50103).
+/// PagePTEStkAttributeTemplateSets (ID 50103).
 /// </summary>
-page 50103 StockedAttributeTemplateSets
+page 50103 PTEStkAttributeTemplateSets
 {
     Caption = 'Stocked Attribute Template Sets';
     LinksAllowed = false;
     PageType = List;
-    SourceTable = StockedAttributeTemplateEntry;
+    SourceTable = PTEStkAttributeTemplateEntry;
     SourceTableTemporary = true;
     DelayedInsert = true;
     UsageCategory = None;
@@ -68,7 +68,7 @@ page 50103 StockedAttributeTemplateSets
 
                 trigger OnAction()
                 begin
-                    StockedAttributeMgmt.CopyAttributesToTemplate(Rec);
+                    PTEStkAttributeMgmt.CopyAttributesToTemplate(Rec);
                     currPage.Update(false);
                 end;
             }
@@ -77,27 +77,27 @@ page 50103 StockedAttributeTemplateSets
 
     trigger OnClosePage()
     begin
-        StockedAttributeTemplate."Template Set ID" := StockedAttributeMgmt.GetAttributeTemplateSetID(Rec);
-        StockedAttributeTemplate.Modify();
+        PTEStkAttributeTemplate."Template Set ID" := PTEStkAttributeMgmt.GetAttributeTemplateSetID(Rec);
+        PTEStkAttributeTemplate.Modify();
     end;
 
     trigger OnOpenPage()
     begin
         NewTemplateID := GetRangeMin(TemplateID);
-        StockedAttributeMgmt.GetAttributeTemplateSet(Rec, NewTemplateID);
+        PTEStkAttributeMgmt.GetAttributeTemplateSet(Rec, NewTemplateID);
     end;
 
     /// <summary>
     /// SetTemplate.
     /// </summary>
-    /// <param name="TemplateIn">Record StockedAttributeTemplate.</param>
-    procedure SetTemplate(TemplateIn: Record StockedAttributeTemplate)
+    /// <param name="TemplateIn">Record PTEStkAttributeTemplate.</param>
+    procedure SetTemplate(TemplateIn: Record PTEStkAttributeTemplate)
     begin
-        StockedAttributeTemplate.Copy(TemplateIn);
+        PTEStkAttributeTemplate.Copy(TemplateIn);
     end;
 
     var
-        StockedAttributeTemplate: Record StockedAttributeTemplate;
-        StockedAttributeMgmt: Codeunit StockedAttributeMgmt;
+        PTEStkAttributeTemplate: Record PTEStkAttributeTemplate;
+        PTEStkAttributeMgmt: Codeunit PTEStkAttributeMgmt;
         NewTemplateID: Integer;
 }

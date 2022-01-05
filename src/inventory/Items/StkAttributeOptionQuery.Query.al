@@ -1,7 +1,7 @@
 /// <summary>
-/// Query StockedAttributeOptionQry (ID 50101).
+/// QueryPTEStkAttributeOptionQry (ID 50101).
 /// </summary>
-query 50101 StockedAttributeOptionQry
+query 50101 PTEStkAttributeOptionQry
 {
     QueryType = Normal;
 
@@ -14,7 +14,7 @@ query 50101 StockedAttributeOptionQry
             {
             }
 
-            dataitem(StockedAttributeSetEntry; StockedAttributeSetEntry) //option set entry
+            dataitem(StockedAttributeSetEntry; PTEStkAttributeSetEntry) //option set entry
             {
 
                 DataItemLink = AttributeValueID = ItemAttributeValue.ID;

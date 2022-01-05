@@ -1,7 +1,7 @@
 /// <summary>
-/// Codeunit StockedAttributeMgmt (ID 50100).
+/// Codeunit PTEStkAttributeMgmt (ID 50100).
 /// </summary>
-codeunit 50100 StockedAttributeMgmt
+codeunit 50100 PTEStkAttributeMgmt
 {
     /// <summary>
     /// RunSciNetDirectDebitWizard.
@@ -9,7 +9,7 @@ codeunit 50100 StockedAttributeMgmt
     /// <param name="DirectDebitNotify">Notification.</param>
     procedure RunAssistedSetup(DirectDebitNotify: Notification)
     begin
-        Page.Run(Page::StockedAttributeAssistedSetup);
+        Page.Run(Page::PTEStkAttributeAssistedSetup);
     end;
 
     /// <summary>
@@ -18,11 +18,11 @@ codeunit 50100 StockedAttributeMgmt
     /// <returns>Return value of type Boolean.</returns>
     procedure IsEnabled(): Boolean;
     var
-        StockedAttributeSetup: Record StockedAttributeSetup;
+        StkAttributeSetup: Record PTEStkAttributeSetup;
     begin
-        if not StockedAttributeSetup.Get() then
+        if not StkAttributeSetup.Get() then
             exit(false);
-        exit(StockedAttributeSetup.Enabled);
+        exit(StkAttributeSetup.Enabled);
     end;
 
     /// <summary>
@@ -33,7 +33,7 @@ codeunit 50100 StockedAttributeMgmt
     procedure CreateAllPossibleVariants(ItemNo: Code[20]; ShowVariants: Boolean)
     var
         ItemToCreateVariantFor: Record Item;
-        tempAttributeSetEntry: Record StockedAttributeSetEntry temporary;
+        tempAttributeSetEntry: Record PTEStkAttributeSetEntry temporary;
         CombinedAttributeList: List of [Text];
         Window: Dialog;
         x: Integer;
@@ -42,7 +42,7 @@ codeunit 50100 StockedAttributeMgmt
         CreatingForMsg: Label 'Creating #1########\#2######################';
     begin
         ItemToCreateVariantFor.Get(ItemNo);
-        ItemToCreateVariantFor.TestField(StockedAttributeTemplateCode);
+        ItemToCreateVariantFor.TestField(PTEStkAttributeTemplateCode);
 
         if not RemoveCurrentVariants(ItemNo) then
             if ShowVariants then
@@ -66,7 +66,7 @@ codeunit 50100 StockedAttributeMgmt
         end;
 
         // update the item search fields.
-        CheckUpdateItemSearchTerms(ItemToCreateVariantFor, ItemToCreateVariantFor.StockedAttributeTemplateCode);
+        CheckUpdateItemSearchTerms(ItemToCreateVariantFor, ItemToCreateVariantFor.PTEStkAttributeTemplateCode);
         if GuiAllowed() then
             Window.Close();
 
@@ -84,16 +84,16 @@ codeunit 50100 StockedAttributeMgmt
     /// <param name="Seperator">Text[1].</param>
     local procedure BuildCombinedAttributesList(ItemToCreateFor: Record Item; var CombinedAttributeList: List of [Text]; Seperator: Text[1]);
     var
-        StockedAttributeTemplate: Record StockedAttributeTemplate;
-        StockedAttrTemplateEntry: Record StockedAttributeTemplateEntry;
+        PTEStkAttributeTemplate: Record PTEStkAttributeTemplate;
+        StockedAttrTemplateEntry: Record PTEStkAttributeTemplateEntry;
         AttributeList: List of [Text];
         CurrentAttribute: Integer;
     begin
         // Using the Stocked Attibrutes assigned to the item, build a list of unique combinations of the
         // attributes, which will be used to create the variants.     
-        StockedAttributeTemplate.Get(ItemToCreateFor.StockedAttributeTemplateCode);
+        PTEStkAttributeTemplate.Get(ItemToCreateFor.PTEStkAttributeTemplateCode);
 
-        StockedAttrTemplateEntry.SetRange(TemplateID, StockedAttributeTemplate."Template Set ID");
+        StockedAttrTemplateEntry.SetRange(TemplateID, PTEStkAttributeTemplate."Template Set ID");
         if not StockedAttrTemplateEntry.FindSet() then
             exit;
 
@@ -129,22 +129,22 @@ codeunit 50100 StockedAttributeMgmt
     /// <summary>
     /// CodeCombine.
     /// </summary>
-    /// <param name="Var StockedAttributeList">List of [Text].</param>
+    /// <param name="StkAttributeList">VAR List of [Text].</param>
     /// <param name="AttributeList">List of [Text].</param>
     /// <param name="Seperator">Text[1].</param>
-    local procedure CodeCombine(Var StockedAttributeList: List of [Text]; AttributeList: List of [Text]; Seperator: Text[1])
+    local procedure CodeCombine(var StkAttributeList: List of [Text]; AttributeList: List of [Text]; Seperator: Text[1])
     var
         NewList: List of [Text];
         x: Integer;
         y: Integer;
     begin
         // concatentate entries from each list to each other using the provided seperator
-        for x := 1 to StockedAttributeList.Count() do
+        for x := 1 to StkAttributeList.Count() do
             for y := 1 to AttributeList.Count() do
-                NewList.Add(FormatAttributeListEntry(StockedAttributeList.Get(x), AttributeList.Get(y), Seperator));
+                NewList.Add(FormatAttributeListEntry(StkAttributeList.Get(x), AttributeList.Get(y), Seperator));
 
-        Clear(StockedAttributeList);
-        StockedAttributeList.AddRange(NewList);
+        Clear(StkAttributeList);
+        StkAttributeList.AddRange(NewList);
     end;
 
     /// <summary>
@@ -164,10 +164,10 @@ codeunit 50100 StockedAttributeMgmt
     /// <summary>
     /// CreateVariantSet.
     /// </summary>
-    /// <param name="tempAttributeSetEntry">Temporary VAR Record StockedAttributeSetEntry.</param>
+    /// <param name="tempAttributeSetEntry">Temporary VAR Record PTEStkAttributeSetEntry.</param>
     /// <param name="CodeString">Text.</param>
     /// <param name="Seperator">Text[1].</param>
-    local procedure CreateVariantSet(var tempAttributeSetEntry: Record StockedAttributeSetEntry temporary; CodeString: Text; Seperator: Text[1])
+    local procedure CreateVariantSet(var tempAttributeSetEntry: Record PTEStkAttributeSetEntry temporary; CodeString: Text; Seperator: Text[1])
     var
         ItemAttribute: Record "Item Attribute";
         ItemAttributeValue: Record "Item Attribute Value";
@@ -214,8 +214,8 @@ codeunit 50100 StockedAttributeMgmt
     /// CreateVariant.
     /// </summary>
     /// <param name="ItemToCreateFor">Record Item.</param>
-    /// <param name="tempAttributeSetEntry">Temporary VAR Record StockedAttributeSetEntry.</param>
-    local procedure CreateVariant(ItemToCreateFor: Record Item; var tempAttributeSetEntry: Record StockedAttributeSetEntry temporary)
+    /// <param name="tempAttributeSetEntry">Temporary VAR Record PTEStkAttributeSetEntry.</param>
+    local procedure CreateVariant(ItemToCreateFor: Record Item; var tempAttributeSetEntry: Record PTEStkAttributeSetEntry temporary)
     var
         ItemVariant: Record "Item Variant";
         AttributeSetID: Integer;
@@ -225,14 +225,14 @@ codeunit 50100 StockedAttributeMgmt
 
         Clear(ItemVariant);
         ItemVariant.SetRange("Item No.", ItemToCreateFor."No.");
-        ItemVariant.SetRange("Attribute Set ID", AttributeSetID);
+        ItemVariant.SetRange(PTEStkAttributeSetId, AttributeSetID);
         if not ItemVariant.FindFirst() then begin
             ItemVariant.Validate("Item No.", ItemToCreateFor."No.");
             ItemVariant.Validate(Code, GetNextVariantCode(ItemToCreateFor."No."));
             ItemVariant.Insert(true);
         end;
         ItemVariant.Validate(Description, CopyStr(StrSubStno(VariantDescriptionTxt, ItemToCreateFor.Description, AttributeSetID), 1, MaxStrLen(ItemVariant.Description)));
-        ItemVariant.Validate("Attribute Set ID", AttributeSetID);
+        ItemVariant.Validate(PTEStkAttributeSetId, AttributeSetID);
         ItemVariant.Modify(true);
     end;
 
@@ -243,8 +243,8 @@ codeunit 50100 StockedAttributeMgmt
     /// <param name="TemplateCode">Code[20].</param>
     procedure CheckUpdateItemSearchTerms(ItemToUpdate: Record Item; TemplateCode: Code[20])
     var
-        StockAttributeTemplate: Record StockedAttributeTemplate;
-        StockedAttributeTempltEntry: Record StockedAttributeTemplateEntry;
+        StockAttributeTemplate: Record PTEStkAttributeTemplate;
+        StkAttributeTempltEntry: Record PTEStkAttributeTemplateEntry;
     begin
         ModifySearchTerms(ItemToUpdate, ItemToUpdate.Description);
         ModifySearchTerms(ItemToUpdate, ItemToUpdate."Description 2");
@@ -253,14 +253,14 @@ codeunit 50100 StockedAttributeMgmt
         if not StockAttributeTemplate.Get(TemplateCode) then
             exit;
 
-        StockedAttributeTempltEntry.SetRange(TemplateID, StockAttributeTemplate."Template Set ID");
-        if not StockedAttributeTempltEntry.FindSet() then
+        StkAttributeTempltEntry.SetRange(TemplateID, StockAttributeTemplate."Template Set ID");
+        if not StkAttributeTempltEntry.FindSet() then
             exit;
 
         repeat
-            StockedAttributeTempltEntry.CalcFields("Attribute Value");
-            ModifySearchTerms(ItemToUpdate, StockedAttributeTempltEntry."Attribute Value");
-        until StockedAttributeTempltEntry.Next() = 0;
+            StkAttributeTempltEntry.CalcFields("Attribute Value");
+            ModifySearchTerms(ItemToUpdate, StkAttributeTempltEntry."Attribute Value");
+        until StkAttributeTempltEntry.Next() = 0;
 
         ItemToUpdate.Modify();
     end;
@@ -277,22 +277,22 @@ codeunit 50100 StockedAttributeMgmt
         BadCharsTxt: Label '()|&*><"%';
         WhereLbl: Label '=';
     begin
-        if ItemToUpdate.StockedAttributeSearchText.Contains(SearchValue) then
+        if ItemToUpdate.PTEStkAttributeSearchText.Contains(SearchValue) then
             exit;
 
-        if ItemToUpdate.StockedAttributeSearchText2.Contains(SearchValue) then
+        if ItemToUpdate.PTEStkAttributeSearchText2.Contains(SearchValue) then
             exit;
 
         for i := 1 to StrLen(BadCharsTxt) do
             SearchValue := DelChr(SearchValue, WhereLbl, Format(BadCharsTxt) [i]);
 
-        if StrLen(StrSubstNo(SearchTxt, ItemToUpdate.StockedAttributeSearchText, SearchValue)) <= MaxStrLen(ItemToUpdate.StockedAttributeSearchText) then
-            ItemToUpdate.StockedAttributeSearchText := StrSubstNo(SearchTxt, ItemToUpdate.StockedAttributeSearchText, SearchValue)
+        if StrLen(StrSubstNo(SearchTxt, ItemToUpdate.PTEStkAttributeSearchText, SearchValue)) <= MaxStrLen(ItemToUpdate.PTEStkAttributeSearchText) then
+            ItemToUpdate.PTEStkAttributeSearchText := StrSubstNo(SearchTxt, ItemToUpdate.PTEStkAttributeSearchText, SearchValue)
         else
-            if StrLen(StrSubstNo(SearchTxt, ItemToUpdate.StockedAttributeSearchText, SearchValue)) <= MaxStrLen(ItemToUpdate.StockedAttributeSearchText) then
-                ItemToUpdate.StockedAttributeSearchText := StrSubstNo(SearchTxt, ItemToUpdate.StockedAttributeSearchText, SearchValue)
+            if StrLen(StrSubstNo(SearchTxt, ItemToUpdate.PTEStkAttributeSearchText, SearchValue)) <= MaxStrLen(ItemToUpdate.PTEStkAttributeSearchText) then
+                ItemToUpdate.PTEStkAttributeSearchText := StrSubstNo(SearchTxt, ItemToUpdate.PTEStkAttributeSearchText, SearchValue)
             else
-                Error('We need another StockedAttributeSearchText field!');
+                Error('We need another PTEStkAttributeSearchText field!');
     end;
 
     /// <summary>
@@ -353,19 +353,19 @@ codeunit 50100 StockedAttributeMgmt
     /// <summary>
     /// EditStockedAttributeTemplate.
     /// </summary>
-    /// <param name="StockedAttributeTemplate">Record StockedAttributeTemplate.</param>
-    procedure EditStockedAttributeTemplate(StockedAttributeTemplate: Record StockedAttributeTemplate)
+    /// <param name="StockedAttributeTemplate">Record PTEStkAttributeTemplate.</param>
+    procedure EditStockedAttributeTemplate(StockedAttributeTemplate: Record PTEStkAttributeTemplate)
     var
-        StockedAttributeTemplateEntry: Record StockedAttributeTemplateEntry;
-        StockedAttributesPage: Page StockedAttributeTemplateSets;
+        StkAttributeTemplateEntry: Record PTEStkAttributeTemplateEntry;
+        StkAttributesPage: Page PTEStkAttributeTemplateSets;
     begin
-        StockedAttributeTemplateEntry.FilterGroup(2);
-        StockedAttributeTemplateEntry.SetRange(TemplateID, StockedAttributeTemplate."Template Set ID");
-        StockedAttributeTemplateEntry.FilterGroup(0);
+        StkAttributeTemplateEntry.FilterGroup(2);
+        StkAttributeTemplateEntry.SetRange(TemplateID, StockedAttributeTemplate."Template Set ID");
+        StkAttributeTemplateEntry.FilterGroup(0);
 
-        StockedAttributesPage.SetTemplate(StockedAttributeTemplate);
-        StockedAttributesPage.SetTableView(StockedAttributeTemplateEntry);
-        StockedAttributesPage.RunModal();
+        StkAttributesPage.SetTemplate(StockedAttributeTemplate);
+        StkAttributesPage.SetTableView(StkAttributeTemplateEntry);
+        StkAttributesPage.RunModal();
     end;
 
     /// <summary>
@@ -374,78 +374,78 @@ codeunit 50100 StockedAttributeMgmt
     /// <param name="VariantAttributeSetID">Integer.</param>
     procedure ShowVariantAttributes(VariantAttributeSetID: Integer)
     var
-        StockedAttributeSetEntry: Record StockedAttributeSetEntry;
-        StockedAttributeSetsPage: Page StockedAttributeSets;
+        StkAttributeSetEntry: Record PTEStkAttributeSetEntry;
+        StkAttributeSetsPage: Page PTEStkAttributeSets;
     begin
-        StockedAttributeSetEntry.FilterGroup(2);
-        StockedAttributeSetEntry.SetRange(AttributeSetID, VariantAttributeSetID);
-        StockedAttributeSetEntry.FilterGroup(0);
+        StkAttributeSetEntry.FilterGroup(2);
+        StkAttributeSetEntry.SetRange(AttributeSetID, VariantAttributeSetID);
+        StkAttributeSetEntry.FilterGroup(0);
 
-        StockedAttributeSetsPage.SetTableView(StockedAttributeSetEntry);
-        StockedAttributeSetsPage.RunModal();
+        StkAttributeSetsPage.SetTableView(StkAttributeSetEntry);
+        StkAttributeSetsPage.RunModal();
     end;
 
     /// <summary>
     /// GetAttributeSetID.
     /// </summary>
-    /// <param name="StockedAttributeSetEntry2">VAR Record StockedAttributeSetEntry.</param>
+    /// <param name="StkAttributeSetEntry2">VAR Record PTEStkAttributeSetEntry.</param>
     /// <returns>Return value of type Integer.</returns>
-    procedure GetAttributeSetID(var StockedAttributeSetEntry2: Record StockedAttributeSetEntry): Integer;
+    procedure GetAttributeSetID(var StkAttributeSetEntry2: Record PTEStkAttributeSetEntry): Integer;
     var
-        StockedAttributeSetEntry: Record StockedAttributeSetEntry;
+        StkAttributeSetEntry: Record PTEStkAttributeSetEntry;
     begin
-        exit(StockedAttributeSetEntry.GetAttributeSetID(StockedAttributeSetEntry2));
+        exit(StkAttributeSetEntry.GetAttributeSetID(StkAttributeSetEntry2));
     end;
 
     /// <summary>
     /// GetAttributeSet.
     /// </summary>
-    /// <param name="TempAttributeSetEntry">Temporary VAR Record StockedAttributeSetEntry.</param>
+    /// <param name="TempAttributeSetEntry">Temporary VAR Record PTEStkAttributeSetEntry.</param>
     /// <param name="AttributeSetID">Integer.</param>
-    procedure GetAttributeSet(var TempAttributeSetEntry: Record StockedAttributeSetEntry temporary; AttributeSetID: Integer)
+    procedure GetAttributeSet(var TempAttributeSetEntry: Record PTEStkAttributeSetEntry temporary; AttributeSetID: Integer)
     var
-        StockedAttributeSetEntry: Record StockedAttributeSetEntry;
+        PTEStkAttributeSetEntry: Record PTEStkAttributeSetEntry;
     begin
         clear(TempAttributeSetEntry);
         TempAttributeSetEntry.DeleteAll();
 
-        StockedAttributeSetEntry.SETRANGE(AttributeSetID, AttributeSetID);
-        if StockedAttributeSetEntry.FindSet() then
+        PTEStkAttributeSetEntry.SETRANGE(AttributeSetID, AttributeSetID);
+        if PTEStkAttributeSetEntry.FindSet() then
             repeat
-                TempAttributeSetEntry := StockedAttributeSetEntry;
+                TempAttributeSetEntry := PTEStkAttributeSetEntry;
                 TempAttributeSetEntry.Insert();
-            until StockedAttributeSetEntry.Next() = 0;
+            until PTEStkAttributeSetEntry.Next() = 0;
     end;
 
     /// <summary>
     /// GetAttributeTemplateSetID.
     /// </summary>
-    /// <param name="StockedAttributeTemplateEntry2">VAR Record StockedAttributeTemplateEntry.</param>
+    /// <param name="StkAttributeTemplateEntry2">VAR Record PTEStkAttributeTemplateEntry.</param>
     /// <returns>Return value of type Integer.</returns>
-    procedure GetAttributeTemplateSetID(var StockedAttributeTemplateEntry2: Record StockedAttributeTemplateEntry): Integer;
+    procedure GetAttributeTemplateSetID(var StkAttributeTemplateEntry2: Record PTEStkAttributeTemplateEntry): Integer;
     var
-        StockedAttributeTemplateEntry: Record StockedAttributeTemplateEntry;
+        StkAttributeTemplateEntry: Record PTEStkAttributeTemplateEntry;
     begin
-        exit(StockedAttributeTemplateEntry.GetTemplateSetID(StockedAttributeTemplateEntry2));
+        exit(StkAttributeTemplateEntry.GetTemplateSetID(StkAttributeTemplateEntry2));
     end;
 
     /// <summary>
     /// GetAttributeTemplateSet.
     /// </summary>
-    /// <param name="TempAttributeTemplateSet">Temporary VAR Record StockedAttributeTemplateEntry.</param>
+    /// <param name="TempAttributeTemplateSet">Temporary VAR Record PTEStkAttributeTemplateEntry.</param>
     /// <param name="TemplateSetID">Integer.</param>
-    procedure GetAttributeTemplateSet(var TempAttributeTemplateSet: Record StockedAttributeTemplateEntry temporary; TemplateSetID: Integer)
+    procedure GetAttributeTemplateSet(var TempAttributeTemplateSet: Record PTEStkAttributeTemplateEntry temporary; TemplateSetID: Integer)
     var
-        StockedAttributeTemplateEntry: Record StockedAttributeTemplateEntry;
+        StkAttributeTemplateEntry: Record PTEStkAttributeTemplateEntry;
     begin
         TempAttributeTemplateSet.DeleteAll();
 
-        StockedAttributeTemplateEntry.SetRange(TemplateID, TemplateSetID);
-        if StockedAttributeTemplateEntry.FindSet() then
+        StkAttributeTemplateEntry.SetRange(TemplateID, TemplateSetID);
+        if StkAttributeTemplateEntry.FindSet() then
             repeat
-                TempAttributeTemplateSet := StockedAttributeTemplateEntry;
+                TempAttributeTemplateSet := StkAttributeTemplateEntry;
                 TempAttributeTemplateSet.Insert();
-            until StockedAttributeTemplateEntry.Next() = 0;
+            until StkAttributeTemplateEntry.Next() = 0;
     end;
 
     /// <summary>
@@ -456,24 +456,24 @@ codeunit 50100 StockedAttributeMgmt
     /// <returns>Return value of type Text.</returns>
     procedure GetVariantFullDescription(Item: Record Item; VariantAttributeSetID: Integer): Text;
     var
-        StockedAttributeSetEntry: Record StockedAttributeSetEntry;
+        StkAttributeSetEntry: Record PTEStkAttributeSetEntry;
         FullDescriptionTB: TextBuilder;
         AttributeFormatTxt: Label '%1: %2';
         AttributeseperatorTxt: Label '; ';
     begin
-        StockedAttributeSetEntry.SetRange(AttributeSetID, VariantAttributeSetID);
-        if not StockedAttributeSetEntry.FindSet() then
+        StkAttributeSetEntry.SetRange(AttributeSetID, VariantAttributeSetID);
+        if not StkAttributeSetEntry.FindSet() then
             exit(Item.Description);
 
         FullDescriptionTB.Append(Item.Description);
         repeat
-            StockedAttributeSetEntry.CalcFields("Attribute Code", "Attribute Value");
+            StkAttributeSetEntry.CalcFields("Attribute Code", "Attribute Value");
 
             if FullDescriptionTB.Length() > 0 then
                 FullDescriptionTB.Append(AttributeseperatorTxt);
 
-            FullDescriptionTB.Append(StrSubstNo(AttributeFormatTxt, StockedAttributeSetEntry."Attribute Code", StockedAttributeSetEntry."Attribute Value"));
-        until StockedAttributeSetEntry.Next() = 0;
+            FullDescriptionTB.Append(StrSubstNo(AttributeFormatTxt, StkAttributeSetEntry."Attribute Code", StkAttributeSetEntry."Attribute Value"));
+        until StkAttributeSetEntry.Next() = 0;
 
         exit(FullDescriptionTB.ToText());
     end;
@@ -481,10 +481,10 @@ codeunit 50100 StockedAttributeMgmt
     /// <summary>
     /// CopyAttributesToTemplate.
     /// </summary>
-    /// <param name="TempStockedAttributeTemplateEntry">Temporary VAR Record StockedAttributeTemplateEntry.</param>
-    procedure CopyAttributesToTemplate(var TempStockedAttributeTemplateEntry: Record StockedAttributeTemplateEntry temporary)
+    /// <param name="TempStockedAttributeTemplateEntry">Temporary VAR Record PTEStkAttributeTemplateEntry.</param>
+    procedure CopyAttributesToTemplate(var TempStockedAttributeTemplateEntry: Record PTEStkAttributeTemplateEntry temporary)
     var
-        TempStockedAttributeTemplateEntry2: Record StockedAttributeTemplateEntry temporary;
+        TempStockedAttributeTemplateEntry2: Record PTEStkAttributeTemplateEntry temporary;
         ItemAttributes: Record "Item Attribute";
         FilterPage: FilterPageBuilder;
         ItemAttributeLbl: Label 'Item Attribute';
@@ -503,11 +503,11 @@ codeunit 50100 StockedAttributeMgmt
     /// TransferAttributesToTemplate.
     /// </summary>
     /// <param name="AttributeView">Text.</param>
-    /// <param name="TempStockedAttributeTemplateEntry">Temporary VAR Record StockedAttributeTemplateEntry.</param>
-    local procedure TransferAttributesToTemplate(AttributeView: Text; var TempStockedAttributeTemplateEntry: Record StockedAttributeTemplateEntry temporary)
+    /// <param name="TempStockedAttributeTemplateEntry">Temporary VAR Record PTEStkAttributeTemplateEntry.</param>
+    local procedure TransferAttributesToTemplate(AttributeView: Text; var TempStockedAttributeTemplateEntry: Record PTEStkAttributeTemplateEntry temporary)
     var
         ItemAttribute: Record "Item Attribute";
-        ItemAttributesQuery: Query StockedAttributeItemAttributes;
+        ItemAttributesQuery: Query PTEStkAttributeItemAttributes;
     begin
         if StrLen(AttributeView) = 0 then
             exit;

@@ -1,12 +1,12 @@
 /// <summary>
-/// Page StockedAttributeFactbox (ID 50102).
+/// PagePTEStkAttributeFactbox (ID 50102).
 /// </summary>
-page 50102 StockedAttributeFactbox
+page 50102 PTEStkAttributeFactbox
 {
     Caption = 'Stocked Attributes';
     PageType = ListPart;
     Editable = false;
-    SourceTable = StockedAttributeSetEntry;
+    SourceTable = PTEStkAttributeSetEntry;
     UsageCategory = None;
 
     layout

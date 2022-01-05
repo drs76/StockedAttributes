@@ -1,7 +1,7 @@
 /// <summary>
-/// Table StockedAttributeTreeNode (ID 50101).
+/// TablePTEStkAttributeTreeNode (ID 50101).
 /// </summary>
-table 50101 StockedAttributeTreeNode
+table 50101 PTEStkAttributeTreeNode
 {
     Caption = 'Stocked Attribute Tree Node';
     DataClassification = CustomerContent;
@@ -19,7 +19,7 @@ table 50101 StockedAttributeTreeNode
             Caption = 'Attribute Value ID';
             DataClassification = CustomerContent;
         }
-        field(3; "Attribute Set ID"; Integer)
+        field(3; StkAttributeSetId; Integer)
         {
             Caption = 'Attribute Set ID';
             AutoIncrement = true;

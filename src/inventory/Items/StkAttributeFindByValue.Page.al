@@ -1,7 +1,7 @@
 /// <summary>
-/// Page StockedAttributeFindByValue (ID 50110).
+/// PagePTEStkAttributeFindByValue (ID 50110).
 /// </summary>
-page 50110 StockedAttributeFindByValue
+page 50110 PTEStkAttributeFindByValue
 {
 
     Caption = 'Stocked Attribute Find By Value';
@@ -65,10 +65,10 @@ page 50110 StockedAttributeFindByValue
 
         area(FactBoxes)
         {
-            part(StockedAttributesFactBox; StockedAttributeFactbox)
+            part(StockedAttributesFactBox; PTEStkAttributeFactbox)
             {
                 ApplicationArea = All;
-                SubPageLink = AttributeSetID = field("Attribute Set Id");
+                SubPageLink = AttributeSetID = field(PTEStkAttributeSetId);
             }
         }
     }
@@ -91,7 +91,6 @@ page 50110 StockedAttributeFindByValue
         SearchText: Text;
         VariantCount: Integer;
 
-        // the var's included here can be used to manipulate page controls editable, enabled and visible
         [InDataSet]
         ShowRepeater: Boolean;
 
@@ -137,8 +136,8 @@ page 50110 StockedAttributeFindByValue
         FoundEntryIds.AddRange(GetIdsFromQuery(SearchTextTb.ToText(), WordList.Count()));
 
         // Build a filter list of the Id's found by the query and apply to the record.
-        Rec.SetFilter("Attribute Set Id", BuildSetIdFilter(FoundEntryIds));
-        if Rec.GetFilter("Attribute Set Id") = '' then begin
+        Rec.SetFilter(PTEStkAttributeSetId, BuildSetIdFilter(FoundEntryIds));
+        if Rec.GetFilter(PTEStkAttributeSetId) = '' then begin
             Message(NowtMsg);
             Clear(SearchText);
         end;
@@ -154,7 +153,7 @@ page 50110 StockedAttributeFindByValue
     /// <returns>Return variable ReturnList of type List of [Integer].</returns>
     local procedure GetIdsFromQuery(FilterWord: Text; MaxWords: Integer) ReturnList: List of [Integer]
     var
-        StockOptionsQry: Query StockedAttributeOptionQry;
+        StockOptionsQry: Query PTEStkAttributeOptionQry;
     begin
         // filter on the option value field i.e. *green*|*Home Delivery*
         StockOptionsQry.SetFilter(Attribute_Value, FilterWord);
@@ -197,7 +196,7 @@ page 50110 StockedAttributeFindByValue
     var
         Item: Record Item;
         ItemVariant: Record "Item Variant";
-        VariantMgmt: Codeunit StockedAttributeMgmt;
+        VariantMgmt: Codeunit PTEStkAttributeMgmt;
         CommitCount: Integer;
         ItemCount: Integer;
         ProcessT: Time;
@@ -219,7 +218,7 @@ page 50110 StockedAttributeFindByValue
                 Commit();
                 Clear(CommitCount);
             end;
-            Item.StockedAttributeTemplateCode := GetRandDomTemplate();
+            Item.PTEStkAttributeTemplateCode := GetRandDomTemplate();
             Item.Modify(true);
             VariantMgmt.CreateAllPossibleVariants(Item."No.", false);
             Clear(VariantMgmt);
@@ -233,7 +232,7 @@ page 50110 StockedAttributeFindByValue
     /// <returns>Return value of type Code[20].</returns>
     local procedure GetRandDomTemplate(): Code[20]
     var
-        OptionsTemplate: Record StockedAttributeTemplate;
+        OptionsTemplate: Record PTEStkAttributeTemplate;
         StepCount: Integer;
     begin
         if OptionsTemplate.IsEmpty() then

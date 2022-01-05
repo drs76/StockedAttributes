@@ -1,12 +1,12 @@
 /// <summary>
-/// Page StockedAttributeTemplate (ID 50105).
+/// PagePTEStkAttributeTemplate (ID 50105).
 /// </summary>
-page 50105 StockedAttributeTemplate
+page 50105 PTEStkAttributeTemplate
 {
 
     Caption = 'Stocked Attribute Template';
     PageType = Card;
-    SourceTable = StockedAttributeTemplate;
+    SourceTable = PTEStkAttributeTemplate;
     UsageCategory = None;
     RefreshOnActivate = true;
 
@@ -36,9 +36,9 @@ page 50105 StockedAttributeTemplate
 
                     trigger OnDrillDown()
                     var
-                        StockedAttributeMgmt: Codeunit StockedAttributeMgmt;
+                        PTEStkAttributeMgmt: Codeunit PTEStkAttributeMgmt;
                     begin
-                        StockedAttributeMgmt.EditStockedAttributeTemplate(Rec);
+                        PTEStkAttributeMgmt.EditStockedAttributeTemplate(Rec);
                     end;
                 }
                 field(EntryPageType; Rec.EntryPageType)
@@ -69,9 +69,9 @@ page 50105 StockedAttributeTemplate
 
                     trigger OnAction()
                     var
-                        StockedAttributeMgmt: Codeunit StockedAttributeMgmt;
+                        PTEStkAttributeMgmt: Codeunit PTEStkAttributeMgmt;
                     begin
-                        StockedAttributeMgmt.EditStockedAttributeTemplate(Rec);
+                        PTEStkAttributeMgmt.EditStockedAttributeTemplate(Rec);
                     end;
                 }
             }

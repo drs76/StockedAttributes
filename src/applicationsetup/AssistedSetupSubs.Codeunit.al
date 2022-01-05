@@ -27,17 +27,17 @@ codeunit 50106 SCI002AssistedSetupSubs
         SetupDescTxt: Label 'Set up Stocked Attributes extension functionality.';
         EmptyTxt: Label '';
     begin
-        if GuidedExperience.Exists(GuidedExperienceType::"Assisted Setup", ObjectType::Page, Page::StockedAttributeAssistedSetup) then
+        if GuidedExperience.Exists(GuidedExperienceType::"Assisted Setup", ObjectType::Page, Page::PTEStkAttributeAssistedSetup) then
             exit;
 
         NavApp.GetCurrentModuleInfo(Info);
         CurrentGlobalLanguage := GlobalLanguage();
-        GuidedExperience.InsertAssistedSetup(SetupTxt, SetupTxt, SetupDescTxt, 10000, ObjectType::Page, Page::StockedAttributeAssistedSetup, "Assisted Setup Group"::ReadyForBusiness, EmptyTxt, "Video Category"::Uncategorized, EmptyTxt);
+        GuidedExperience.InsertAssistedSetup(SetupTxt, SetupTxt, SetupDescTxt, 10000, ObjectType::Page, Page::PTEStkAttributeAssistedSetup, "Assisted Setup Group"::ReadyForBusiness, EmptyTxt, "Video Category"::Uncategorized, EmptyTxt);
 
         GlobalLanguage(Language.GetDefaultApplicationLanguageId());
 
         //Adds the translation for the name of the setup.
-        GuidedExperience.AddTranslationForSetupObjectDescription(GuidedExperienceType::"Assisted Setup", ObjectType::Page, Page::StockedAttributeAssistedSetup, Language.GetDefaultApplicationLanguageId(), SetupDescTxt);
+        GuidedExperience.AddTranslationForSetupObjectDescription(GuidedExperienceType::"Assisted Setup", ObjectType::Page, Page::PTEStkAttributeAssistedSetup, Language.GetDefaultApplicationLanguageId(), SetupDescTxt);
         GlobalLanguage(CurrentGlobalLanguage);
     end;
 }

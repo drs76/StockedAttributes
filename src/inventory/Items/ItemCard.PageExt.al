@@ -1,24 +1,25 @@
 /// <summary>
-/// PageExtension StockedAttributeItemCard (ID 50102) extends Record Item Card.
+/// PageExtension PTEItemCard (ID 50102) extends Page Item Card.
 /// </summary>
-pageextension 50102 StockedAttributeItemCard extends "Item Card"
+pageextension 50102 PTEItemCard extends "Item Card"
 {
     layout
     {
         addlast(content)
         {
-            group(StockedAttributeGrp)
+            group(PTEStockedAttributeGrp)
             {
                 Caption = 'Stocked Attribute';
-                Visible = StockedAttributeVisible;
-                field(StockedAttributeTemplateCode; Rec.StockedAttributeTemplateCode)
+                Visible = StkAttributeVisible;
+
+                field(PTEStkAttributeTemplateCode; Rec.PTEStkAttributeTemplateCode)
                 {
                     ApplicationArea = All;
                     Importance = Promoted;
                     ToolTip = 'Select the stocked attribute template to use for this item';
                 }
 
-                field(StockedAttributeEntryPageType; Rec.StockedAttributeEntryPageType)
+                field(PTEStkAttributeEntryPageType; Rec.PTEStkAttributeEntryPageType)
                 {
                     ToolTip = 'Default: Stocked Attribute Template, Configurator: Configurator Entry Page, Quick Entry: Quick Entry Page, None: BC Standard';
                     ApplicationArea = All;
@@ -39,11 +40,11 @@ pageextension 50102 StockedAttributeItemCard extends "Item Card"
 
     trigger OnOpenPage()
     begin
-        StockedAttributeVisible := StockedAttributeMgmt.IsEnabled();
+        StkAttributeVisible := StkAttributeMgmt.IsEnabled();
     end;
 
     var
-        StockedAttributeMgmt: Codeunit StockedAttributeMgmt;
-        StockedAttributeVisible: Boolean;
+        StkAttributeMgmt: Codeunit PTEStkAttributeMgmt;
+        StkAttributeVisible: Boolean;
 
 }

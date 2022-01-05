@@ -1,27 +1,30 @@
-tableextension 50100 StockedAttributeItem extends Item
+/// <summary>
+/// TableExtension PTEItem (ID 50100) extends Record Item.
+/// </summary>
+tableextension 50100 PTEItem extends Item
 {
     fields
     {
-        field(50100; StockedAttributeTemplateCode; Code[20])
+        field(50100; PTEStkAttributeTemplateCode; Code[20])
         {
             Caption = 'Stocked Attribute Template Code';
             DataClassification = CustomerContent;
-            TableRelation = StockedAttributeTemplate.Code;
+            TableRelation = PTEStkAttributeTemplate.Code;
         }
-        field(50101; StockedAttributeEntryPageType; Enum StockedAttributeEntryPageType)
+        field(50101; PTEStkAttributeEntryPageType; Enum PTEStkAttributeEntryPageType)
         {
             Caption = 'Entry Page Type';
             DataClassification = CustomerContent;
             InitValue = Default;
         }
 
-        field(50102; StockedAttributeSearchText; Text[2048])
+        field(50102; PTEStkAttributeSearchText; Text[2048])
         {
             Caption = 'Search Text1';
             DataClassification = CustomerContent;
         }
 
-        field(50103; StockedAttributeSearchText2; Text[2048])
+        field(50103; PTEStkAttributeSearchText2; Text[2048])
         {
             Caption = 'Search Text2';
             DataClassification = CustomerContent;
@@ -31,6 +34,6 @@ tableextension 50100 StockedAttributeItem extends Item
 
     keys
     {
-        key(Search; StockedAttributeSearchText, StockedAttributeSearchText2) { }
+        key(Search; PTEStkAttributeSearchText, PTEStkAttributeSearchText2) { }
     }
 }

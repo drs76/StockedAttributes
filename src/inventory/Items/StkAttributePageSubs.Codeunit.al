@@ -1,7 +1,7 @@
 /// <summary>
-/// Codeunit StockedAttributePageSubs (ID 50102).
+/// Codeunit PTEStkAttributePageSubs (ID 50102).
 /// </summary>
-codeunit 50102 StockedAttributePageSubs
+codeunit 50102 PTEStkAttributePageSubs
 {
     #region Sales
 
@@ -167,12 +167,12 @@ codeunit 50102 StockedAttributePageSubs
         TransferLine: Record "Transfer Line";
         AssemblyLine: Record "Assembly Line";
         ItemJnlLine: Record "Item Journal Line";
-        StockedAttributeDocEntryMgmt: Codeunit StockedAttributeDocEntryMgmt;
-        StockedAttributeMgmt: Codeunit StockedAttributeMgmt;
+        StkAttributeDocEntryMgmt: Codeunit PTEStkAttributeDocEntryMgmt;
+        StkAttributeMgmt: Codeunit PTEStkAttributeMgmt;
         RecRef: RecordRef;
         TypeItemTxt: Label 'Item';
     begin
-        if not StockedAttributeMgmt.IsEnabled() then
+        if not StkAttributeMgmt.IsEnabled() then
             exit;
 
         RecRef.Get(SourceRecordId);
@@ -208,7 +208,7 @@ codeunit 50102 StockedAttributePageSubs
                         exit;
                 end;
         end;
-        StockedAttributeDocEntryMgmt.LaunchStockedAttributeConfigurator(RecRef);
+        StkAttributeDocEntryMgmt.LaunchStockedAttributeConfigurator(RecRef);
 
         ReturnValue := true;
     end;
@@ -236,7 +236,7 @@ codeunit 50102 StockedAttributePageSubs
             exit;
 
         Item.Get(ItemNo);
-        if StrLen(Item.StockedAttributeTemplateCode) = 0 then
+        if StrLen(Item.PTEStkAttributeTemplateCode) = 0 then
             exit;
 
         ReturnValue := true;

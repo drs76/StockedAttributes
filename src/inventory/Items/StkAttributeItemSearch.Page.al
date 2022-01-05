@@ -1,7 +1,7 @@
 /// <summary>
-/// Page StockedAttributeSearchEntry (ID 50109).
+/// PagePTEStkAttributeSearchEntry (ID 50109).
 /// </summary>
-page 50109 StockedAttributeItemSearch
+page 50109 PTEStkAttributeItemSearch
 {
     AdditionalSearchTermsML = ENU = 'Item Search', ENG = 'Item Search';
     Caption = 'Stocked Attribute Item Search';
@@ -156,13 +156,13 @@ page 50109 StockedAttributeItemSearch
                     ApplicationArea = All;
                 }
 
-                field(StockedAttributeSearchText; StockedAttributeSearchText)
+                field(StockedAttributeSearchText; PTEStkAttributeSearchText)
                 {
                     ToolTip = 'Attributes Search String';
                     ApplicationArea = All;
                 }
 
-                field(StockedAttributeSearchText2; StockedAttributeSearchText2)
+                field(StockedAttributeSearchText2; PTEStkAttributeSearchText2)
                 {
                     ToolTip = 'Attributes Search String 2';
                     ApplicationArea = All;
@@ -256,8 +256,8 @@ page 50109 StockedAttributeItemSearch
             Item.SetFilter(Description, FilterText);
             Item.SetFilter("Description 2", FilterText);
             Item.SetFilter("Search Description", FilterText);
-            Item.SetFilter(StockedAttributeSearchText, FilterText);
-            Item.SetFilter(StockedAttributeSearchText2, FilterText);
+            Item.SetFilter(PTEStkAttributeSearchText, FilterText);
+            Item.SetFilter(PTEStkAttributeSearchText2, FilterText);
         end;
 
         if Item.FindSet(false, false) then
@@ -367,7 +367,7 @@ page 50109 StockedAttributeItemSearch
         Item: Record Item;
         ItemUoM: Record "Item Unit of Measure";
         ConfigTemplateHeader: Record "Config. Template Header";
-        VariantMgmt: Codeunit StockedAttributeMgmt;
+        VariantMgmt: Codeunit PTEStkAttributeMgmt;
         ConfigTemplateManagement: Codeunit "Config. Template Management";
         ItemRecRef: RecordRef;
         DescTxt: Label '%1 %2', Comment = '%1=Item Count, %2=Item Description';
@@ -399,16 +399,16 @@ page 50109 StockedAttributeItemSearch
         Item.Validate("Sales Unit of Measure", UoMTxt);
         Item."Vendor No." := GetRandomVendor();
 
-        Item.StockedAttributeTemplateCode := GetRandDomTemplate();
+        Item.PTEStkAttributeTemplateCode := GetRandDomTemplate();
         Item.Modify(true);
 
-        if Item.StockedAttributeTemplateCode <> '' then
+        if Item.PTEStkAttributeTemplateCode <> '' then
             VariantMgmt.CreateAllPossibleVariants(Item."No.", false);
     end;
 
     local procedure GetRandDomTemplate(): Code[20]
     var
-        OptionsTemplate: Record StockedAttributeTemplate;
+        OptionsTemplate: Record PTEStkAttributeTemplate;
         StepCount: Integer;
     begin
         if OptionsTemplate.IsEmpty() then
@@ -471,13 +471,13 @@ page 50109 StockedAttributeItemSearch
     local procedure UpdateSearchStrings()
     var
         Item: Record Item;
-        StockAttribMgmt: Codeunit StockedAttributeMgmt;
+        StockAttribMgmt: Codeunit PTEStkAttributeMgmt;
     begin
         if not Item.FindSet() then
             exit;
 
         repeat
-            StockAttribMgmt.CheckUpdateItemSearchTerms(Item, Item.StockedAttributeTemplateCode);
+            StockAttribMgmt.CheckUpdateItemSearchTerms(Item, Item.PTEStkAttributeTemplateCode);
             Item.Find('=');
             if Item."Item Category Code" = '' then begin
                 Item."Item Category Code" := GetRandomCategory();

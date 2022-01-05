@@ -1,7 +1,7 @@
 /// <summary>
-/// Codeunit StockedAttributeDocEntryMgmt (ID 50101).
+/// Codeunit PTEStkAttributeDocEntryMgmt (ID 50101).
 /// </summary>
-codeunit 50101 StockedAttributeDocEntryMgmt
+codeunit 50101 PTEStkAttributeDocEntryMgmt
 {
     // Methods used for the Stocked Attribute Configurator Entry page.
     var
@@ -20,7 +20,7 @@ codeunit 50101 StockedAttributeDocEntryMgmt
     /// <param name="SourceRecordRef">RecordRef.</param>
     procedure LaunchStockedAttributeConfigurator(SourceRecordRef: RecordRef)
     var
-        TempStockedAttributeDocBuffer: Record StockedAttributeDocEntryBuffer temporary;
+        TempStockedAttributeDocBuffer: Record PTEStkAttributeDocEntryBuffer temporary;
         Parameters: JsonObject;
     begin
         InitFields(); // setup field arrays required.
@@ -102,9 +102,9 @@ codeunit 50101 StockedAttributeDocEntryMgmt
     local procedure GetPageIdToRun(var Parameters: JsonObject): Boolean;
     var
         Item: Record Item;
-        StockedAttributeTemplate: Record StockedAttributeTemplate;
-        StockedAttributeSetup: Record StockedAttributeSetup;
-        EntryPageType: Enum StockedAttributeEntryPageType;
+        StkAttributeTemplate: Record PTEStkAttributeTemplate;
+        StkAttributeSetup: Record PTEStkAttributeSetup;
+        EntryPageType: Enum PTEStkAttributeEntryPageType;
         JToken: JsonToken;
         PageId: Integer;
         PageLbl: Label 'Page';
@@ -115,24 +115,24 @@ codeunit 50101 StockedAttributeDocEntryMgmt
 
         Item.Get(JToken.AsValue().AsText());
 
-        if Item.StockedAttributeEntryPageType = EntryPageType::Default then begin
-            StockedAttributeTemplate.Get(Item.StockedAttributeTemplateCode);
-            if StockedAttributeTemplate.EntryPageType = EntryPageType::Default then begin
-                StockedAttributeSetup.Get();
-                PageId := StockedAttributeSetup.EntryPageType.AsInteger();
+        if Item.PTEStkAttributeEntryPageType = EntryPageType::Default then begin
+            StkAttributeTemplate.Get(Item.PTEStkAttributeTemplateCode);
+            if StkAttributeTemplate.EntryPageType = EntryPageType::Default then begin
+                StkAttributeSetup.Get();
+                PageId := StkAttributeSetup.EntryPageType.AsInteger();
             end else
-                PageId := StockedAttributeTemplate.EntryPageType.AsInteger();
+                PageId := StkAttributeTemplate.EntryPageType.AsInteger();
         end else
-            if Item.StockedAttributeEntryPageType <> EntryPageType::None then
-                PageId := Item.StockedAttributeEntryPageType.AsInteger();
+            if Item.PTEStkAttributeEntryPageType <> EntryPageType::None then
+                PageId := Item.PTEStkAttributeEntryPageType.AsInteger();
 
         case PageId of
             EntryPageType::Configurator.AsInteger():
-                PageId := Page::StockedAttributeConfigurator;
+                PageId := Page::PTEStkAttributeConfigurator;
             EntryPageType::"Quick Entry".AsInteger():
-                PageId := Page::StockedAttributeQuickEntry;
+                PageId := Page::PTEStkAttributeQuickEntry;
             EntryPageType::"Search Entry".AsInteger():
-                PageId := Page::StockedAttributeSearchEntry;
+                PageId := Page::PTEStkAttributeSearchEntry;
         end;
 
         if PageId <> 0 then
@@ -145,9 +145,9 @@ codeunit 50101 StockedAttributeDocEntryMgmt
     /// RunAttributeVariantEntry.
     /// </summary>
     /// <param name="Parameters">JsonObject.</param>
-    /// <param name="TempDocEntryBuffer">Temporary VAR Record StockedAttributeDocEntryBuffer.</param>
+    /// <param name="TempDocEntryBuffer">Temporary VAR Record PTEStkAttributeDocEntryBuffer.</param>
     /// <returns>Return value of type Boolean.</returns>
-    local procedure RunAttributeVariantEntry(Parameters: JsonObject; var TempDocEntryBuffer: Record StockedAttributeDocEntryBuffer temporary): Boolean;
+    local procedure RunAttributeVariantEntry(Parameters: JsonObject; var TempDocEntryBuffer: Record PTEStkAttributeDocEntryBuffer temporary): Boolean;
     var
         ItemNo: Text;
         LocationCodeParam: Text;
@@ -197,32 +197,32 @@ codeunit 50101 StockedAttributeDocEntryMgmt
     /// RunEntryPage.
     /// </summary>
     /// <param name="PageNo">Integer.</param>
-    /// <param name="TempDocEntryBuffer">Temporary VAR Record StockedAttributeDocEntryBuffer.</param>
+    /// <param name="TempDocEntryBuffer">Temporary VAR Record PTEStkAttributeDocEntryBuffer.</param>
     /// <param name="Location">Text.</param>
     /// <param name="UOM">Text.</param>
     /// <returns>Return value of type Boolean.</returns>
-    local procedure RunEntryPage(PageNo: Integer; var TempDocEntryBuffer: Record StockedAttributeDocEntryBuffer temporary; Location: Text; UOM: Text): Boolean
+    local procedure RunEntryPage(PageNo: Integer; var TempDocEntryBuffer: Record PTEStkAttributeDocEntryBuffer temporary; Location: Text; UOM: Text): Boolean
     begin
-        if PageNo = Page::StockedAttributeConfigurator then
+        if PageNo = Page::PTEStkAttributeConfigurator then
             exit(RunConfigurator(TempDocEntryBuffer, Location, UOM));
 
-        if PageNo = Page::StockedAttributeQuickEntry then
+        if PageNo = Page::PTEStkAttributeQuickEntry then
             exit(RunQuickEntry(TempDocEntryBuffer, Location, UOM));
 
-        if PageNo = Page::StockedAttributeSearchEntry then
+        if PageNo = Page::PTEStkAttributeSearchEntry then
             exit(RunSearchEntry(TempDocEntryBuffer, Location, UOM));
     end;
 
     /// <summary>
     /// RunConfigurator.
     /// </summary>
-    /// <param name="TempDocEntryBuffer">Temporary VAR Record StockedAttributeDocEntryBuffer.</param>
+    /// <param name="TempDocEntryBuffer">Temporary VAR Record PTEStkAttributeDocEntryBuffer.</param>
     /// <param name="Location">Text.</param>
     /// <param name="UOM">Text.</param>
     /// <returns>Return value of type Boolean.</returns>
-    local procedure RunConfigurator(var TempDocEntryBuffer: Record StockedAttributeDocEntryBuffer temporary; Location: Text; UOM: Text): Boolean
+    local procedure RunConfigurator(var TempDocEntryBuffer: Record PTEStkAttributeDocEntryBuffer temporary; Location: Text; UOM: Text): Boolean
     var
-        VariantConfigurator: Page StockedAttributeConfigurator;
+        VariantConfigurator: Page PTEStkAttributeConfigurator;
     begin
         VariantConfigurator.SetTableView(TempDocEntryBuffer);
         VariantConfigurator.SetLineDefaults(Location, UOM);
@@ -237,13 +237,13 @@ codeunit 50101 StockedAttributeDocEntryMgmt
     /// <summary>
     /// RunQuickEntry.
     /// </summary>
-    /// <param name="TempDocEntryBuffer">Temporary VAR Record StockedAttributeDocEntryBuffer.</param>
+    /// <param name="TempDocEntryBuffer">Temporary VAR Record PTEStkAttributeDocEntryBuffer.</param>
     /// <param name="Location">Text.</param>
     /// <param name="UOM">Text.</param>
     /// <returns>Return value of type Boolean.</returns>
-    local procedure RunQuickEntry(var TempDocEntryBuffer: Record StockedAttributeDocEntryBuffer temporary; Location: Text; UOM: Text): Boolean;
+    local procedure RunQuickEntry(var TempDocEntryBuffer: Record PTEStkAttributeDocEntryBuffer temporary; Location: Text; UOM: Text): Boolean;
     var
-        VariantQuickEntry: Page StockedAttributeQuickEntry;
+        VariantQuickEntry: Page PTEStkAttributeQuickEntry;
     begin
         VariantQuickEntry.SetTableView(TempDocEntryBuffer);
         VariantQuickEntry.SetLineDefaults(Location, UOM);
@@ -259,13 +259,13 @@ codeunit 50101 StockedAttributeDocEntryMgmt
     /// <summary>
     /// RunSearchEntry.
     /// </summary>
-    /// <param name="TempDocEntryBuffer">Temporary VAR Record StockedAttributeDocEntryBuffer.</param>
+    /// <param name="TempDocEntryBuffer">Temporary VAR Record PTEStkAttributeDocEntryBuffer.</param>
     /// <param name="Location">Text.</param>
     /// <param name="UOM">Text.</param>
     /// <returns>Return value of type Boolean.</returns>
-    local procedure RunSearchEntry(var TempDocEntryBuffer: Record StockedAttributeDocEntryBuffer temporary; Location: Text; UOM: Text): Boolean;
+    local procedure RunSearchEntry(var TempDocEntryBuffer: Record PTEStkAttributeDocEntryBuffer temporary; Location: Text; UOM: Text): Boolean;
     var
-        VariantSearchEntry: Page StockedAttributeSearchEntry;
+        VariantSearchEntry: Page PTEStkAttributeSearchEntry;
     begin
         VariantSearchEntry.SetTableView(TempDocEntryBuffer);
         VariantSearchEntry.SetLineDefaults(Location, UOM);
@@ -283,11 +283,11 @@ codeunit 50101 StockedAttributeDocEntryMgmt
     /// </summary>
     /// <param name="SourceRecordRef">RecordRef.</param>
     /// <param name="Parameters">JsonObject.</param>
-    /// <param name="TempDocEntryBuffer">Temporary VAR Record StockedAttributeDocEntryBuffer.</param>
-    local procedure AddSelectionsToDocument(SourceRecordRef: RecordRef; Parameters: JsonObject; var TempDocEntryBuffer: Record StockedAttributeDocEntryBuffer temporary)
+    /// <param name="TempDocEntryBuffer">Temporary VAR Record PTEStkAttributeDocEntryBuffer.</param>
+    local procedure AddSelectionsToDocument(SourceRecordRef: RecordRef; Parameters: JsonObject; var TempDocEntryBuffer: Record PTEStkAttributeDocEntryBuffer temporary)
     var
         Item: Record Item;
-        StockedAttributeMgmt: Codeunit StockedAttributeMgmt;
+        PTEStkAttributeMgmt: Codeunit PTEStkAttributeMgmt;
         NewLineRecordRef: RecordRef;
         ItemToken: JsonToken;
         VariantFieldNo: Integer;
@@ -317,7 +317,7 @@ codeunit 50101 StockedAttributeDocEntryMgmt
             UpdateRecordRef(SourceRecordRef, QuantityFieldNo, TempDocEntryBuffer.Quantity);
             UpdateRecordRef(SourceRecordRef, UoMFieldNo, TempDocEntryBuffer.UnitofMeasureCode);
             UpdateRecordRef(SourceRecordRef, LocationFieldNo, TempDocEntryBuffer.LocationCode);
-            UpdateRecordRef(SourceRecordRef, DescriptionFieldNo, StockedAttributeMgmt.GetVariantFullDescription(Item, TempDocEntryBuffer.AttributeSetId));
+            UpdateRecordRef(SourceRecordRef, DescriptionFieldNo, PTEStkAttributeMgmt.GetVariantFullDescription(Item, TempDocEntryBuffer.AttributeSetId));
             SourceRecordRef.Modify();
 
             // Add any additional selections to the document.
@@ -331,7 +331,7 @@ codeunit 50101 StockedAttributeDocEntryMgmt
                     UpdateRecordRef(NewLineRecordRef, QuantityFieldNo, TempDocEntryBuffer.Quantity);
                     UpdateRecordRef(NewLineRecordRef, UoMFieldNo, TempDocEntryBuffer.UnitofMeasureCode);
                     UpdateRecordRef(NewLineRecordRef, LocationFieldNo, TempDocEntryBuffer.LocationCode);
-                    UpdateRecordRef(SourceRecordRef, DescriptionFieldNo, StockedAttributeMgmt.GetVariantFullDescription(Item, TempDocEntryBuffer.AttributeSetId));
+                    UpdateRecordRef(SourceRecordRef, DescriptionFieldNo, PTEStkAttributeMgmt.GetVariantFullDescription(Item, TempDocEntryBuffer.AttributeSetId));
                     NewLineRecordRef.Modify(true);
                 until TempDocEntryBuffer.Next() = 0;
         end;

@@ -1,12 +1,12 @@
 /// <summary>
-/// Page StockedAttributeSearchEntry (ID 50108).
+/// PagePTEStkAttributeSearchEntry (ID 50108).
 /// </summary>
-page 50108 StockedAttributeSearchEntry
+page 50108 PTEStkAttributeSearchEntry
 {
 
     Caption = 'Stocked Attribute Search Entry';
     PageType = List;
-    SourceTable = StockedAttributeDocEntryBuffer;
+    SourceTable = PTEStkAttributeDocEntryBuffer;
     SourceTableTemporary = true;
     UsageCategory = None;
     DeleteAllowed = false;
@@ -161,8 +161,8 @@ page 50108 StockedAttributeSearchEntry
     /// <summary>
     /// GetRecords.
     /// </summary>
-    /// <param name="TempStockedAttributeDocBuffer">Temporary VAR Record StockedAttributeDocEntryBuffer.</param>
-    procedure GetRecords(var TempStockedAttributeDocBuffer: Record StockedAttributeDocEntryBuffer temporary);
+    /// <param name="TempStockedAttributeDocBuffer">Temporary VAR Record PTEStkAttributeDocEntryBuffer.</param>
+    procedure GetRecords(var TempStockedAttributeDocBuffer: Record PTEStkAttributeDocEntryBuffer temporary);
     begin
         Rec.ClearMarks();
         Rec.Reset();
@@ -282,7 +282,7 @@ page 50108 StockedAttributeSearchEntry
     /// <param name="ItemVariant">Record "Item Variant".</param>
     local procedure InsertBufferRecord(ItemVariant: Record "Item Variant"; var EntryNo: Integer)
     var
-        StockedAttributeMgmt: Codeunit StockedAttributeMgmt;
+        PTEStkAttributeMgmt: Codeunit PTEStkAttributeMgmt;
     begin
         EntryNo += 1;
 
@@ -292,10 +292,10 @@ page 50108 StockedAttributeSearchEntry
         Rec."Variant Code" := ItemVariant.Code;
         Rec.LocationCode := CopyStr(LocationDefault, 1, MaxStrLen(Rec.LocationCode));
         Rec.UnitofMeasureCode := CopyStr(UoMDefault, 1, MaxStrLen(Rec.UnitofMeasureCode));
-        Rec.AttributeSetId := ItemVariant."Attribute Set Id";
+        Rec.AttributeSetId := ItemVariant.PTEStkAttributeSetId;
         Rec.Insert(true);
 
-        SearchDict.Add(Rec.EntryNo, StockedAttributeMgmt.GetVariantFullDescription(Item, Rec.AttributeSetId))
+        SearchDict.Add(Rec.EntryNo, PTEStkAttributeMgmt.GetVariantFullDescription(Item, Rec.AttributeSetId))
     end;
 
     /// <summary>

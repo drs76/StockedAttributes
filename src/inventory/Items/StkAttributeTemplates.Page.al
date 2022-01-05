@@ -1,15 +1,15 @@
 /// <summary>
-/// Page StockedAttributeTemplates (ID 50106).
+/// PagePTEStkAttributeTemplates (ID 50106).
 /// </summary>
-page 50106 StockedAttributeTemplates
+page 50106 PTEStkAttributeTemplates
 {
 
     Caption = 'Stocked Attribute Templates';
     PageType = List;
-    SourceTable = StockedAttributeTemplate;
+    SourceTable = PTEStkAttributeTemplate;
     ApplicationArea = All;
     UsageCategory = Administration;
-    CardPageId = StockedAttributeTemplate;
+    CardPageId = PTEStkAttributeTemplate;
     RefreshOnActivate = true;
 
     layout

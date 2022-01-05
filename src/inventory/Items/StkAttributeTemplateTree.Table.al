@@ -1,7 +1,7 @@
 /// <summary>
-/// Table StockedAttributeTemplateTree (ID 50103).
+/// TablePTEStkAttributeTemplateTree (ID 50103).
 /// </summary>
-table 50103 StockedAttributeTemplateTree
+table 50103 PTEStkAttributeTemplateTree
 {
     Caption = 'Stocked Attribute Template';
     DataClassification = CustomerContent;

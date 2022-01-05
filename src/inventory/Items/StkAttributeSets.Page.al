@@ -1,13 +1,13 @@
 /// <summary>
-/// Page StockedAttributeSets (ID 50101).
+/// PagePTEStkAttributeSets (ID 50101).
 /// </summary>
-page 50101 StockedAttributeSets
+page 50101 PTEStkAttributeSets
 {
     Caption = 'Stocked Attributes Sets';
     LinksAllowed = false;
     Editable = false;
     PageType = List;
-    SourceTable = StockedAttributeSetEntry;
+    SourceTable = PTEStkAttributeSetEntry;
     UsageCategory = None;
 
     layout

@@ -1,7 +1,7 @@
 /// <summary>
-/// Table StockedAttributeSetup (ID 50100).
+/// TablePTEStkAttributeSetup (ID 50100).
 /// </summary>
-table 50100 StockedAttributeSetup
+table 50100 PTEStkAttributeSetup
 {
     Caption = 'StockedAttributesSetup';
     DataClassification = CustomerContent;
@@ -18,7 +18,7 @@ table 50100 StockedAttributeSetup
             Caption = 'Enabled';
             DataClassification = CustomerContent;
         }
-        field(3; EntryPageType; Enum StockedAttributeEntryPageType)
+        field(3; EntryPageType; Enum PTEStkAttributeEntryPageType)
         {
             Caption = 'Entry Page Type';
             DataClassification = CustomerContent;

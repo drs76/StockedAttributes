@@ -1,13 +1,14 @@
 /// <summary>
-/// Page StockedAttributeConfigurator (ID 50104).
+/// PagePTEStkAttributeQuickEntry (ID 50107).
 /// </summary>
-page 50104 StockedAttributeConfigurator
+page 50107 PTEStkAttributeQuickEntry
 {
-    Caption = 'Variant Configurator';
-    PageType = NavigatePage;
+    Caption = 'Variant Quick Entry';
+    PageType = List;
     UsageCategory = None;
-    SourceTable = StockedAttributeDocEntryBuffer;
+    SourceTable = PTEStkAttributeDocEntryBuffer;
     SourceTableTemporary = true;
+    Editable = true;
 
     layout
     {
@@ -31,15 +32,12 @@ page 50104 StockedAttributeConfigurator
                     ApplicationArea = All;
                 }
             }
-            group(Configuration)
+            repeater(Configuration)
             {
-                Caption = 'Configuration';
-                Visible = CurrentStep = 1;
-
                 field(Selection1; Selections[1])
                 {
                     CaptionClass = '3,' + Captions[1];
-                    TableRelation = StockedAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 1"));
+                    TableRelation = PTEStkAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 1"));
                     ShowMandatory = true;
                     Visible = AttributeVisible1;
                     ToolTip = 'Attribute 1';
@@ -55,7 +53,7 @@ page 50104 StockedAttributeConfigurator
                 field(Selection2; Selections[2])
                 {
                     CaptionClass = '3,' + Captions[2];
-                    TableRelation = StockedAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 2"));
+                    TableRelation = PTEStkAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 2"));
                     ShowMandatory = true;
                     Visible = AttributeVisible2;
                     ToolTip = 'Attribute 2';
@@ -70,7 +68,7 @@ page 50104 StockedAttributeConfigurator
                 field(Selection3; Selections[3])
                 {
                     CaptionClass = '3,' + Captions[3];
-                    TableRelation = StockedAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 3"));
+                    TableRelation = PTEStkAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 3"));
                     ShowMandatory = true;
                     Visible = AttributeVisible3;
                     ToolTip = 'Attribute 3';
@@ -85,7 +83,7 @@ page 50104 StockedAttributeConfigurator
                 field(Selection4; Selections[4])
                 {
                     CaptionClass = '3,' + Captions[4];
-                    TableRelation = StockedAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 4"));
+                    TableRelation = PTEStkAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 4"));
                     ShowMandatory = true;
                     Visible = AttributeVisible4;
                     ToolTip = 'Attribute 4';
@@ -100,7 +98,7 @@ page 50104 StockedAttributeConfigurator
                 field(Selection5; Selections[5])
                 {
                     CaptionClass = '3,' + Captions[5];
-                    TableRelation = StockedAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 5"));
+                    TableRelation = PTEStkAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 5"));
                     ShowMandatory = true;
                     Visible = AttributeVisible5;
                     ToolTip = 'Attribute 5';
@@ -115,7 +113,7 @@ page 50104 StockedAttributeConfigurator
                 field(Selection6; Selections[6])
                 {
                     CaptionClass = '3,' + Captions[6];
-                    TableRelation = StockedAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 6"));
+                    TableRelation = PTEStkAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 6"));
                     ShowMandatory = true;
                     Visible = AttributeVisible6;
                     ToolTip = 'Attribute 6';
@@ -130,7 +128,7 @@ page 50104 StockedAttributeConfigurator
                 field(Selection7; Selections[7])
                 {
                     CaptionClass = '3,' + Captions[7];
-                    TableRelation = StockedAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 7"));
+                    TableRelation = PTEStkAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 7"));
                     ShowMandatory = true;
                     Visible = AttributeVisible7;
                     ToolTip = 'Attribute 7';
@@ -145,7 +143,7 @@ page 50104 StockedAttributeConfigurator
                 field(Selection8; Selections[8])
                 {
                     CaptionClass = '3,' + Captions[8];
-                    TableRelation = StockedAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 8"));
+                    TableRelation = PTEStkAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 8"));
                     ShowMandatory = true;
                     Visible = AttributeVisible8;
                     ToolTip = 'Attribute 8';
@@ -160,7 +158,7 @@ page 50104 StockedAttributeConfigurator
                 field(Selection9; Selections[9])
                 {
                     CaptionClass = '3,' + Captions[9];
-                    TableRelation = StockedAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 9"));
+                    TableRelation = PTEStkAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 9"));
                     ShowMandatory = true;
                     Visible = AttributeVisible9;
                     ToolTip = 'Attribute 9';
@@ -175,7 +173,7 @@ page 50104 StockedAttributeConfigurator
                 field(Selection10; Selections[10])
                 {
                     CaptionClass = '3,' + Captions[10];
-                    TableRelation = StockedAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 10"));
+                    TableRelation = PTEStkAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 10"));
                     ShowMandatory = true;
                     Visible = AttributeVisible10;
                     ToolTip = 'Attribute 10';
@@ -190,7 +188,7 @@ page 50104 StockedAttributeConfigurator
                 field(Selection11; Selections[11])
                 {
                     CaptionClass = '3,' + Captions[11];
-                    TableRelation = StockedAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 11"));
+                    TableRelation = PTEStkAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 11"));
                     ShowMandatory = true;
                     Visible = AttributeVisible11;
                     ToolTip = 'Attribute 11';
@@ -205,7 +203,7 @@ page 50104 StockedAttributeConfigurator
                 field(Selection12; Selections[12])
                 {
                     CaptionClass = '3,' + Captions[12];
-                    TableRelation = StockedAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 12"));
+                    TableRelation = PTEStkAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 12"));
                     ShowMandatory = true;
                     Visible = AttributeVisible12;
                     ToolTip = 'Attribute 12';
@@ -220,7 +218,7 @@ page 50104 StockedAttributeConfigurator
                 field(Selection13; Selections[13])
                 {
                     CaptionClass = '3,' + Captions[13];
-                    TableRelation = StockedAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 13"));
+                    TableRelation = PTEStkAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 13"));
                     ShowMandatory = true;
                     Visible = AttributeVisible13;
                     ToolTip = 'Attribute 13';
@@ -235,7 +233,7 @@ page 50104 StockedAttributeConfigurator
                 field(Selection14; Selections[14])
                 {
                     CaptionClass = '3,' + Captions[14];
-                    TableRelation = StockedAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 14"));
+                    TableRelation = PTEStkAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 14"));
                     ShowMandatory = true;
                     Visible = AttributeVisible14;
                     ToolTip = 'Attribute 14';
@@ -250,7 +248,7 @@ page 50104 StockedAttributeConfigurator
                 field(Selection15; Selections[15])
                 {
                     CaptionClass = '3,' + Captions[15];
-                    TableRelation = StockedAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 15"));
+                    TableRelation = PTEStkAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 15"));
                     ShowMandatory = true;
                     Visible = AttributeVisible15;
                     ToolTip = 'Attribute 15';
@@ -265,7 +263,7 @@ page 50104 StockedAttributeConfigurator
                 field(Selection16; Selections[16])
                 {
                     CaptionClass = '3,' + Captions[16];
-                    TableRelation = StockedAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 16"));
+                    TableRelation = PTEStkAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 16"));
                     ShowMandatory = true;
                     Visible = AttributeVisible16;
                     ToolTip = 'Attribute 16';
@@ -280,7 +278,7 @@ page 50104 StockedAttributeConfigurator
                 field(Selection17; Selections[17])
                 {
                     CaptionClass = '3,' + Captions[17];
-                    TableRelation = StockedAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 17"));
+                    TableRelation = PTEStkAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 17"));
                     ShowMandatory = true;
                     Visible = AttributeVisible17;
                     ToolTip = 'Attribute 17';
@@ -295,7 +293,7 @@ page 50104 StockedAttributeConfigurator
                 field(Selection18; Selections[18])
                 {
                     CaptionClass = '3,' + Captions[18];
-                    TableRelation = StockedAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 18"));
+                    TableRelation = PTEStkAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 18"));
                     ShowMandatory = true;
                     Visible = AttributeVisible18;
                     ToolTip = 'Attribute 18';
@@ -310,7 +308,7 @@ page 50104 StockedAttributeConfigurator
                 field(Selection19; Selections[19])
                 {
                     CaptionClass = '3,' + Captions[19];
-                    TableRelation = StockedAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 19"));
+                    TableRelation = PTEStkAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 19"));
                     ShowMandatory = true;
                     Visible = AttributeVisible19;
                     ToolTip = 'Attribute 19';
@@ -325,7 +323,7 @@ page 50104 StockedAttributeConfigurator
                 field(Selection20; Selections[20])
                 {
                     CaptionClass = '3,' + Captions[20];
-                    TableRelation = StockedAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 20"));
+                    TableRelation = PTEStkAttributeTemplateEntry.AttributeValueID where(TemplateID = field("Template Filter"), AttributeID = field("Attribute Filter 20"));
                     ShowMandatory = true;
                     Visible = AttributeVisible20;
                     ToolTip = 'Attribute 20';
@@ -337,17 +335,18 @@ page 50104 StockedAttributeConfigurator
                         ValidateSelection(20);
                     end;
                 }
-            }
-            group(EnterQuantity)
-            {
-                Caption = 'Required Quantity';
-                Visible = CurrentStep = 2;
                 field(UnitofMeasureCode; Rec.UnitofMeasureCode)
                 {
                     Caption = 'Unit of Measure';
                     ToolTip = 'Enter the unit of measure required';
                     ShowMandatory = true;
                     ApplicationArea = All;
+
+                    trigger OnValidate()
+                    var
+                    begin
+                        currPage.SaveRecord();
+                    end;
                 }
                 field(LocationCode; Rec.LocationCode)
                 {
@@ -355,6 +354,12 @@ page 50104 StockedAttributeConfigurator
                     ToolTip = 'Enter the location required';
                     ShowMandatory = true;
                     ApplicationArea = All;
+
+                    trigger OnValidate()
+                    var
+                    begin
+                        CurrPage.SaveRecord();
+                    end;
                 }
 
                 field(Quantity; Rec.Quantity)
@@ -363,151 +368,26 @@ page 50104 StockedAttributeConfigurator
                     ToolTip = 'Enter the required quantity';
                     ShowMandatory = true;
                     ApplicationArea = All;
+
+                    trigger OnValidate()
+                    begin
+                        if Quantity <> xRec.Quantity then
+                            FindVariant();
+
+                        CurrPage.SaveRecord();
+                    end;
                 }
-            }
 
-            group(ConfirmSelections)
-            {
-                Caption = 'Confirm';
-                Visible = CurrentStep = 3;
-
-                repeater(Selections)
+                field(EntryNo; Rec.EntryNo)
                 {
-                    field("Variant Code"; Rec."Variant Code")
-                    {
-                        Caption = 'Variant Code';
-                        ToolTip = 'Variant code for selected configuration';
-                        Editable = false;
-                        ShowMandatory = true;
-                        ApplicationArea = All;
-                    }
-                    field(UnitofMeasureCode2; Rec.UnitofMeasureCode)
-                    {
-                        Caption = 'Unit of Measure Code';
-                        ToolTip = 'Unit of measure code for selected configuration';
-                        ShowMandatory = true;
-                        ApplicationArea = All;
-                    }
-                    field(Quantity2; Rec.Quantity)
-                    {
-                        Caption = 'Quantity';
-                        ToolTip = 'Quantity required for selected configuration';
-                        ShowMandatory = true;
-                        ApplicationArea = All;
-                    }
+                    Caption = 'Entry No.';
+                    ToolTip = 'Entry No.';
+                    ApplicationArea = All;
                 }
             }
         }
     }
 
-    actions
-    {
-        area(Processing)
-        {
-            group(Navigate)
-            {
-                action(Next)
-                {
-                    Caption = '&Next';
-                    ToolTip = 'Next Configurator page';
-                    Visible = NextVisible;
-                    InFooterBar = true;
-                    Image = NextRecord;
-                    ApplicationArea = All;
-
-                    trigger OnAction()
-                    begin
-                        DoStep(1);
-                    end;
-                }
-
-                action(Back)
-                {
-                    Caption = '&Back';
-                    ToolTip = 'Previous Configurator page';
-                    Visible = BackVisible;
-                    InFooterBar = true;
-                    Image = PreviousRecord;
-                    ApplicationArea = All;
-
-                    trigger OnAction()
-                    begin
-                        DoStep(-1);
-                    end;
-                }
-
-                action(Add)
-                {
-                    Caption = '&Add';
-                    ToolTip = 'Add configuration to selections';
-                    Image = Save;
-                    Visible = AddVisible;
-                    InFooterBar = true;
-                    ApplicationArea = All;
-
-                    trigger OnAction()
-                    begin
-                        InitPage();
-                        DoStep(1);
-                    end;
-                }
-                action(Finish)
-                {
-                    Caption = '&Finish';
-                    ToolTip = 'Close page, add selections to document';
-                    Image = Post;
-                    Visible = FinishVisible;
-                    InFooterBar = true;
-                    ApplicationArea = All;
-
-                    trigger OnAction()
-                    begin
-                        ClosedWithSave := True;
-                        CurrPage.Close();
-                    end;
-                }
-            }
-
-            action(Test)
-            {
-                Caption = 'Test';
-                ToolTip = 'Close page, add selections to document';
-                Image = Action;
-                InFooterBar = false;
-                ApplicationArea = All;
-                Promoted = true;
-                PromotedOnly = true;
-                PromotedCategory = Process;
-
-                trigger OnAction()
-                begin
-                    Message('hello');
-                end;
-            }
-            action(Test2)
-            {
-                Caption = 'Test2';
-                ToolTip = 'Close page, add selections to document';
-                Image = Action;
-                InFooterBar = false;
-                ApplicationArea = All;
-                Promoted = true;
-                PromotedOnly = true;
-                PromotedCategory = Process;
-
-                trigger OnAction()
-                begin
-                    Message('hello');
-                end;
-            }
-        }
-    }
-
-    trigger OnOpenPage()
-    begin
-        InitPage();
-        DoStep(1); // page 1
-    end;
 
     var
         Attributes: Dictionary of [Integer, Integer];
@@ -516,14 +396,8 @@ page 50104 StockedAttributeConfigurator
         SelectedValueIDs: array[20] of Integer;
         LocationDefault: Text;
         UoMDefault: Text;
-        RecordCount: Integer;
-        MaxSteps: Integer;
-        CurrentStep: Integer;
+        [InDataSet]
         ClosedWithSave: Boolean;
-        NextVisible: Boolean;
-        BackVisible: Boolean;
-        AddVisible: Boolean;
-        FinishVisible: Boolean;
         AttributeVisible1: Boolean;
         AttributeVisible2: Boolean;
         AttributeVisible3: Boolean;
@@ -545,6 +419,36 @@ page 50104 StockedAttributeConfigurator
         AttributeVisible19: Boolean;
         AttributeVisible20: Boolean;
 
+    trigger OnOpenPage()
+    begin
+        InitPage();
+    end;
+
+    trigger OnQueryClosePage(CloseAction: Action): Boolean
+    var
+        SaveChangesQst: Label 'Add selections to document';
+    begin
+        if Rec.Count() > 0 then
+            ClosedWithSave := Confirm(SaveChangesQst, false);
+    end;
+
+    trigger OnNewRecord(BelowxRec: Boolean)
+    begin
+        Rec.EntryNo := xRec.EntryNo + 1;
+        Rec.TransferFields(xRec, false);
+        Rec.Quantity := 0;
+    end;
+
+    trigger OnAfterGetRecord()
+    begin
+        GetRowSelections();
+    end;
+
+    trigger OnAfterGetCurrRecord()
+    begin
+        GetRowSelections();
+    end;
+
     /// <summary>
     /// SetLineDefaults.
     /// </summary>
@@ -559,8 +463,8 @@ page 50104 StockedAttributeConfigurator
     /// <summary>
     /// GetRecords.
     /// </summary>
-    /// <param name="TempStockedAttributeDocBuffer">Temporary VAR Record StockedAttributeDocEntryBuffer.</param>
-    procedure GetRecords(var TempStockedAttributeDocBuffer: Record StockedAttributeDocEntryBuffer temporary);
+    /// <param name="TempStockedAttributeDocBuffer">Temporary VAR Record PTEStkAttributeDocEntryBuffer.</param>
+    procedure GetRecords(var TempStockedAttributeDocBuffer: Record PTEStkAttributeDocEntryBuffer temporary);
     begin
         TempStockedAttributeDocBuffer.Copy(Rec, true);
     end;
@@ -575,76 +479,40 @@ page 50104 StockedAttributeConfigurator
     end;
 
     /// <summary>
-    /// DoStep.
-    /// </summary>
-    /// <param name="StepCount">Integer.</param>
-    local procedure DoStep(StepCount: Integer)
-    begin
-        if CurrentStep + StepCount > MaxSteps then
-            exit;
-        if CurrentStep + StepCount < 1 then
-            exit;
-
-        CurrentStep += StepCount;
-        if CurrentStep = 3 then begin
-            FindVariant();
-            Modify();
-        end;
-
-        SetControls();
-    end;
-
-    /// <summary>
-    /// SetControls.
-    /// </summary>
-    local procedure SetControls()
-    begin
-        NextVisible := CurrentStep < 3;
-        BackVisible := CurrentStep > 1;
-        AddVisible := CurrentStep = 3;
-        FinishVisible := CurrentStep = 3;
-    end;
-
-    /// <summary>
     /// InitPage.
     /// </summary>
     local procedure InitPage()
     var
         Item: Record Item;
-        StockedAttributeTemplate: Record StockedAttributeTemplate;
-        TempAttributeTemplateEntry: Record StockedAttributeTemplateEntry temporary;
-        StockedAttributeEntrySetup: Codeunit StockedAttributeEntryPageMgmt;
-        StockedAttributeMgmt: Codeunit StockedAttributeMgmt;
+        PTEStkAttributeTemplate: Record PTEStkAttributeTemplate;
+        TempAttributeTemplateEntry: Record PTEStkAttributeTemplateEntry temporary;
+        PTEStkAttributeEntrySetup: Codeunit PTEStkAttributeEntryPageMgmt;
+        PTEStkAttributeMgmt: Codeunit PTEStkAttributeMgmt;
         AttributeCount: Integer;
     begin
-        MaxSteps := 3; // Maximum navigation steps
-        Clear(CurrentStep);
+        Rec.EntryNo := 1;
+        Rec."Item No." := Rec.GetRangeMin("Item No.");
+        Rec.LocationCode := CopyStr(LocationDefault, 1, MaxStrLen(Rec.LocationCode));
+        Rec.UnitofMeasureCode := CopyStr(UoMDefault, 1, MaxStrLen(Rec.UnitofMeasureCode));
 
-        Rec.Init();
-        RecordCount += 1;
-        EntryNo := RecordCount;
-        "Item No." := GetRangeMin("Item No.");
-        LocationCode := CopyStr(LocationDefault, 1, MaxStrLen(LocationCode));
-        UnitofMeasureCode := CopyStr(UoMDefault, 1, MaxStrLen(UnitofMeasureCode));
+        Item.Get(Rec."Item No.");
+        Item.TestField(PTEStkAttributeTemplateCode);
+        PTEStkAttributeTemplate.Get(Item.PTEStkAttributeTemplateCode);
 
-        Item.Get("Item No.");
-        Item.TestField(StockedAttributeTemplateCode);
-        StockedAttributeTemplate.Get(Item.StockedAttributeTemplateCode);
+        PTEStkAttributeMgmt.GetAttributeTemplateSet(TempAttributeTemplateEntry, PTEStkAttributeTemplate."Template Set ID");
 
-        StockedAttributeMgmt.GetAttributeTemplateSet(TempAttributeTemplateEntry, StockedAttributeTemplate."Template Set ID");
+        PTEStkAttributeEntrySetup.SetStockedAttributeDocEntryBuffer(Rec);
+        PTEStkAttributeEntrySetup.SetTempAttributeEntry(TempAttributeTemplateEntry);
+        PTEStkAttributeEntrySetup.SetupPage();
 
-        StockedAttributeEntrySetup.SetStockedAttributeDocEntryBuffer(Rec);
-        StockedAttributeEntrySetup.SetTempAttributeEntry(TempAttributeTemplateEntry);
-        StockedAttributeEntrySetup.SetupPage();
-
-        StockedAttributeEntrySetup.GetAttributeCount(AttributeCount);
-        StockedAttributeEntrySetup.GetAttributes(Attributes);
-        StockedAttributeEntrySetup.GetCaptions(Captions);
-        StockedAttributeEntrySetup.GetStockedAttributeDocEntryBuffer(Rec);
+        PTEStkAttributeEntrySetup.GetAttributeCount(AttributeCount);
+        PTEStkAttributeEntrySetup.GetAttributes(Attributes);
+        PTEStkAttributeEntrySetup.GetCaptions(Captions);
+        PTEStkAttributeEntrySetup.GetStockedAttributeDocEntryBuffer(Rec);
 
         SetFieldsVisible(AttributeCount);
 
-        "Template Filter" := StockedAttributeTemplate."Template Set ID";
+        Rec."Template Filter" := PTEStkAttributeTemplate."Template Set ID";
         Rec.Insert();
     end;
 
@@ -707,10 +575,10 @@ page 50104 StockedAttributeConfigurator
     /// <param name="ColumnNo">Integer.</param>
     local procedure ValidateSelection(ColumnNo: Integer)
     var
-        StockedAttributeEntrySetup: Codeunit StockedAttributeEntryPageMgmt;
+        PTEStkAttributeEntrySetup: Codeunit PTEStkAttributeEntryPageMgmt;
     begin
-        StockedAttributeEntrySetup.ValidateEntry(ColumnNo, Attributes, Selections, SelectedValueIDs);
-        currPage.SaveRecord();
+        PTEStkAttributeEntrySetup.ValidateEntry(ColumnNo, Attributes, Selections, SelectedValueIDs);
+        UpdateSelections();
     end;
 
     /// <summary>
@@ -718,8 +586,54 @@ page 50104 StockedAttributeConfigurator
     /// </summary>
     local procedure FindVariant()
     var
-        StockedAttributeEntrySetup: Codeunit StockedAttributeEntryPageMgmt;
+        PTEStkAttributeEntrySetup: Codeunit PTEStkAttributeEntryPageMgmt;
     begin
-        StockedAttributeEntrySetup.EntryPageFindVariant(Rec, Attributes, SelectedValueIDs);
+        PTEStkAttributeEntrySetup.EntryPageFindVariant(Rec, Attributes, SelectedValueIDs);
+    end;
+
+    /// <summary>
+    /// UpdateSelections.
+    /// </summary>
+    local procedure UpdateSelections()
+    var
+        TxtBuilder: TextBuilder;
+        x: Integer;
+        CommaTxt: Label ',';
+    begin
+        Clear(Rec.PageSelections);
+        for x := 1 to ArrayLen(SelectedValueIDs) do begin
+            if txtBuilder.Length() > 0 then
+                TxtBuilder.Append(CommaTxt);
+
+            TxtBuilder.Append(Format(SelectedValueIDs[x]));
+        end;
+        Rec.PageSelections := COpyStr(TxtBuilder.ToText(), 1, MaxStrLen(Rec.PageSelections));
+        CurrPage.SaveRecord();
+    end;
+
+    /// <summary>
+    /// GetRowSelections.
+    /// </summary>
+    local procedure GetRowSelections()
+    var
+        ItemAttributeValue: Record "Item Attribute Value";
+        SelectionsList: List of [Text];
+        ListElement: Text;
+        x: Integer;
+        CommaTxt: Label ',';
+    begin
+        if StrLen(Rec.PageSelections) = 0 then
+            exit;
+
+        Clear(Selections);
+        Clear(SelectedValueIDs);
+        SelectionsList := Rec.PageSelections.Split(CommaTxt);
+        for x := 1 to SelectionsList.Count() do
+            if x <= ArrayLen(Selections) then
+                if SelectionsList.Get(x, ListElement) then
+                    if Evaluate(SelectedValueIDs[x], ListElement) then
+                        if Attributes.ContainsKey(x) then
+                            if ItemAttributeValue.Get(Attributes.Get(x), SelectedValueIDs[x]) then
+                                Selections[x] := ItemAttributeValue.Value;
     end;
 }

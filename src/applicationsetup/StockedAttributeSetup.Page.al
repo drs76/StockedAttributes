@@ -1,11 +1,11 @@
 /// <summary>
-/// Page StockedAttributeSetup (ID 50100).
+/// PagePTEStkAttributeSetup (ID 50100).
 /// </summary>
-page 50100 StockedAttributeSetup
+page 50100 PTEStkAttributeSetup
 {
 
     PageType = Card;
-    SourceTable = StockedAttributeSetup;
+    SourceTable = PTEStkAttributeSetup;
     Caption = 'Stocked Attribute Setup';
     UsageCategory = Administration;
     ApplicationArea = All;
@@ -56,7 +56,7 @@ page 50100 StockedAttributeSetup
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                RunObject = Page StockedAttributeTemplates;
+                RunObject = Page PTEStkAttributeTemplates;
             }
         }
     }

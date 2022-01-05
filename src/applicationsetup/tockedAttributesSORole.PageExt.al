@@ -1,7 +1,7 @@
 /// <summary>
-/// PageExtension StockedAttributesSORole (ID 50105) extends Record SO Processor Activities.
+/// PageExtensionPTEStkAttributesSORole (ID 50105) extends Record SO Processor Activities.
 /// </summary>
-pageextension 50105 StockedAttributesSORole extends "SO Processor Activities"
+pageextension 50105 PTEStkAttributesSORole extends "SO Processor Activities"
 {
 
     trigger OnOpenPage()
@@ -20,12 +20,12 @@ pageextension 50105 StockedAttributesSORole extends "SO Processor Activities"
         RunWizardTextMsg: Label 'Run Stocked Attribute Setup wizard';
         WizardTok: Label 'RunAssistedSetup';
     begin
-        if not GuidedExperience.AssistedSetupExistsAndIsNotComplete(ObjectType::Page, Page::StockedAttributeAssistedSetup) then
+        if not GuidedExperience.AssistedSetupExistsAndIsNotComplete(ObjectType::Page, Page::PTEStkAttributeAssistedSetup) then
             exit;
 
         SetupNotify.Scope(NotificationScope::LocalScope);
         SetupNotify.Message(NotificationTextQst);
-        SetupNotify.AddAction(RunWizardTextMsg, Codeunit::StockedAttributeMgmt, WizardTok);
+        SetupNotify.AddAction(RunWizardTextMsg, Codeunit::PTEStkAttributeMgmt, WizardTok);
         SetupNotify.Send();
     end;
 

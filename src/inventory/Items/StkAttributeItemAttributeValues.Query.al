@@ -1,7 +1,7 @@
 /// <summary>
-/// Query StockedAttributeItemAttributes (ID 50100).
+/// QueryPTEStkAttributeItemAttributes (ID 50100).
 /// </summary>
-query 50100 StockedAttributeItemAttributes
+query 50100 PTEStkAttributeItemAttributes
 {
     QueryType = Normal;
 
@@ -12,7 +12,7 @@ query 50100 StockedAttributeItemAttributes
             column(ID; ID)
             {
             }
-            column(StockedAttribute; StockedAttribute)
+            column(StockedAttribute; PTEStkAttribute)
             {
             }
             dataitem(ItemAttributeValue; "Item Attribute Value")

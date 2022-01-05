@@ -1,11 +1,11 @@
 /// <summary>
-/// Codeunit StockedAttributeEntryPageMgmt (ID 50103).
+/// Codeunit PTEStkAttributeEntryPageMgmt (ID 50103).
 /// </summary>
-codeunit 50103 StockedAttributeEntryPageMgmt
+codeunit 50103 PTEStkAttributeEntryPageMgmt
 {
     var
-        TempStockedAttributeDocEntryBuffer: Record StockedAttributeDocEntryBuffer temporary;
-        TempAttributeTemplateEntry: Record StockedAttributeTemplateEntry temporary;
+        TempStockedAttributeDocEntryBuffer: Record PTEStkAttributeDocEntryBuffer temporary;
+        TempAttributeTemplateEntry: Record PTEStkAttributeTemplateEntry temporary;
         Attributes: Dictionary of [Integer, Integer];
         Captions: array[20] of Text;
         AttributeCount: Integer;
@@ -38,8 +38,8 @@ codeunit 50103 StockedAttributeEntryPageMgmt
     /// <summary>
     /// SetupPageParts.
     /// </summary>
-    /// <param name="TempTemplateEntry">Temporary Record StockedAttributeTemplateEntry.</param>
-    local procedure SetupPageParts(TempTemplateEntry: Record StockedAttributeTemplateEntry temporary)
+    /// <param name="TempTemplateEntry">Temporary Record PTEStkAttributeTemplateEntry.</param>
+    local procedure SetupPageParts(TempTemplateEntry: Record PTEStkAttributeTemplateEntry temporary)
     begin
         TempTemplateEntry.CalcFields("Attribute Code");
 
@@ -137,8 +137,8 @@ codeunit 50103 StockedAttributeEntryPageMgmt
     /// <summary>
     /// SetTempAttributeEntry.
     /// </summary>
-    /// <param name="NewTempAttributeTemplateEntry">Temporary VAR Record StockedAttributeTemplateEntry.</param>
-    procedure SetTempAttributeEntry(var NewTempAttributeTemplateEntry: Record StockedAttributeTemplateEntry temporary)
+    /// <param name="NewTempAttributeTemplateEntry">Temporary VAR Record PTEStkAttributeTemplateEntry.</param>
+    procedure SetTempAttributeEntry(var NewTempAttributeTemplateEntry: Record PTEStkAttributeTemplateEntry temporary)
     begin
         TempAttributeTemplateEntry.Copy(NewTempAttributeTemplateEntry, true);
     end;
@@ -146,8 +146,8 @@ codeunit 50103 StockedAttributeEntryPageMgmt
     /// <summary>
     /// GetStockedAttributeDocEntryBuffer.
     /// </summary>
-    /// <param name="NewStockedAttributeDocEntryBuffer">Temporary VAR Record StockedAttributeDocEntryBuffer.</param>
-    procedure SetStockedAttributeDocEntryBuffer(var NewStockedAttributeDocEntryBuffer: Record StockedAttributeDocEntryBuffer temporary)
+    /// <param name="NewStockedAttributeDocEntryBuffer">Temporary VAR Record PTEStkAttributeDocEntryBuffer.</param>
+    procedure SetStockedAttributeDocEntryBuffer(var NewStockedAttributeDocEntryBuffer: Record PTEStkAttributeDocEntryBuffer temporary)
     begin
         TempStockedAttributeDocEntryBuffer.Copy(NewStockedAttributeDocEntryBuffer, true);
     end;
@@ -155,8 +155,8 @@ codeunit 50103 StockedAttributeEntryPageMgmt
     /// <summary>
     /// GetStockedAttributeDocEntryBuffer.
     /// </summary>
-    /// <param name="NewStockedAttributeDocEntryBuffer">Temporary VAR Record StockedAttributeDocEntryBuffer.</param>
-    procedure GetStockedAttributeDocEntryBuffer(var NewStockedAttributeDocEntryBuffer: Record StockedAttributeDocEntryBuffer temporary)
+    /// <param name="NewStockedAttributeDocEntryBuffer">Temporary VAR Record PTEStkAttributeDocEntryBuffer.</param>
+    procedure GetStockedAttributeDocEntryBuffer(var NewStockedAttributeDocEntryBuffer: Record PTEStkAttributeDocEntryBuffer temporary)
     begin
         NewStockedAttributeDocEntryBuffer.Copy(TempStockedAttributeDocEntryBuffer, true);
     end;
@@ -197,14 +197,14 @@ codeunit 50103 StockedAttributeEntryPageMgmt
     /// <summary>
     /// EntryPageFindVariant.
     /// </summary>
-    /// <param name="TempDocBuffer">Temporary VAR Record StockedAttributeDocEntryBuffer.</param>
+    /// <param name="TempDocBuffer">Temporary VAR Record PTEStkAttributeDocEntryBuffer.</param>
     /// <param name="Attributes">Dictionary of [Integer, Integer].</param>
     /// <param name="ValueIDs">VAR array[20] of Integer.</param>
-    procedure EntryPageFindVariant(var TempDocBuffer: Record StockedAttributeDocEntryBuffer temporary; Attributes: Dictionary of [Integer, Integer]; var ValueIDs: array[20] of Integer)
+    procedure EntryPageFindVariant(var TempDocBuffer: Record PTEStkAttributeDocEntryBuffer temporary; Attributes: Dictionary of [Integer, Integer]; var ValueIDs: array[20] of Integer)
     var
-        TempSetEntry: Record StockedAttributeSetEntry temporary;
+        TempSetEntry: Record PTEStkAttributeSetEntry temporary;
         ItemVariant: Record "Item Variant";
-        StockedAttributeMgmt: Codeunit StockedAttributeMgmt;
+        PTEStkAttributeMgmt: Codeunit PTEStkAttributeMgmt;
         FoundSetID: Integer;
         x: Integer;
         CannotFindErr: Label 'Cannot locate a matching configuration';
@@ -219,13 +219,13 @@ codeunit 50103 StockedAttributeEntryPageMgmt
             end;
 
         Clear(TempDocBuffer."Variant Code");
-        FoundSetID := StockedAttributeMgmt.GetAttributeSetID(TempSetEntry);
+        FoundSetID := PTEStkAttributeMgmt.GetAttributeSetID(TempSetEntry);
         if FoundSetID > 0 then begin
             ItemVariant.SetRange("Item No.", TempDocBuffer."Item No.");
-            ItemVariant.SetRange("Attribute Set Id", FoundSetID);
+            ItemVariant.SetRange(PTEStkAttributeSetId, FoundSetID);
             if ItemVariant.FindFirst() then begin
                 TempDocBuffer."Variant Code" := ItemVariant.Code;
-                TempDocBuffer.AttributeSetId := ItemVariant."Attribute Set Id";
+                TempDocBuffer.AttributeSetId := ItemVariant.PTEStkAttributeSetId;
             end;
         end;
 

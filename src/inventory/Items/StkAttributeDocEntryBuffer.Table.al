@@ -1,7 +1,7 @@
 /// <summary>
-/// Table StockedAttributeDocEntryBuffer (ID 50105).
+/// TablePTEStkAttributeDocEntryBuffer (ID 50105).
 /// </summary>
-table 50105 StockedAttributeDocEntryBuffer
+table 50105 PTEStkAttributeDocEntryBuffer
 {
     Caption = 'Stocked Attribute Entry Buffer';
     DataClassification = CustomerContent;

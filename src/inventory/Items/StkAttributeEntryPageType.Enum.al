@@ -1,7 +1,7 @@
 /// <summary>
-/// Enum StockedAttributeEntryPageType (ID 50100).
+/// Enum PTEStkAttributeEntryPageType (ID 50100).
 /// </summary>
-enum 50100 StockedAttributeEntryPageType
+enum 50100 PTEStkAttributeEntryPageType
 {
     Extensible = true;
 

@@ -1,7 +1,7 @@
 /// <summary>
-/// Table StockedAttributeTemplate (ID 50106).
+/// TablePTEStkAttributeTemplate (ID 50106).
 /// </summary>
-table 50106 StockedAttributeTemplate
+table 50106 PTEStkAttributeTemplate
 {
     Caption = 'StockedAttributeTemplate';
     DataClassification = ToBeClassified;
@@ -23,7 +23,7 @@ table 50106 StockedAttributeTemplate
             Caption = 'Template Set ID';
             DataClassification = CustomerContent;
         }
-        field(5; EntryPageType; Enum StockedAttributeEntryPageType)
+        field(5; EntryPageType; Enum PTEStkAttributeEntryPageType)
         {
             Caption = 'Entry Page Type';
             DataClassification = CustomerContent;
