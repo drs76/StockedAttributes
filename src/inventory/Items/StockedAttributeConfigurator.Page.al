@@ -467,6 +467,39 @@ page 50104 StockedAttributeConfigurator
                     end;
                 }
             }
+
+            action(Test)
+            {
+                Caption = 'Test';
+                ToolTip = 'Close page, add selections to document';
+                Image = Action;
+                InFooterBar = false;
+                ApplicationArea = All;
+                Promoted = true;
+                PromotedOnly = true;
+                PromotedCategory = Process;
+
+                trigger OnAction()
+                begin
+                    Message('hello');
+                end;
+            }
+            action(Test2)
+            {
+                Caption = 'Test2';
+                ToolTip = 'Close page, add selections to document';
+                Image = Action;
+                InFooterBar = false;
+                ApplicationArea = All;
+                Promoted = true;
+                PromotedOnly = true;
+                PromotedCategory = Process;
+
+                trigger OnAction()
+                begin
+                    Message('hello');
+                end;
+            }
         }
     }
 
