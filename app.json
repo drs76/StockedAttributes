@@ -2,7 +2,7 @@
   "id": "12c48b50-270a-4bc0-a9f6-f12571719f58",
   "name": "StockedAttributes",
   "publisher": "Dave Sinclair",
-  "version": "18.3.25234.0",
+  "version": "18.3.25237.0",
   "brief": "",
   "description": "Item Stocked Attributes",
   "privacyStatement": "",
@@ -29,7 +29,7 @@
   "idRanges": [
     {
       "from": 50100,
-      "to": 50110
+      "to": 50115
     }
   ],
   "contextSensitiveHelpUrl": "https://StockedAttributes.com/help/",

@@ -4,6 +4,15 @@
 codeunit 50100 StockedAttributeMgmt
 {
     /// <summary>
+    /// RunSciNetDirectDebitWizard.
+    /// </summary>
+    /// <param name="DirectDebitNotify">Notification.</param>
+    procedure RunAssistedSetup(DirectDebitNotify: Notification)
+    begin
+        Page.Run(Page::StockedAttributeAssistedSetup);
+    end;
+
+    /// <summary>
     /// IsEnabled.
     /// </summary>
     /// <returns>Return value of type Boolean.</returns>

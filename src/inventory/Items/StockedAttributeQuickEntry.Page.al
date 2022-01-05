@@ -388,6 +388,7 @@ page 50107 StockedAttributeQuickEntry
         }
     }
 
+
     var
         Attributes: Dictionary of [Integer, Integer];
         Captions: array[20] of Text;
