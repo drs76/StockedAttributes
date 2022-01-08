@@ -1,5 +1,5 @@
 /// <summary>
-/// PagePTEStkAttributeAssistedSetup (ID 50110).
+/// Page PTEStkAttributeAssistedSetup (ID 50111).
 /// </summary>
 page 50111 PTEStkAttributeAssistedSetup
 {

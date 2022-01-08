@@ -75,8 +75,6 @@ page 50110 PTEStkAttributeFindByValue
 
     trigger OnOpenPage()
     begin
-        //        if Confirm('Update') then
-        //           SetTemplatesAndVariants();
         ShowRepeater := SearchText <> '';
         VariantCount := Rec.Count();
     end;
@@ -187,63 +185,5 @@ page 50110 PTEStkAttributeFindByValue
 
         // return the filter string
         exit(FilterTb.ToText());
-    end;
-
-    /// <summary>
-    /// SetTemplatesAndVariants.
-    /// </summary>
-    local procedure SetTemplatesAndVariants()
-    var
-        Item: Record Item;
-        ItemVariant: Record "Item Variant";
-        VariantMgmt: Codeunit PTEStkAttributeMgmt;
-        CommitCount: Integer;
-        ItemCount: Integer;
-        ProcessT: Time;
-        Window: Dialog;
-        ProgressTxt: Label 'Item: #1######';
-    begin
-        Window.Open(ProgressTxt);
-        ItemVariant.DeleteAll();
-        Item.Find('-');
-        ProcessT := Time();
-        repeat
-            ItemCount += 1;
-            CommitCount += 1;
-            if Time() > (ProcessT + 1000) then begin
-                Window.Update(1, ItemCount);
-                ProcessT := Time();
-            end;
-            if CommitCount > 499 then begin
-                Commit();
-                Clear(CommitCount);
-            end;
-            Item.PTEStkAttributeTemplateCode := GetRandDomTemplate();
-            Item.Modify(true);
-            VariantMgmt.CreateAllPossibleVariants(Item."No.", false);
-            Clear(VariantMgmt);
-        until (Item.Next() = 0) or (ItemCount >= 2000);
-        Window.Close();
-    end;
-
-    /// <summary>
-    /// GetRandDomTemplate.
-    /// </summary>
-    /// <returns>Return value of type Code[20].</returns>
-    local procedure GetRandDomTemplate(): Code[20]
-    var
-        OptionsTemplate: Record PTEStkAttributeTemplate;
-        StepCount: Integer;
-    begin
-        if OptionsTemplate.IsEmpty() then
-            exit;
-
-        StepCount := Random(OptionsTemplate.Count());
-
-        OptionsTemplate.Find('-');
-        if OptionsTemplate.Next(StepCount) = 0 then
-            OptionsTemplate.FindFirst();
-
-        exit(OptionsTemplate.TemplateCode);
     end;
 }
