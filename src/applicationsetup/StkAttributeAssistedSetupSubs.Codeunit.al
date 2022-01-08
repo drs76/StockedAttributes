@@ -1,8 +1,8 @@
 /// <summary>
-/// Codeunit SCI002AssistedSetupSubs (ID 70229342).
+/// Codeunit StkAttributeAssistedSetupSubs (ID 50106).
 /// Subcriptions to Assisted Setup codeunit.
 /// </summary>
-codeunit 50106 SCI002AssistedSetupSubs
+codeunit 50106 StkAttributeAssistedSetupSubs
 {
     /// <summary>
     /// AssistedSetup_OnRegister.

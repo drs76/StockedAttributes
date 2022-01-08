@@ -26,6 +26,20 @@ pageextension 50102 PTEItemCard extends "Item Card"
                 }
             }
         }
+
+        // addfirst(FactBoxes)
+        // {
+        //     part(StockedAttributesFactBox; PTEStkAttributeFactbox)
+        //     {
+        //         ApplicationArea = All;
+        //         SubPageLink = AttributeSetID = field(PTEStkAttributeSetId);
+        //     }
+        // }
+
+        modify(ItemAttributesFactbox)
+        {
+            Visible = not StkAttributeVisible;
+        }
     }
 
     actions
@@ -36,6 +50,11 @@ pageextension 50102 PTEItemCard extends "Item Card"
             Promoted = true;
             PromotedCategory = Category4;
         }
+
+        modify(Attributes)
+        {
+            Visible = not StkAttributeVisible;
+        }
     }
 
     trigger OnOpenPage()
@@ -45,6 +64,7 @@ pageextension 50102 PTEItemCard extends "Item Card"
 
     var
         StkAttributeMgmt: Codeunit PTEStkAttributeMgmt;
+        [InDataSet]
         StkAttributeVisible: Boolean;
 
 }

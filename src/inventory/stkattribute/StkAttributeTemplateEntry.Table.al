@@ -92,7 +92,7 @@ table 50104 PTEStkAttributeTemplateEntry
         repeat
             StkAttributeTemplateEntry.TestField(AttributeValueID);
             if Found then
-                if StkAttributeTemplateTree.Get(StkAttributeTemplateTree.TemplateSetId, StkAttributeTemplateEntry.AttributeID, StkAttributeTemplateEntry.AttributeValueID) then begin
+                if not StkAttributeTemplateTree.Get(StkAttributeTemplateTree.TemplateSetId, StkAttributeTemplateEntry.AttributeID, StkAttributeTemplateEntry.AttributeValueID) then begin
                     Found := false;
                     StkAttributeTemplateTree.LockTable();
                 end;
