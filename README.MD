@@ -8,3 +8,5 @@ setup on required items, using the Create Variants functionality an item variant
 item attributes.
 
 An entry page will allow selection of variant by attribute on un-posted documents and item journals.
+
+Fast search option available.
