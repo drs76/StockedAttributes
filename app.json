@@ -12,8 +12,8 @@
   "logo": "./src/img/Dave.png",
   "dependencies": [],
   "screenshots": [],
-  "platform": "18.0.0.0",
-  "application": "18.0.0.0",
+  "platform": "20.0.0.0",
+  "application": "20.0.0.0",
   "idRanges": [
     {
       "from": 50100,
@@ -21,7 +21,10 @@
     }
   ],
   "contextSensitiveHelpUrl": "https://StockedAttributes.com/help/",
-  "showMyCode": true,
-  "runtime": "7.0",
+  "resourceExposurePolicy": {
+    "allowDebugging": true,
+    "allowDownloadingSource": false
+  },
+  "runtime": "9.0",
   "target": "Cloud"
 }
